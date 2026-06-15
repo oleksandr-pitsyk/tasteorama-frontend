@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import styles from './loading.module.css';
+import styles from './Loading.module.css';
 
 export default function Loading(): React.ReactElement {
   return (
