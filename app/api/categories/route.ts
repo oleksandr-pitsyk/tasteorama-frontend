@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { isAxiosError } from 'axios';
 import { api } from '../api';
-import { logErrorResponse } from '../_utils/utils';
+import { logErrorResponse } from '@/app/api/_utils/utils';
 
 export async function GET() {
   try {
@@ -12,7 +12,7 @@ export async function GET() {
       logErrorResponse(error.response?.data);
       return NextResponse.json(
         { error: error.message, response: error.response?.data },
-        { status: error.status }
+        { status: error.status || 500 }
       );
     }
 

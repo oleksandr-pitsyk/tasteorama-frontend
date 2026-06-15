@@ -1,4 +1,4 @@
-import { getRecipeById } from '@/lib/api/api-myTest';
+import { getRecipeById } from '@/lib/api/api';
 
 type Props = {
   params: Promise<{ recipeId: string }>;

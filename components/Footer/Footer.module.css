@@ -1,26 +1,119 @@
-/* components/Footer.module.css  */
-
+/* ==========================================================================
+   1. БАЗОВІ СТИЛІ (Мобільні пристрої до 393px — Гумова верстка)
+   ========================================================================== */
 .footer {
-  padding: 20px;
-  background-color: #f0f0f0;
-  text-align: center;
-  font-size: 14px;
-  color: #555;
-  border-top: 1px solid #ddd;
+  width: 100%;
+  background: #3d2218;
+  padding: 24px 20px;
+  box-sizing: border-box;
 }
 
-.wrap {
+.container {
+  width: 100%;
   display: flex;
+  flex-direction: column;
+  align-items: center; /* Все по центру на мобільних */
   justify-content: center;
-  gap: 20px;
+  gap: 16px;
 }
 
-.footer a {
-  color: #226ec5;
-  font-weight: 600;
+/* СТИЛІ МОНОЛІТНОГО ЛОГОТИПУ */
+.logoLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #ffffff;
 }
 
-.footer a:hover {
+.logoIcon {
+  width: 24px;
+  height: 24px;
+  fill: #ffffff; /* Заливка кольором */
+}
+
+/* На гумовому екрані до 393px приховуємо текст логотипу для економії місця */
+.logoText {
+  display: none;
+}
+
+.copyright,
+.link {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.copyright {
+  text-align: center;
+  opacity: 0.8;
+}
+
+.nav {
+  display: flex;
+  gap: 24px;
+}
+
+.link {
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
   text-decoration: underline;
+}
+
+/* ==========================================================================
+   2. ТОЧКА РОЗЛАМУ: ВІД 393px (Смартфони — Повертаємо текст логотипу)
+   ========================================================================== */
+@media (min-width: 393px) {
+  .footer {
+    padding: 24px 32px;
+  }
+
+  .container {
+    gap: 20px;
+  }
+
+  .logoText {
+    display: inline; /* Текст гарно з'являється поруч з іконкою */
+  }
+}
+
+/* ==========================================================================
+   3. ТОЧКА РОЗЛАМУ: ВІД 768px (Планшети — Все по центру)
+   ========================================================================== */
+@media (min-width: 768px) {
+  .footer {
+    padding: 30px 40px;
+  }
+
+  .container {
+    gap: 24px;
+  }
+}
+
+/* ==========================================================================
+   4. ТОЧКА РОЗЛАМУ: ВІД 1440px (Десктоп — 108px відступи по боках)
+   ========================================================================== */
+@media (min-width: 1440px) {
+  .footer {
+    height: 94px;
+    padding: 24px 108px; /* Твій точний десктопний паддінг строго за Figma */
+    display: flex;
+    align-items: center;
+  }
+
+  .container {
+    max-width: 1224px;
+    margin: 0 auto;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+  }
 }

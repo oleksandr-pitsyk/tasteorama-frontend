@@ -9,26 +9,26 @@
 import css from './MainPage.module.css';
 
 // Імпорт компонентів
-// import SearchBox from '@/components/SearchBox/SearchBox';
+
+import Hero from '@/components/Hero/Hero';
 import Filters from '@/components/Filters/Filters';
 import RecipesList from '@/components/RecipesList/RecipesList';
-import RecipeCard from '@/components/RecipeCard/RecipeCard';
-import LoadMoreBtn from '@/components/LoadMoreBtn/LoadMoreBtn';
+// import RecipeCard from '@/components/RecipeCard/RecipeCard';
+// import LoadMoreBtn from '@/components/LoadMoreBtn/LoadMoreBtn';
 
-import MyTest from '@/components/MyTest/MyTest';
-import HeaderMy from '@/components/HeaderMy/HeaderMy';
+// import HeaderMy from '@/components/HeaderMy/HeaderMy';
+// import MyTest from '@/components/MyTest/MyTest';
 
 function MainPage() {
   return (
     <main className={css.container}>
-      <h1 className={css.title}>Tasteorama</h1>
-      {/* <SearchBox /> */}
-      <HeaderMy />
+      <Hero />
       <Filters />
       <RecipesList />
-      <RecipeCard />
-      <LoadMoreBtn />
-      <MyTest />
+      {/* <RecipeCard /> */}
+      {/* <LoadMoreBtn /> */}
+      {/* <HeaderMy /> */}
+      {/* <MyTest /> */}
     </main>
   );
 }
