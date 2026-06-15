@@ -12,9 +12,6 @@ const HeaderMy = () => {
 
   return (
     <header className={css.header}>
-      <Link href="/" aria-label="Home" className={css.headerLink}>
-        Tasteorama
-      </Link>
       <nav aria-label="Main Navigation">
         <ul className={css.navigation}>
           <li className={css.navigationItem}>
@@ -23,14 +20,22 @@ const HeaderMy = () => {
             </Link>
           </li>
 
-          {/* Навігація для авторизації та авторизованих користувачів */}
-          {/* <AuthNavigation /> */}
-
           <li className={css.navigationItem}>
             {/* Приклад посилання на рецепт за Id */}
             {/* <Link href={`/notes/${item.id}`}>{item.title}</Link> */}
             <Link href={`/recipes/${recipeId}`}>Рецепт за Id {recipeId}</Link>
           </li>
+          <li className={css.navigationItem}>
+            <Link href={`/auth/register`}>Register-Modal</Link>
+          </li>
+          <li className={css.navigationItem}>
+            <Link href={`/auth/login`}>Login-Modal</Link>
+          </li>
+          <li className={css.navigationItem}>
+            <Link href={`/profile/own`}>Profile-Own</Link>
+          </li>
+          {/* Навігація для авторизації та авторизованих користувачів */}
+          {/* <AuthNavigation /> */}
         </ul>
       </nav>
     </header>
