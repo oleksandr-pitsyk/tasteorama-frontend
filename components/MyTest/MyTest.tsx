@@ -1,4 +1,7 @@
-// 1. Імпортуємо функцію
+// Імпорт модуля Link для навігації між сторінками
+import Link from 'next/link';
+
+// Імпортуємо функцію
 import { getCategories } from '@/lib/api/api-myTest';
 import { getIngredients } from '@/lib/api/api-myTest';
 import { getRecipes } from '@/lib/api/api-myTest';
@@ -29,7 +32,9 @@ const MyTest = async () => {
       <ul>
         Recipes:{' '}
         {recipes.data.map(recipe => (
-          <li key={recipe._id}>{recipe.title}</li>
+          <li key={recipe._id}>
+            <Link href={`/recipes/${recipe._id}`}>{recipe.title}</Link>
+          </li>
         ))}
       </ul>
       <p>Recipe by Id:</p>

@@ -81,6 +81,10 @@ import type { Recipe } from '@/types/recipe';
 
 // Типізація відповіді Get-запиту від Axios - колекція рецептів - згідно структури бекенда :
 interface GetRecipesHttpResponse {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
   data: Recipe[]; // Відповідь містить масив рецептів у властивості data
 }
 
@@ -89,16 +93,58 @@ interface GetRecipeHttpResponse {
   data: Recipe; // Відповідь містить один рецепт у властивості data
 }
 // ==========================================================================================
-// getRecipes : виконує запит для отримання колекції рецептів.
+// getRecipes : виконує запит для отримання колекції рецептів
 // ==========================================================================================
 // Структура запиту :
+// ------------------------------------------------------------------------------------------
+// page=2
+// Page number - Номер сторінки для пагінації
+// ------------------------------------------------------------------------------------------
+// perPage=12
+// Notes per page - Кількість на сторінці
+// ------------------------------------------------------------------------------------------
+// search=example_search
+// Search recipe by title - Пошук по назві
+// ------------------------------------------------------------------------------------------
+// Filter recipes by category - Фільтрація рецептів по категории
+// category=
+// ------------------------------------------------------------------------------------------
+// Filter recipes by ingredients - Фільтрація рецептів по інгредієнтам
+// ingredients=
+// ------------------------------------------------------------------------------------------
+// Sort  - Сортування за ___
+// sortBy=updated
+// ------------------------------------------------------------------------------------------
 
-export async function getRecipes(): Promise<GetRecipesHttpResponse> {
+export async function getRecipes(
+  page: number = 1,
+  perPage: number = 5,
+  search: string,
+  category: string,
+  ingredients: string
+): Promise<GetRecipesHttpResponse> {
+  // Параметри запиту
+  const options = {
+    params: {
+      page,
+      perPage,
+      search,
+      category,
+      ingredients,
+    },
+  };
   // Виконуємо HTTP-запит
-  const response = await axios.get<GetRecipesHttpResponse>('/api/recipes');
+  const response = await axios.get<GetRecipesHttpResponse>('/api/recipes', options);
 
   // Повертаємо значення data відповіді
   return response.data;
+  // return {
+  //   page: response.page,
+  //   perPage: response.perPage,
+  //   totalItems: totalItems,
+  //   totalPages: totalPages,
+  //   data: response.data,
+  // };
 }
 
 // ==========================================================================================
