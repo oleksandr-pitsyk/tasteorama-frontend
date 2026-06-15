@@ -8,7 +8,7 @@ import { api, ApiError } from '../api';
 
 export async function GET() {
   try {
-    const { data } = await api('api/categories');
+    const { data } = await api('api/ingredients');
 
     // NextResponse – це розширення стандартного Web Response з додатковими методами Next.js
     // і дозволяє легко повертати JSON-дані.
