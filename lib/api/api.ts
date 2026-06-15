@@ -110,10 +110,10 @@ interface GetRecipeHttpResponse {
 
 export async function getRecipes(
   page: number = 1,
-  perPage: number = 5,
-  search: string,
-  category: string,
-  ingredients: string
+  perPage: number = 12,
+  search?: string,
+  category?: string,
+  ingredients?: string
 ): Promise<GetRecipesHttpResponse> {
   // Параметри запиту
   const options = {
