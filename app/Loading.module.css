@@ -8,9 +8,28 @@
   background-color: #ffffff;
 }
 
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(61, 34, 24, 0.1);
+  border-left-color: #3d2218;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
 .loaderText {
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   color: #3d2218;
   margin: 0;
+  font-weight: 400;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
