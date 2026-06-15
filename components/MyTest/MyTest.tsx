@@ -11,7 +11,7 @@ const MyTest = async () => {
   // 3. Виконуємо запит
   const categories = await getCategories();
   const ingredients = await getIngredients();
-  const recipes = await getRecipes();
+  const recipes = await getRecipes(2, 6, 'Tart', 'Dessert');
   const recipeById = await getRecipeById('6462a8f74c3d0ddd28897fbc');
 
   return (

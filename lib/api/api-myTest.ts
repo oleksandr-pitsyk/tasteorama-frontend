@@ -21,6 +21,7 @@ import axios from 'axios';
 
 // Базова URL-адреса для всіх запитів, що надсилаються через цей інстанс
 axios.defaults.baseURL = 'https://tasteorama-backend-jumn.onrender.com';
+// axios.defaults.baseURL = 'http://localhost:3000/api';
 
 // *********************************************************************************
 // Робота з категоріями
