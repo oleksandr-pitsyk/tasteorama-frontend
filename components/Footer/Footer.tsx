@@ -1,17 +1,36 @@
-// Імпорт компонента Link з Next.js - Для створення посилань
-// import Link from 'next/link';
+'use client';
 
-// Імпорт стилів з модуля стилів
-import css from './Footer.module.css';
+import React from 'react';
+import Link from 'next/link';
+import styles from './Footer.module.css';
 
-const Footer = () => {
+export default function Footer(): React.ReactElement {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className={css.footer}>
-      <div className={css.content}>
-        <p>© 2026 CookingCompanion. All rights reserved.</p>
+    <footer className={styles.footer}>
+      <div className={styles.container}>
+        {/* ЛОГОТИП: Теперь с официальной SVG-иконкой из спрайта */}
+        <Link href="/" className={styles.logoLink}>
+          <svg className={styles.logoIcon}>
+            <use href="/sprite.svg#logo" />
+          </svg>
+          <span className={styles.logoText}>Tasteorama</span>
+        </Link>
+
+        {/* Копірайт */}
+        <p className={styles.copyright}>© {currentYear} CookingCompanion. All rights reserved.</p>
+
+        {/* Елементи навігації */}
+        <nav className={styles.nav}>
+          <Link href="/recipes" className={styles.link}>
+            Recipes
+          </Link>
+          <Link href="/profile" className={styles.link}>
+            Account
+          </Link>
+        </nav>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

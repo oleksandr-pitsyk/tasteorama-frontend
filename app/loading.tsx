@@ -1,20 +1,14 @@
-import { FidgetSpinner } from 'react-loader-spinner';
+'use client';
 
-import css from './Loading.module.css';
+import React from 'react';
+import styles from './loading.module.css';
 
-const Loading = () => {
+export default function Loading(): React.ReactElement {
   return (
-    <div className={css.loaderwrapper}>
-      <FidgetSpinner
-        visible={true}
-        height="120"
-        width="120"
-        ariaLabel="fidget-spinner-loading"
-        wrapperStyle={{}}
-        wrapperClass="fidget-spinner-wrapper"
-      />
+    <div className={styles.loaderContainer}>
+      {/* Чистый CSS Спинер, который не требует установки библиотек */}
+      <div className={styles.spinner}></div>
+      <p className={styles.loaderText}>Loading, please wait...</p>
     </div>
   );
-};
-
-export default Loading;
+}
