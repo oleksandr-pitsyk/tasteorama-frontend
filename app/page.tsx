@@ -8,9 +8,12 @@
 
 import css from './MainPage.module.css';
 
-// Імпорт компонента
-import SearchBox from '@/components/SearchBox/SearchBox';
+// Імпорт компонентів
+// import SearchBox from '@/components/SearchBox/SearchBox';
 import Filters from '@/components/Filters/Filters';
+import RecipesList from '@/components/RecipesList/RecipesList';
+import RecipeCard from '@/components/RecipeCard/RecipeCard';
+import LoadMoreBtn from '@/components/LoadMoreBtn/LoadMoreBtn';
 
 function MainPage() {
   return (
@@ -18,6 +21,9 @@ function MainPage() {
       <h1 className={css.title}>Tasteorama</h1>
       {/* <SearchBox /> */}
       <Filters />
+      <RecipesList />
+      <RecipeCard />
+      <LoadMoreBtn />
     </main>
   );
 }
