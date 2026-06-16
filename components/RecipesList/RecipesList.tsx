@@ -20,6 +20,7 @@ import LoadMoreBtn from '@/components/LoadMoreBtn/LoadMoreBtn';
 import css from './RecipesList.module.css';
 import Loading from '@/app/loading';
 import AppError from '@/app/error';
+import { notFound } from 'next/navigation';
 
 // ==========================================================================================
 // Компонент
@@ -84,7 +85,7 @@ const RecipesList = () => {
   // Стан пустого результату
   // ------------------------------------------------------------------------------------------
   if (recipes.length === 0) {
-    return <div className={css.empty}>We&apos;re sorry! We were not able to find a match.</div>;
+    notFound();
   }
 
   // ------------------------------------------------------------------------------------------
