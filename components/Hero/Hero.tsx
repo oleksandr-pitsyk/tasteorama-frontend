@@ -12,7 +12,7 @@ import css from './Hero.module.css';
 const Hero = () => {
   return (
     <section className={css.hero}>
-      <h3>Hero</h3>
+      <h3 className={css.hero}>Hero</h3>
       {/* <SearchBox /> */}
     </section>
   );

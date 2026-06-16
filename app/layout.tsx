@@ -1,3 +1,9 @@
+// ======================================================================================
+// layout.tsx – це кореневий компонент, який обгортає всі сторінки та компоненти Next.js.
+// ======================================================================================
+// Нормалізація стилів
+import 'modern-normalize';
+
 // Імпорт глобальних стилів
 import './globals.css';
 
@@ -12,14 +18,19 @@ import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 
 // Імпорт шрифтів з Google Fonts за допомогою Next.js
-import { Roboto } from 'next/font/google';
-
+import { Montserrat, DM_Sans } from 'next/font/google';
 // Налаштування шрифтів та їхніх властивостей, таких як вага, підмножини та змінні CSS для використання в стилях.
-const roboto = Roboto({
+const montserrat = Montserrat({
   subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-roboto',
-  // браузер одразу показує текст, навіть якщо шрифт ще не завантажився, замінюючи його на системний шрифт, а потім замінює його на Roboto, коли він завантажується, що покращує користувацький досвід і зменшує час відображення тексту.
+  weight: ['400', '600', '700'],
+  variable: '--font-montserrat', // Створюємо CSS-змінну для цього шрифту
+  display: 'swap',
+});
+
+const dmSans = DM_Sans({
+  subsets: ['latin'], // сабсети для кирилиці - ['cyrillic'])
+  weight: ['700'],
+  variable: '--font-dm-sans', // Створюємо CSS-змінну для цього шрифту
   display: 'swap',
 });
 
@@ -57,7 +68,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.variable}>
+      <body className={`${montserrat.variable} ${dmSans.variable}`}>
         <TanStackProvider>
           {/* Провайдер авторизації */}
           <AuthProvider>
