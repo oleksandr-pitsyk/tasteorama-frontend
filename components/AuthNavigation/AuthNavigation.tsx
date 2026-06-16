@@ -20,7 +20,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store/authStore';
 
 // Імпорт функції виходу з клієнтського API
-import { logout } from '@/lib/api/api';
+import { logout } from '@/lib/api/clientApi';
 
 const AuthNavigation = () => {
   const router = useRouter();
