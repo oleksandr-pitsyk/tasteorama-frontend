@@ -17,21 +17,20 @@ export async function POST() {
     // Передаємо поточні cookie до API
     const cookieStore = await cookies();
 
-    // const accessToken = cookieStore.get('accessToken')?.value;
-    // const refreshToken = cookieStore.get('refreshToken')?.value;
+    const accessToken = cookieStore.get('accessToken')?.value;
+    const refreshToken = cookieStore.get('refreshToken')?.value;
     const sessionId = cookieStore.get('sessionId')?.value;
 
     await api.post('/api/auth/logout', null, {
       headers: {
-        // cookie: `sessionId=${sessionId}; accessToken=${accessToken}; refreshToken=${refreshToken}`,
-        cookie: `sessionId=${sessionId}`,
+        cookie: `sessionId=${sessionId}; accessToken=${accessToken}; refreshToken=${refreshToken}`,
       },
     });
 
     // Очищаємо токени після запиту
     cookieStore.delete('accessToken');
     cookieStore.delete('refreshToken');
-    // cookieStore.delete('sessionId');
+    cookieStore.delete('sessionId');
 
     return NextResponse.json({ message: 'Logged out successfully' }, { status: 200 });
   } catch (error) {

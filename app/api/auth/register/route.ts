@@ -8,9 +8,9 @@ import { parse } from 'cookie';
 import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
-  // Парсимо body
-  const body = await req.json();
   try {
+    // Парсимо body
+    const body = await req.json();
     // Запит до бекенду
     const apiRes = await api.post('/api/auth/register', body);
     // Отримуємо інстанс для роботи з cookies
@@ -40,9 +40,9 @@ export async function POST(req: NextRequest) {
         if (parsed.refreshToken) {
           cookieStore.set('refreshToken', parsed.refreshToken, options);
         }
-        // if (parsed.sessionId) {
-        //   cookieStore.set('sessionId', parsed.sessionId, options);
-        // }
+        if (parsed.sessionId) {
+          cookieStore.set('sessionId', parsed.sessionId, options);
+        }
       }
 
       // Тільки якщо є setCookie повертаємо результат

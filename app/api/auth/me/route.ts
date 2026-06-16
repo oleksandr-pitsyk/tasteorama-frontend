@@ -7,7 +7,7 @@
 
 // Роут перевірки сесії користувача
 // ======================================================================================
-// auth/me – це приватний маршрут в API, тому, так само як і auth/session,
+// users/me – це приватний маршрут в API, тому, так само як і auth/session,
 // обов’язково має отримувати cookie
 // ======================================================================================
 import { NextResponse } from 'next/server';
@@ -17,14 +17,12 @@ import { cookies } from 'next/headers';
 export async function GET() {
   try {
     const cookieStore = await cookies();
-    console.log('cookieStore', cookieStore);
 
     const apiRes = await api.get('/api/users/me', {
       headers: {
         Cookie: cookieStore.toString(),
       },
     });
-    console.log('apiRes', apiRes);
 
     return NextResponse.json(apiRes.data);
   } catch (error) {

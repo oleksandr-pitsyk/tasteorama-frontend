@@ -177,18 +177,6 @@ export const login = async (data: LoginRequest) => {
 };
 
 // ==========================================================================================
-// checkSession : Перевірка сесії користувача (чи він авторизований)
-// ==========================================================================================
-type CheckSessionRequest = {
-  success: boolean;
-};
-
-export const checkSession = async () => {
-  const res = await nextServer.get<CheckSessionRequest>('/auth/session');
-  return res.data.success;
-};
-
-// ==========================================================================================
 // getMe : Отримання об’єкта користувача (профілю) для авторизованого користувача
 // ==========================================================================================
 export const getMe = async () => {
@@ -200,6 +188,17 @@ export const getMe = async () => {
 // logout : Вихід користувача з системи (логаут)
 // ==========================================================================================
 export const logout = async (): Promise<void> => {
-  console.log('clientApi.ts - Logging out...');
   await nextServer.post('/auth/logout');
+};
+
+// ==========================================================================================
+// checkSession : Перевірка сесії користувача (чи він авторизований)
+// ==========================================================================================
+type CheckSessionRequest = {
+  success: boolean;
+};
+
+export const checkSession = async () => {
+  const res = await nextServer.get<CheckSessionRequest>('/auth/session');
+  return res.data.success;
 };
