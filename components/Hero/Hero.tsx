@@ -15,7 +15,11 @@ const Hero = () => {
   return (
     <section className={css.hero}>
       <div className={css.content}>
-        <h1 className={css.title}>Plan, Cook, and Share Your Flavors</h1>
+        <h1 className={css.title}>
+          Plan, Cook, and
+          <br />
+          Share Your Flavors
+        </h1>
 
         <SearchBox />
       </div>
