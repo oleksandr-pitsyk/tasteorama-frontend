@@ -11,4 +11,3 @@ export const removeRecipeFromFavorites = async (recipeId: string) => {
 
   return response.data;
 };
-n;
