@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+/* import Image from 'next/image'; */
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { register } from '@/lib/api/clientApi';
@@ -62,7 +62,11 @@ const PasswordInput = ({
         aria-label={show ? 'Hide password' : 'Show password'}
         className={css.eyeBtn}
       >
-        <Image src={show ? '/eye.svg' : '/eye-closed.svg'} alt="" width={24} height={24} />
+        {/* Добавили класс css.eyeIcon */}
+        <svg width={24} height={24} className={css.eyeIcon}>
+          {/* Добавили правильный путь к спрайту */}
+          <use href={show ? '/sprite.svg#open-eye' : '/sprite.svg#close-eye'} />
+        </svg>
       </button>
     </div>
   );

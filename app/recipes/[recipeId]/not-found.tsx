@@ -45,7 +45,7 @@ export default function NotFoundRecipePage(): React.ReactElement {
 
       <button type="button" onClick={handleBackToHome} className={styles.backButton}>
         <svg className={styles.arrowIcon}>
-          <use href="/sprite.svg#icon-arrow-left" />
+          <use href="/sprite.svg#arrow-left" />
         </svg>
         Back to Home
       </button>

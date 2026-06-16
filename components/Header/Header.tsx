@@ -24,7 +24,7 @@ const Header = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isMenuOpen]);
 
-  const burgerIcon = isMenuOpen ? '/icons/icons.svg#close' : '/icons/icons.svg#burger';
+  const burgerIcon = isMenuOpen ? '/sprite.svg#close' : '/sprite.svg#burger';
 
   useEffect(() => {
     const handleResize = () => {
