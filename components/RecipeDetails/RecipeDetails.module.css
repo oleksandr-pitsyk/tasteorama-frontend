@@ -1,0 +1,288 @@
+/* ══════════════════════════════════════
+   BASE — резина від 320px
+══════════════════════════════════════ */
+.wrapper {
+  margin: 0 auto;
+  max-width: 1440px;
+  padding: 24px 16px 48px;
+}
+
+/* Заголовок — завжди над картинкою */
+.title {
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.1;
+  color: #000;
+  margin: 0 0 16px;
+}
+
+/* ── Фото mobile ── */
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 276px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  background-color: #2b2d30;
+}
+
+.image {
+  object-fit: cover;
+}
+
+/* ── General info mobile — колонка ── */
+.infoRowMobile {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.infoCard {
+  background: #faf3e0;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.infoTitle {
+  font-weight: 600;
+  font-size: 20px;
+  color: #000;
+  margin: 0;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.infoLabel {
+  font-weight: 600;
+  font-size: 16px;
+  color: #000;
+}
+
+.infoValue {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #000;
+}
+
+/* ── Save button ── */
+.saveBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #9b6c43;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 16px;
+  height: 56px;
+  width: 100%;
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.saveBtn:hover:not(:disabled) {
+  background-color: #7a5535;
+}
+.saveBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.saveBtnActive {
+  background-color: #3c1a1a;
+}
+.saveBtnActive:hover:not(:disabled) {
+  background-color: #2a1010;
+}
+
+.saveIcon {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.5px;
+  flex-shrink: 0;
+}
+
+/* ── Aside — прихований на mobile/tablet ── */
+.aside {
+  display: none;
+}
+
+/* ── Текстовий контент ── */
+.desktopLayout {
+  display: flex;
+  flex-direction: column;
+}
+
+.textContent {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectionTitle {
+  font-weight: 600;
+  font-size: 24px;
+  color: #000;
+  margin: 0;
+}
+
+.text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #000;
+  margin: 0;
+  white-space: pre-line;
+}
+
+.ingredientsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ingredientItem {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #000;
+}
+
+/* ══════════════════════════════════════
+   TABLET — 768px
+══════════════════════════════════════ */
+@media (min-width: 768px) {
+  .wrapper {
+    padding: 32px 40px 64px;
+  }
+
+  .title {
+    font-size: 36px;
+    margin-bottom: 24px;
+  }
+
+  .imageWrapper {
+    width: 100%;
+    height: 400px;
+    background-color: transparent;
+    margin-bottom: 24px;
+    border-radius: 12px;
+  }
+
+  .image {
+    object-fit: cover;
+  }
+
+  /* Рядок: бежевий + кнопка поруч */
+  .infoRowMobile {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .infoCard {
+    flex: 1;
+  }
+
+  .saveBtn {
+    width: 249px;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  .infoTitle {
+    font-size: 24px;
+  }
+
+  .sectionTitle {
+    font-size: 32px;
+  }
+}
+
+/* ══════════════════════════════════════
+   DESKTOP — 1440px
+══════════════════════════════════════ */
+@media (min-width: 1440px) {
+  .wrapper {
+    padding: 48px 108px;
+  }
+
+  .title {
+    font-size: 48px;
+    margin-bottom: 32px;
+  }
+
+  .imageWrapper {
+    width: 100%;
+    height: 624px;
+    background-color: #2b2d30;
+    border-radius: 12px;
+    margin-bottom: 32px;
+  }
+
+  .image {
+    object-fit: contain;
+  }
+
+  /* Ховаємо mobile infoRow */
+  .infoRowMobile {
+    display: none;
+  }
+
+  /* Два стовпці */
+  .desktopLayout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .textContent {
+    width: 808px;
+    flex-shrink: 0;
+    gap: 40px;
+  }
+
+  /* Aside — видимий тільки на desktop */
+  .aside {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 393px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 24px;
+  }
+
+  .infoCard {
+    width: 393px;
+  }
+
+  .saveBtn {
+    width: 393px;
+    height: 56px;
+    align-self: auto;
+  }
+}

@@ -71,12 +71,12 @@
   width: 100%;
   margin-bottom: 16px;
   padding: 10px 14px;
-  border: 1px solid #cececa;
+  border: 1px solid #d9d9d9;
   border-radius: 8px;
   font-size: 14px;
   line-height: 1.3;
   color: #333333;
-  background: #f8f8f7;
+  background: #fff;
 }
 
 .input:focus {

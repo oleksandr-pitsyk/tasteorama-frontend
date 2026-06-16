@@ -1,0 +1,11 @@
+# Змінні оточення
+
+# Це потрібно, щоб у файлі lib/api/api.ts до baseURL 
+# (const baseURL = process.env.NEXT_PUBLIC_API_URL + '/api';) 
+# запити завжди йшли на правильний сервер, незалежно від середовища.
+
+# Під час локальної розробки :
+NEXT_PUBLIC_API_URL = http://localhost:3000
+# після деплою — адресу вашого сайту на Vercel (в Environment Variables Vercel)
+# NEXT_PUBLIC_API_URL = https://tasteorama-frontend.vercel.app/
+

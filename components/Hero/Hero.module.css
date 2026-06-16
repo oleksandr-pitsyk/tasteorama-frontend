@@ -13,6 +13,21 @@
   background-position: center;
   background-size: cover;
 }
+
+.content {
+  max-width: 329px;
+}
+
+.title {
+  margin-bottom: 24px;
+
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.1;
+
+  color: #fff;
+}
+
 @media screen and (min-width: 768px) {
   .hero {
     min-height: 443px;
@@ -40,6 +55,8 @@
     display: flex;
     flex-direction: row;
     gap: 12px;
+    /* 
+    width: 661px; */
   }
 
   .input {

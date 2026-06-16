@@ -1,24 +1,25 @@
 /* ==========================================================================
-   1. БАЗОВІ СТИЛІ (Мобільні пристрої до 393px — Гумова верстка)
+   1. БАЗОВІ СТИЛІ (Мобільні пристрої)
    ========================================================================== */
+
 .pageContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 94px); /* Вираховуємо висоту футера */
+  min-height: calc(100vh - 94px);
   width: 100%;
-  padding: 40px 20px;
-  background-color: #ffffff;
+  padding: 40px 16px;
+  background: #fff;
   box-sizing: border-box;
 }
 
 .imageWrapper {
   position: relative;
-  width: 100%;
-  max-width: 310px; /* Гумове стиснення на вузьких екранах */
-  aspect-ratio: 4 / 3;
+  width: 361px;
+  height: 267px;
   margin-bottom: 32px;
+  flex-shrink: 0;
 }
 
 .pictureContainer {
@@ -32,101 +33,144 @@
 }
 
 .errorCode {
+  margin: 0;
+
   font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 54px;
-  color: #000000;
-  margin: 0 0 12px 0;
-  line-height: 1;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 1.1;
+  text-align: center;
+  color: #000;
 }
 
 .errorMessage {
+  margin: 16px 0 0;
+
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
-  font-size: 18px;
-  color: #000000;
-  margin: 0 0 32px 0;
+  font-size: 24px;
   text-align: center;
+  color: #000;
 }
 
 .backButton {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  color: #ffffff;
-  background-color: #a46b4d; /* Коричнева кнопка з макету */
-  border: none;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 310px;
-  height: 56px;
+  margin-top: 32px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
+  gap: 16px;
 
-.backButton:hover {
-  background-color: #8c5a3f;
-}
+  width: 361px;
+  height: 56px;
+  padding: 16px;
 
-.arrow {
+  border: none;
+  border-radius: 8px;
+
+  background: #9b6c43;
+
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
   font-size: 18px;
-  transition: transform 0.2s ease;
-}
+  color: #fff;
 
-.backButton:hover .arrow {
-  transform: translateX(-4px); /* Стрілочка гарно зсувається вліво при наведенні */
+  cursor: pointer;
 }
 
 .arrowIcon {
-  width: 20px;
-  height: 20px;
-  stroke: #ffffff;
-  fill: none; /* Для лінійної стрілочки Саші */
-  transition: transform 0.2s ease;
+  width: 24px;
+  height: 24px;
+  stroke: #fff;
+  fill: none;
+  flex-shrink: 0;
 }
 
 /* ==========================================================================
-   2. ТОЧКА РОЗЛАМУ: ВІД 393px (Сучасні смартфони)
+   2. ВІД 393px
    ========================================================================== */
+
 @media (min-width: 393px) {
-  .imageWrapper {
-    max-width: 353px;
-  }
-  .backButton {
-    max-width: 353px;
+  .pageContainer {
+    padding: 40px 16px;
   }
 }
 
 /* ==========================================================================
-   3. ТОЧКА РОЗЛАМУ: ВІД 768px (Планшети)
+   3. ПЛАНШЕТИ (768px - 1439px)
    ========================================================================== */
+
 @media (min-width: 768px) {
+  .pageContainer {
+    padding: 48px 32px;
+  }
+
   .imageWrapper {
-    max-width: 440px;
+    width: 600px;
+    height: 438px;
+    margin-bottom: 32px;
   }
+
   .errorCode {
-    font-size: 72px;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 1.1;
+    text-align: center;
+    color: #000;
   }
+
   .errorMessage {
-    font-size: 22px;
+    margin-top: 16px;
+
+    font-weight: 400;
+    font-size: 24px;
+    text-align: center;
+    color: #000;
+  }
+
+  .backButton {
+    margin-top: 32px;
+
+    width: 340px;
+    height: 56px;
+
+    padding: 16px;
+
+    border-radius: 8px;
+
+    background: #9b6c43;
+
+    font-weight: 600;
+    font-size: 18px;
+
+    gap: 16px;
   }
 }
 
 /* ==========================================================================
-   4. ТОЧКА РОЗЛАМУ: ВІД 1440px (Десктоп)
+   4. ДЕСКТОП (1440px+)
    ========================================================================== */
+
 @media (min-width: 1440px) {
   .pageContainer {
-    padding: 60px 0;
+    padding: 60px 32px;
   }
+
   .imageWrapper {
-    max-width: 500px;
+    width: 600px;
+    height: 438px;
   }
-  .errorCode {
-    font-size: 80px;
+
+  .backButton {
+    width: 288px;
+    height: 56px;
+
+    padding: 16px;
+
+    border-radius: 8px;
+
+    background: #9b6c43;
+
+    gap: 16px;
   }
 }
