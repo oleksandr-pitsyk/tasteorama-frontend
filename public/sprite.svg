@@ -35,7 +35,7 @@
 <path stroke-linejoin="miter" stroke-linecap="butt" stroke-miterlimit="4" stroke-width="0.6667" d="M8.908 7.5h14.183c1.054 0 1.908 0.854 1.908 1.908 0 0.487-0.186 0.956-0.521 1.31l-6.402 6.782v5.878c0 0.983-1.027 1.628-1.912 1.201l-1.487-0.716c-0.461-0.222-0.755-0.689-0.755-1.201v-5.162l-6.402-6.782c-0.334-0.354-0.521-0.823-0.521-1.31 0-1.054 0.854-1.908 1.908-1.908z"></path>
 </symbol>
 
-<symbol id="login" viewBox="0 0 27 32">
+<symbol id="logout" viewBox="0 0 27 32">
 <path stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="0.5714" d="M11.209 5.571h-3.132c-1.384 0-2.505 1.122-2.505 2.505v11.275c0 1.384 1.122 2.506 2.505 2.506h3.132M9.857 13.714h12.527M18.626 9.956l3.758 3.758-3.758 3.758"></path>
 </symbol>
 

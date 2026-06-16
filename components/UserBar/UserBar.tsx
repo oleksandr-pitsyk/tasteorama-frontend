@@ -19,7 +19,7 @@ const UserBar = ({ name, onLogout }: UserBarProps) => {
 
         <button className={css.logoutBtn} onClick={onLogout} aria-label="Logout">
           <svg width="24" height="24">
-            <use href="/icons/icons.svg#icon-logout" />
+            <use href="/sprite.svg#logout" />
           </svg>
         </button>
       </div>

@@ -39,8 +39,8 @@
 .logoutBtn svg {
   stroke: white;
   fill: none;
+  stroke-width: 2px;
 }
-
 .divider {
   width: 1px;
   height: 39px;
