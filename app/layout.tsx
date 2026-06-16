@@ -52,10 +52,8 @@ import AuthProvider from '@/components/AuthProvider/AuthProvider';
 
 export default function RootLayout({
   children,
-  modal,
 }: Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -66,7 +64,6 @@ export default function RootLayout({
             <Header />
             {/* <main> */}
             {children}
-            {modal}
             {/* </main> */}
             <Footer />
           </AuthProvider>
@@ -75,3 +72,30 @@ export default function RootLayout({
     </html>
   );
 }
+
+// c modal
+// export default function RootLayout({
+//   children,
+//   modal,
+// }: Readonly<{
+//   children: React.ReactNode;
+//   modal: React.ReactNode;
+// }>) {
+//   return (
+//     <html lang="en">
+//       <body className={roboto.variable}>
+//         <TanStackProvider>
+//           {/* Провайдер авторизації */}
+//           <AuthProvider>
+//             <Header />
+//             {/* <main> */}
+//             {children}
+//             {modal}
+//             {/* </main> */}
+//             <Footer />
+//           </AuthProvider>
+//         </TanStackProvider>
+//       </body>
+//     </html>
+//   );
+// }
