@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Footer.module.css';
 
 export default function Footer(): React.ReactElement {
@@ -12,9 +13,14 @@ export default function Footer(): React.ReactElement {
       <div className={styles.container}>
         {/* ЛОГОТИП: Теперь с официальной SVG-иконкой из спрайта */}
         <Link href="/" className={styles.logoLink}>
-          <svg className={styles.logoIcon}>
-            <use href="/sprite.svg#logo" />
-          </svg>
+          <Image
+            src="/logo.svg"
+            alt="Tasteorama"
+            className={styles.logoIcon}
+            width={32}
+            height={30}
+            priority
+          />
           <span className={styles.logoText}>Tasteorama</span>
         </Link>
 

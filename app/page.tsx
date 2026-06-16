@@ -13,8 +13,8 @@ import css from './MainPage.module.css';
 import Hero from '@/components/Hero/Hero';
 import Filters from '@/components/Filters/Filters';
 import RecipesList from '@/components/RecipesList/RecipesList';
-import RecipeCard from '@/components/RecipeCard/RecipeCard';
-import LoadMoreBtn from '@/components/LoadMoreBtn/LoadMoreBtn';
+// import RecipeCard from '@/components/RecipeCard/RecipeCard';
+// import LoadMoreBtn from '@/components/LoadMoreBtn/LoadMoreBtn';
 
 // import HeaderMy from '@/components/HeaderMy/HeaderMy';
 // import MyTest from '@/components/MyTest/MyTest';
@@ -25,8 +25,8 @@ function MainPage() {
       <Hero />
       <Filters />
       <RecipesList />
-      <RecipeCard />
-      <LoadMoreBtn />
+      {/* <RecipeCard /> */}
+      {/* <LoadMoreBtn /> */}
       {/* <HeaderMy /> */}
       {/* <MyTest /> */}
     </main>

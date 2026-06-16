@@ -1,0 +1,56 @@
+.userBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #9b6c43;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.name {
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.logoutBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.logoutBtn svg {
+  stroke: white;
+  fill: none;
+}
+
+.divider {
+  width: 1px;
+  height: 39px;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .userBarItem {
+    order: 2;
+  }
+}

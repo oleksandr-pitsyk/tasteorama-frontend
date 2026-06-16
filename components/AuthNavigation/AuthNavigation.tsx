@@ -1,78 +1,67 @@
-// ===================================================================
-// Навігація по сторінкам AuthNavigation
-// ===================================================================
-// Щоб змінювати відображення кнопок у хедері залежно від статусу авторизації користувача,
-// окремий компонент AuthNavigation, який буде містити логіку відображення
-// різних пунктів меню для авторизованих та неавторизованих користувачів.
-// ===================================================================
 'use client';
 
-// Імпорт стилів з модуля стилів
 import css from './AuthNavigation.module.css';
-
-// Імпорт компонента Link з Next.js - Для створення посилань
 import Link from 'next/link';
-
-// Імпорт компонента useRouter з Next.js - Для навігації
+import UserBar from '../UserBar/UserBar';
 import { useRouter } from 'next/navigation';
-
-// Імпорт глобального стану аутентифікації користувача
 import { useAuthStore } from '@/lib/store/authStore';
+import { logout } from '@/lib/api/clientApi';
+interface AuthNavigationProps {
+  onLinkClick?: () => void;
+}
 
-// Імпорт функції виходу з клієнтського API
-// import { logout } from '@/lib/api/clientApi';
-
-const AuthNavigation = () => {
+const AuthNavigation = ({ onLinkClick }: AuthNavigationProps) => {
   const router = useRouter();
-  // Отримуємо поточну сесію та юзера
   const { isAuthenticated, user } = useAuthStore();
+
   // Отримуємо метод очищення глобального стану
   const clearIsAuthenticated = useAuthStore(state => state.clearIsAuthenticated);
 
   const handleLogout = async () => {
-    // Викликаємо logout - функції виходу з клієнтського API
-    // await logout();
-    // Чистимо глобальний стан
+    await logout();
     clearIsAuthenticated();
-    // Виконуємо навігацію на сторінку авторизації
     router.push('/sign-in');
   };
 
-  // Якщо є сесія - відображаємо Logout та інформацію про користувача
-  // інакше - відображаємо посилання на логін та реєстрацію
   return isAuthenticated ? (
     <>
       <li className={css.navigationItem}>
-        <Link href="/notes/filter/all" className={css.navigationLink}>
-          Notes
+        <Link onClick={onLinkClick} className={css.navigationLink} href="/profile">
+          My Profile
         </Link>
       </li>
+      <UserBar name={user?.name ?? ''} onLogout={handleLogout} />
       <li className={css.navigationItem}>
-        <Link href="/profile" prefetch={false} className={css.navigationLink}>
-          Profile
+        <Link onClick={onLinkClick} className={css.akcentLink} href="/add-recipe" prefetch={false}>
+          Add Recipe
         </Link>
-      </li>
-
-      <li className={css.navigationItem}>
-        <p className={css.userEmail}>{user?.email}</p>
-        <button className={css.logoutButton} onClick={handleLogout}>
-          Logout
-        </button>
       </li>
     </>
   ) : (
     <>
-      <li className={css.navigationItem}>
-        <Link href="/auth/login" prefetch={false} className={css.navigationLink}>
-          Login
-        </Link>
-      </li>
+      <div className={css.notAuthUser}>
+        <li>
+          <Link
+            onClick={onLinkClick}
+            className={css.navigationLink}
+            href="/auth/login"
+            prefetch={false}
+          >
+            Log in
+          </Link>
+        </li>
 
-      <li className={css.navigationItem}>
-        <Link href="/auth/register" prefetch={false} className={css.navigationLink}>
-          Sign up
-        </Link>
-      </li>
+        <li>
+          <Link
+            onClick={onLinkClick}
+            className={css.akcentLink}
+            href="/auth/register"
+            prefetch={false}
+          >
+            Register
+          </Link>
+        </li>
+      </div>
     </>
   );
 };

@@ -25,16 +25,8 @@ const HeaderMy = () => {
             {/* <Link href={`/notes/${item.id}`}>{item.title}</Link> */}
             <Link href={`/recipes/${recipeId}`}>Рецепт за Id {recipeId}</Link>
           </li>
-          <li className={css.navigationItem}>
-            <Link href={`/auth/register`}>Register-Modal</Link>
-          </li>
-          <li className={css.navigationItem}>
-            <Link href={`/auth/login`}>Login-Modal</Link>
-          </li>
-          <li className={css.navigationItem}>
-            <Link href={`/profile/own`}>Profile-Own</Link>
-          </li>
-          {/* Навігація для авторизації та авторизованих користувачів */}
+
+          {/* Відображаємо компонент */}
           {/* <AuthNavigation /> */}
         </ul>
       </nav>

@@ -1,6 +1,7 @@
 /* ==========================================================================
-   1. БАЗОВІ СТИЛІ (Мобільні пристрої до 393px — Гумова верстка)
+   1. БАЗОВІ СТИЛІ (Мобільні пристрої до 393px)
    ========================================================================== */
+
 .footer {
   width: 100%;
   background: #3d2218;
@@ -12,54 +13,68 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Все по центру на мобільних */
+  align-items: center;
   justify-content: center;
-  gap: 16px;
 }
 
-/* СТИЛІ МОНОЛІТНОГО ЛОГОТИПУ */
+/* ===========================
+   LOGO
+=========================== */
+
 .logoLink {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   text-decoration: none;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  color: #ffffff;
 }
 
 .logoIcon {
-  width: 24px;
-  height: 24px;
-  fill: #ffffff; /* Заливка кольором */
+  width: 32px;
+  height: 30px;
+  fill: #fff;
 }
 
-/* На гумовому екрані до 393px приховуємо текст логотипу для економії місця */
 .logoText {
-  display: none;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+  color: #fff;
 }
 
-.copyright,
-.link {
+/* ===========================
+   COPYRIGHT
+=========================== */
+
+.copyright {
+  margin-top: 32px;
+
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
   font-size: 12px;
-  color: #ffffff;
+  color: #fff;
+  text-align: center;
 }
 
-.copyright {
-  text-align: center;
-  opacity: 0.8;
-}
+/* ===========================
+   NAVIGATION
+=========================== */
 
 .nav {
+  margin-top: 32px;
+
   display: flex;
-  gap: 24px;
+  gap: 40px;
 }
 
 .link {
   text-decoration: none;
+
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: #fff;
+
   transition: color 0.2s ease;
 }
 
@@ -68,42 +83,69 @@
 }
 
 /* ==========================================================================
-   2. ТОЧКА РОЗЛАМУ: ВІД 393px (Смартфони — Повертаємо текст логотипу)
+   2. ВІД 393px
    ========================================================================== */
+
 @media (min-width: 393px) {
   .footer {
     padding: 24px 32px;
   }
-
-  .container {
-    gap: 20px;
-  }
-
-  .logoText {
-    display: inline; /* Текст гарно з'являється поруч з іконкою */
-  }
 }
 
 /* ==========================================================================
-   3. ТОЧКА РОЗЛАМУ: ВІД 768px (Планшети — Все по центру)
+   3. ПЛАНШЕТ 768+
    ========================================================================== */
+
 @media (min-width: 768px) {
   .footer {
     padding: 30px 40px;
   }
 
-  .container {
-    gap: 24px;
+  .logoText {
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+
+  .copyright {
+    font-weight: 400;
+    font-size: 12px;
+    color: #fff;
+  }
+
+  .nav {
+    margin-top: 32px;
+    gap: 32px;
+  }
+
+  .link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 65px;
+    height: 24px;
+
+    padding: 0 0 4px;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+    font-size: 16px;
+    color: #fff;
   }
 }
 
 /* ==========================================================================
-   4. ТОЧКА РОЗЛАМУ: ВІД 1440px (Десктоп — 108px відступи по боках)
+   4. ДЕСКТОП 1440+
    ========================================================================== */
+
 @media (min-width: 1440px) {
   .footer {
     height: 94px;
-    padding: 24px 108px; /* Твій точний десктопний паддінг строго за Figma */
+    padding: 24px 108px;
+
     display: flex;
     align-items: center;
   }
@@ -111,9 +153,19 @@
   .container {
     max-width: 1224px;
     margin: 0 auto;
+
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 0;
+  }
+
+  .copyright,
+  .nav {
+    margin-top: 0;
+  }
+
+  .nav {
+    gap: 32px;
   }
 }

@@ -2,10 +2,10 @@
 import Link from 'next/link';
 
 // Імпортуємо функцію
-import { getCategories } from '@/lib/api/api';
-import { getIngredients } from '@/lib/api/api';
-import { getRecipes } from '@/lib/api/api';
-import { getRecipeById } from '@/lib/api/api';
+import { getCategories } from '@/lib/api/clientApi';
+import { getIngredients } from '@/lib/api/clientApi';
+import { getRecipes } from '@/lib/api/clientApi';
+import { getRecipeById } from '@/lib/api/clientApi';
 
 const MyTest = async () => {
   // 3. Виконуємо запит

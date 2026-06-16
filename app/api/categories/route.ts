@@ -1,26 +1,22 @@
-// Файл route.ts повинен експортувати функції з назвами, що збігаються з HTTP-методами,
-// які ми хочемо обробляти (GET, POST, PUT тощо).
-// У цьому випадку ми експортуємо функцію getCategories, яка буде обробляти GET-запити до маршруту /api/categories.
-
-// Імпортуємо необхідні модулі та типи
 import { NextResponse } from 'next/server';
-import { api, ApiError } from '../api';
+import { isAxiosError } from 'axios';
+import { api } from '../api';
+import { logErrorResponse } from '@/app/api/_utils/utils';
 
 export async function GET() {
   try {
-    const { data } = await api('api/categories');
-
-    // NextResponse – це розширення стандартного Web Response з додатковими методами Next.js
-    // і дозволяє легко повертати JSON-дані.
-    // Повертаємо те, що відповів бекенд через метод json
-    return NextResponse.json(data);
+    const res = await api.get('/api/categories');
+    return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
-    // У випадку помилки — повертаємо обʼєкт з помилкою
-    return NextResponse.json(
-      {
-        error: (error as ApiError).response?.data?.error ?? (error as ApiError).message,
-      },
-      { status: (error as ApiError).status }
-    );
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status || 500 }
+      );
+    }
+
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

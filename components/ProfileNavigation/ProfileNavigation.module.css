@@ -1,0 +1,23 @@
+.nav {
+  display: flex;
+  gap: 38px;
+}
+
+.tab {
+  padding: 0px 0px 4px;
+  color: var(--foreground);
+  font-weight: 600;
+  font-size: 12px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: #3d2b1f;
+}
+
+.active {
+  color: var(--foreground);
+  border-bottom-color: var(--foreground);
+}

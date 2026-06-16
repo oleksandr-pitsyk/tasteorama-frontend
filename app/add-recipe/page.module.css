@@ -1,0 +1,61 @@
+.page {
+  padding: 48px 16px;
+}
+
+.title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 40px;
+  color: #000;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #3d3d3d;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 393px) {
+  .title {
+    font-size: 32px;
+  }
+
+  .description {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 768px) {
+  .page {
+    padding: 48px 32px;
+  }
+
+  .title {
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+
+  .description {
+    font-size: 16px;
+    margin-bottom: 20px;
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .page {
+    padding: 48px 107px;
+  }
+
+  .title {
+    font-size: 56px;
+    margin-bottom: 14px;
+  }
+
+  .description {
+    font-size: 18px;
+    margin-bottom: 24px;
+    max-width: 780px;
+  }
+}

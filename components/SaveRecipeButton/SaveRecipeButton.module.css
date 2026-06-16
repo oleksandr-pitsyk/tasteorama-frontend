@@ -1,0 +1,48 @@
+.saveButton {
+    background-color: #9b6c43;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 24px;
+
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1;
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.saveButton:hover,
+.saveButton:focus {
+    background-color: #6d554b;
+    transition: background-color 0.8s ease, box-shadow 0.8s ease, border 0.8s ease;
+}
+
+.saveButton:active {
+    background-color: #9b6c43;
+    box-shadow: 0px 0px 0px 6px #4e46b41f;
+    border: 2px solid #ffffff;
+}
+
+.saveButton:disabled {
+    cursor: not-allowed;
+}
+
+@media screen and (min-width: 768px) {
+    .saveButton {
+        padding: 16px;
+        font-size: 16px;
+        max-height: 56px;
+    }
+}
+
+.icon {
+    margin-left: 16px;
+    vertical-align: middle;
+    background-color: transparent;
+}
