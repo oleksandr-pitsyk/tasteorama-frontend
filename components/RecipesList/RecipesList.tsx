@@ -1,15 +1,16 @@
 'use client';
 
 // ==========================================================================================
-// Компонент RecipesList - відображає адаптивну сєтку карток рецептів.
+// Компонент RecipesList -  відображає адаптивну сітку карток рецептів.
 // Використовує useInfiniteQuery для пагінації (TanStack Query).
+// Читає фільтри з URL параметрів які записує компонент Filters (Денис).
 // ==========================================================================================
 
-import { useInfiniteQuery } from '@tanstack/react-query';
-import Loading from '@/app/loading';
+import { useInfiniteQuery, keepPreviousData } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 
 // Імпорт API функції
-import { getRecipes } from '@/lib/api/api';
+import { getRecipes } from '@/lib/api/clientApi';
 
 // Імпорт компонентів
 import RecipeCard from '@/components/RecipeCard/RecipeCard';
@@ -17,46 +18,60 @@ import LoadMoreBtn from '@/components/LoadMoreBtn/LoadMoreBtn';
 
 // Імпорт стилів
 import css from './RecipesList.module.css';
-
-// ==========================================================================================
-// Константа - кількість рецептів на одній сторінці бо в api задано дефолтно 5 рецептів на сторінку якщо змінимо тоді можна буде видалити константу
-// ==========================================================================================
-const PER_PAGE = 12;
+import Loading from '@/app/loading';
+import AppError from '@/app/error';
 
 // ==========================================================================================
 // Компонент
 // ==========================================================================================
 const RecipesList = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
-    useInfiniteQuery({
-      queryKey: ['recipes'],
-      queryFn: ({ pageParam = 1 }) =>
-        getRecipes(pageParam, PER_PAGE, undefined, undefined, undefined),
-      initialPageParam: 1,
-      getNextPageParam: lastPage => {
-        // Якщо поточна сторінка менша за totalPages - повертаємо наступну
-        if (lastPage.page < lastPage.totalPages) {
-          return lastPage.page + 1;
-        }
-        // Інакше - наступної сторінки немає
-        return undefined;
-      },
-    });
+  // ------------------------------------------------------------------------------------------
+  // Читаємо фільтри з URL які записує компонент Filters (Денис)
+  // ------------------------------------------------------------------------------------------
+  const searchParams = useSearchParams();
+  const category = searchParams.get('category') ?? undefined;
+  const ingredient = searchParams.get('ingredient') ?? undefined;
+  const search = searchParams.get('search') ?? undefined;
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useInfiniteQuery({
+    // При зміні фільтрів - робимо новий запит з початку
+    queryKey: ['recipes', { category, ingredient, search }],
+    queryFn: ({ pageParam = 1 }) => getRecipes(pageParam, undefined, search, category, ingredient),
+    initialPageParam: 1,
+    placeholderData: keepPreviousData,
+    getNextPageParam: lastPage => {
+      if (lastPage.page < lastPage.totalPages) {
+        return lastPage.page + 1;
+      }
+      return undefined;
+    },
+  });
 
   // ------------------------------------------------------------------------------------------
   // Стан завантаження початкових даних
   // ------------------------------------------------------------------------------------------
-
   if (isLoading) {
     return <Loading />;
   }
 
   // ------------------------------------------------------------------------------------------
-  // Стан помилки, незнаю , імпортувати помилку з app/error.tsx ?
+  // Стан помилки
   // ------------------------------------------------------------------------------------------
   if (isError) {
     return (
-      <div className={css.error}>Сталася помилка при завантаженні рецептів. Спробуйте пізніше.</div>
+      <AppError
+        error={error instanceof Error ? error : new Error('Something went wrong')}
+        reset={() => refetch()}
+      />
     );
   }
 
@@ -69,7 +84,7 @@ const RecipesList = () => {
   // Стан пустого результату
   // ------------------------------------------------------------------------------------------
   if (recipes.length === 0) {
-    return <div className={css.empty}>Рецептів не знайдено. Спробуйте змінити фільтри.</div>;
+    return <div className={css.empty}>We&apos;re sorry! We were not able to find a match.</div>;
   }
 
   // ------------------------------------------------------------------------------------------

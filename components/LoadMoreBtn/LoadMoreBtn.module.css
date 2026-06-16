@@ -1,0 +1,76 @@
+:root {
+  --load-btn-radius: 8px;
+  --load-btn-padding: 16px;
+  --light-brown: #9b6c43;
+  --white: #ffffff;
+  --font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Wrapper — центрує кнопку */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 24px;
+}
+
+/* Базова кнопка (mobile-first) */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 372px; /* mobile */
+  height: 54px;
+
+  padding: 0 var(--load-btn-padding);
+  border-radius: var(--load-btn-radius);
+
+  background: var(--light-brown);
+  color: var(--white);
+
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 18px;
+
+  border: none;
+  cursor: pointer;
+  transition:
+    transform 150ms ease,
+    filter 150ms ease,
+    box-shadow 150ms ease;
+}
+
+/* Disabled */
+.button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* Hover тільки на пристроях з hover */
+@media (hover: hover) and (pointer: fine) {
+  .button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(0.98);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .button:active:not(:disabled) {
+    transform: translateY(0);
+    filter: brightness(0.95);
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .button {
+    width: 344px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1440px) {
+  .button {
+    width: 289px;
+  }
+}
