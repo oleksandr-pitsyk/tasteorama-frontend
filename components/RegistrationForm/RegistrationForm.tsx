@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { register } from '@/lib/api/api';
+import { register } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
 import { ApiError } from '@/app/api/api';
 import Loading from '@/app/loading';
@@ -17,9 +17,7 @@ const registerSchema = Yup.object({
     .email('Invalid email format')
     .max(128, 'Email must be at most 128 characters')
     .required('Email is required'),
-  name: Yup.string()
-    .max(16, 'Name must be at most 16 characters')
-    .required('Name is required'),
+  name: Yup.string().max(16, 'Name must be at most 16 characters').required('Name is required'),
   password: Yup.string()
     .min(8, 'Password must be at least 8 characters')
     .max(128, 'Password must be at most 128 characters')
@@ -64,12 +62,7 @@ const PasswordInput = ({
         aria-label={show ? 'Hide password' : 'Show password'}
         className={css.eyeBtn}
       >
-        <Image
-          src={show ? '/eye.svg' : '/eye-closed.svg'}
-          alt=""
-          width={24}
-          height={24}
-        />
+        <Image src={show ? '/eye.svg' : '/eye-closed.svg'} alt="" width={24} height={24} />
       </button>
     </div>
   );
@@ -104,8 +97,8 @@ const RegistrationForm = () => {
       } catch (error) {
         showToast(
           (error as ApiError).response?.data?.error ??
-          (error as ApiError).message ??
-          'Registration failed',
+            (error as ApiError).message ??
+            'Registration failed',
           false
         );
       } finally {
@@ -125,12 +118,11 @@ const RegistrationForm = () => {
       <div className={css.card}>
         <h2 className={css.title}>Register</h2>
         <p className={css.subtitle}>
-          Join our community of culinary enthusiasts, save your favorite
-          recipes, and share your cooking creations
+          Join our community of culinary enthusiasts, save your favorite recipes, and share your
+          cooking creations
         </p>
 
         <form onSubmit={formik.handleSubmit} noValidate className={css.form}>
-
           {/* Email */}
           <div className={css.fieldGroup}>
             <label htmlFor="email" className={css.label}>
@@ -196,9 +188,7 @@ const RegistrationForm = () => {
               value={formik.values.confirmPassword}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              hasError={
-                !!(formik.touched.confirmPassword && formik.errors.confirmPassword)
-              }
+              hasError={!!(formik.touched.confirmPassword && formik.errors.confirmPassword)}
             />
             {formik.touched.confirmPassword && formik.errors.confirmPassword && (
               <span className={css.error}>{formik.errors.confirmPassword}</span>
@@ -219,10 +209,7 @@ const RegistrationForm = () => {
       </div>
 
       {toast && (
-        <div
-          className={css.toast}
-          style={{ background: toast.ok ? '#2e7d32' : '#c80000' }}
-        >
+        <div className={css.toast} style={{ background: toast.ok ? '#2e7d32' : '#c80000' }}>
           {toast.msg}
         </div>
       )}
