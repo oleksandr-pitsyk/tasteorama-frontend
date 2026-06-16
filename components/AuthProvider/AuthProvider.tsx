@@ -25,6 +25,8 @@ const AuthProvider = ({ children }: Props) => {
     const fetchUser = async () => {
       // Перевіряємо сесію
       const isAuthenticated = await checkSession();
+      console.log('isAuthenticated', isAuthenticated);
+
       if (isAuthenticated) {
         // Якщо сесія валідна — отримуємо користувача
         const user = await getMe();

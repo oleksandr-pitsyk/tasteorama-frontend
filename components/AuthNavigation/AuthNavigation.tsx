@@ -26,7 +26,7 @@ const AuthNavigation = () => {
   const router = useRouter();
   // Отримуємо поточну сесію та юзера
   const { isAuthenticated, user } = useAuthStore();
-  console.log('AuthNavigation - isAuthenticated:', isAuthenticated, 'user:', user);
+
   // Отримуємо метод очищення глобального стану
   const clearIsAuthenticated = useAuthStore(state => state.clearIsAuthenticated);
 

@@ -40,6 +40,9 @@ export async function POST(req: NextRequest) {
         if (parsed.refreshToken) {
           cookieStore.set('refreshToken', parsed.refreshToken, options);
         }
+        // if (parsed.sessionId) {
+        //   cookieStore.set('sessionId', parsed.sessionId, options);
+        // }
       }
 
       // Тільки якщо є setCookie повертаємо результат

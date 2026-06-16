@@ -7,9 +7,9 @@ import { parse } from 'cookie';
 import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
-  // Парсимо тіло запиту
-  const body = await req.json();
   try {
+    // Парсимо тіло запиту
+    const body = await req.json();
     // Виконуємо запит до API
     const apiRes = await api.post('/api/auth/login', body);
     // Ініціалізуємо cookieStore

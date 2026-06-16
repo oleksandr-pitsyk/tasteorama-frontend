@@ -192,13 +192,14 @@ export const checkSession = async () => {
 // getMe : Отримання об’єкта користувача (профілю) для авторизованого користувача
 // ==========================================================================================
 export const getMe = async () => {
-  const { data } = await nextServer.get<User>('/auth/me');
-  return data;
+  const res = await nextServer.get<User>('/auth/me');
+  return res.data;
 };
 
 // ==========================================================================================
 // logout : Вихід користувача з системи (логаут)
 // ==========================================================================================
 export const logout = async (): Promise<void> => {
+  console.log('clientApi.ts - Logging out...');
   await nextServer.post('/auth/logout');
 };
