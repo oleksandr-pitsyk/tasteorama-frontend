@@ -25,7 +25,7 @@ export async function GET() {
     const cookieStore = await cookies();
 
     // Дістаємо токени
-    const sessionId = cookieStore.get('sessionId')?.value;
+    // const sessionId = cookieStore.get('sessionId')?.value;
     const accessToken = cookieStore.get('accessToken')?.value;
     const refreshToken = cookieStore.get('refreshToken')?.value;
 
