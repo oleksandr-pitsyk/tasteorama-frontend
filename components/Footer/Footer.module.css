@@ -24,22 +24,14 @@
 .logoLink {
   display: flex;
   align-items: center;
-  gap: 6px;
   text-decoration: none;
+  color: #fff;
 }
 
 .logoIcon {
-  width: 32px;
-  height: 30px;
-  fill: #fff;
-}
-
-.logoText {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 18px;
-  letter-spacing: -0.03em;
-  color: #fff;
+  width: 165px;
+  height: 46px;
+  flex-shrink: 0;
 }
 
 /* ===========================
@@ -99,13 +91,6 @@
 @media (min-width: 768px) {
   .footer {
     padding: 30px 40px;
-  }
-
-  .logoText {
-    font-weight: 600;
-    font-size: 18px;
-    letter-spacing: -0.03em;
-    color: #fff;
   }
 
   .copyright {

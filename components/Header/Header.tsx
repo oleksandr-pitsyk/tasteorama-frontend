@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import css from './Header.module.css';
 import AuthNavigation from '@/components/AuthNavigation/AuthNavigation';
 
@@ -23,7 +24,7 @@ const Header = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isMenuOpen]);
 
-  const burgerIcon = isMenuOpen ? '/icons/icons.svg#icon-close' : '/icons/icons.svg#icon-burger';
+  const burgerIcon = isMenuOpen ? '/sprite.svg#close' : '/sprite.svg#burger';
 
   useEffect(() => {
     const handleResize = () => {
@@ -39,10 +40,14 @@ const Header = () => {
   return (
     <header className={css.header}>
       <Link href="/" aria-label="Home" className={css.headerLink}>
-        <svg className={css.logoIcon}>
-          <use href="/icons/icons.svg#icon-logo" />
-        </svg>
-        <span className={css.logoText}>Tasteorama</span>
+        <Image
+          src="/logo.svg"
+          alt="Tasteorama"
+          className={css.logoIcon}
+          width={165}
+          height={46}
+          priority
+        />
       </Link>
 
       <button

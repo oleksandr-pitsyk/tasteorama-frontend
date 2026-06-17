@@ -17,11 +17,10 @@ export default function Footer(): React.ReactElement {
             src="/logo.svg"
             alt="Tasteorama"
             className={styles.logoIcon}
-            width={32}
-            height={30}
+            width={165}
+            height={46}
             priority
           />
-          <span className={styles.logoText}>Tasteorama</span>
         </Link>
 
         {/* Копірайт */}

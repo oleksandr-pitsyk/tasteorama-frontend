@@ -11,21 +11,16 @@
   position: relative;
 }
 
-.logoText {
-  color: white;
-  font-size: 18px;
-  font-weight: 600;
-}
-
 .logoIcon {
-  fill: white;
-  width: 30px;
-  height: 32px;
+  width: 165px;
+  height: 46px;
+  flex-shrink: 0;
 }
 
 .iconBurger {
-  stroke: white;
-  stroke-width: 1;
+  stroke: #ffffff;
+  stroke-width: 2px;
+  fill: none;
 }
 
 .burgerButton {
