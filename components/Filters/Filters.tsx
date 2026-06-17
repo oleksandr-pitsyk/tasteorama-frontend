@@ -1,8 +1,149 @@
-// Імпорт стилів з модуля стилів
-import css from './Filters.module.css';
+'use client';
 
-const Filters = async () => {
-  return <h3 className={css.filter}>Filters</h3>;
+import css from './Filters.module.css';
+import FiltersControls from './FiltersControls';
+import { Category } from '@/types/category';
+import { Ingredient } from '@/types/ingredient';
+import { getCategories, getIngredients } from '@/lib/api/clientApi';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { FC, useCallback, useState } from 'react';
+import Loading from '@/app/loading';
+
+interface FiltersProps {
+  totalItems: number;
+}
+
+const Filters: FC<FiltersProps> = ({ totalItems }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const { data: categories = [], isLoading: isCategoriesLoading } = useQuery<Category[]>({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const response = await getCategories();
+      return response.data;
+    },
+  });
+
+  const { data: ingredients = [], isLoading: isIngredientsLoading } = useQuery<Ingredient[]>({
+    queryKey: ['ingredients'],
+    queryFn: async () => {
+      const response = await getIngredients();
+      return response.data;
+    },
+  });
+
+  const categoryParams = searchParams.get('category');
+  const ingredientParams = searchParams.get('ingredient');
+
+  const updateURL = useCallback(
+    (updates: Record<string, string | null>) => {
+      const params = new URLSearchParams(searchParams);
+
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value) {
+          params.set(key, value);
+        } else {
+          params.delete(key);
+        }
+      });
+
+      const queryString = params.toString();
+
+      router.replace(queryString ? `?${queryString}` : '');
+    },
+    [searchParams, router]
+  );
+
+  const handleCategoryChange = useCallback(
+    (value: string) => {
+      updateURL({
+        category: value || null,
+      });
+    },
+    [updateURL]
+  );
+
+  const handleIngredientChange = useCallback(
+  (value: string) => {
+    updateURL({
+      ingredient: value || null,
+    });
+  },
+  [updateURL]
+);
+
+  const handleResetFilters = useCallback(() => {
+    const params = new URLSearchParams(searchParams);
+
+    params.delete('category');
+    params.delete('ingredient');
+
+    const queryString = params.toString();
+
+    router.replace(queryString ? `?${queryString}` : '/');
+  }, [searchParams, router]);
+
+  if (isCategoriesLoading || isIngredientsLoading) {
+    return <Loading />;
+  }
+
+  return (
+    <section className={css.wrapper}>
+      <div className={css.mobileHeader}>
+        <p className={css.counter}>{totalItems} recipes</p>
+
+        {!isOpen && (
+          <button className={css.filtersButton} onClick={() => setIsOpen(true)}>
+            <svg width={20} height={20}>
+              <use href="/sprite.svg#filter"></use>
+            </svg>
+            Filters
+          </button>
+        )}
+
+        {isOpen && (
+          <div className={css.mobileFilters}>
+            <div className={css.mobileFiltersHeader}>
+              <p className={css.textFiltersButton}>Filters</p>
+
+              <button type="button" className={css.closeButton} onClick={() => setIsOpen(false)}>
+                ✕
+              </button>
+            </div>
+
+            <FiltersControls
+              categoryParams={categoryParams}
+              ingredientParams={ingredientParams}
+              categories={categories}
+              ingredients={ingredients}
+              handleCategoryChange={handleCategoryChange}
+              handleIngredientChange={handleIngredientChange}
+              handleResetFilters={handleResetFilters}
+            />
+          </div>
+        )}
+      </div>
+
+      <div className={css.desktopHeader}>
+        <p className={css.counter}>{totalItems} recipes</p>
+
+          <FiltersControls
+            categoryParams={categoryParams}
+            ingredientParams={ingredientParams}
+            categories={categories}
+            ingredients={ingredients}
+            handleCategoryChange={handleCategoryChange}
+            handleIngredientChange={handleIngredientChange}
+            handleResetFilters={handleResetFilters}
+          />
+      </div>
+    </section>
+  );
+
 };
 
 export default Filters;

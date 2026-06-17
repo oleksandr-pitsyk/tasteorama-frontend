@@ -1,0 +1,51 @@
+.selectGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.controls {
+  display: flex;
+  flex-direction: column;
+}
+
+.selectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.resetButton {
+  all: unset;
+
+  background: transparent;
+  cursor: pointer;
+
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.2;
+
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-family: var(--font-family);
+  color: #000;
+}
+
+@media screen and (min-width: 1440px) {
+  .selectGroup {
+    flex-direction: row;
+    gap: 24px;
+    margin-bottom: 0;
+    align-items: center;
+  }
+
+  .controls {
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .resetButton {
+    order: -1;
+    font-size: 14px;
+  }
+}

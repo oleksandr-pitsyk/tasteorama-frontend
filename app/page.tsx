@@ -1,8 +1,13 @@
+'use client';
 // ==========================================================================================
 // / – головна сторінка з загальною інформацією про застосунок.
 // ==========================================================================================
 // import Image from 'next/image';
 // ------------------------------------------------------------------------------------------
+
+// Імпорт hook 
+
+import { useRecipesList } from '@/hooks/useRecipesList';
 
 // Імпорт модуля зі стилями компонента
 
@@ -20,10 +25,11 @@ import RecipesList from '@/components/RecipesList/RecipesList';
 // import MyTest from '@/components/MyTest/MyTest';
 
 function MainPage() {
+  const { totalItems } = useRecipesList()
   return (
     <main className={css.container}>
       <Hero />
-      <Filters />
+      <Filters totalItems={totalItems}/>
       <RecipesList />
       {/* <RecipeCard /> */}
       {/* <LoadMoreBtn /> */}

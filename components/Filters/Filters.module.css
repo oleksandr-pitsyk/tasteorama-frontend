@@ -1,6 +1,129 @@
-.filter {
-  font-family: var(--font-dm-sans);
-  font-weight: 700;
-  font-size: 24px;
+
+.wrapper {
   width: 100%;
+}
+
+.counter {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 16px;
+  color: black;
+  margin: 0;
+}
+
+/* ================================================== */
+/* MOBILE + TABLET HEADER */
+/* ================================================== */
+
+.mobileHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 16px;
+  margin: 16px 0;
+}
+
+.mobileFilters {
+  margin-top: 16px;
+
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px 12px;
+  max-width: 325px;
+  width: 100%;
+
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.mobileFiltersHeader {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  align-items: center;
+
+  margin-bottom: 29px;
+}
+
+.textFiltersButton {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.filtersButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  width: 67px;
+  height: 28px;
+
+  padding: 0;
+  margin: 0;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 12px;
+
+  color: black;
+
+  cursor: pointer;
+}
+
+.filtersButton svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.closeButton {
+  all: unset;
+
+  width: 15px;
+  height: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid black;
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  color: #050505;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.desktopHeader {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .mobileHeader {
+    padding: 0 32px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .mobileHeader {
+    display: none;
+  }
+
+  .desktopHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
 }
