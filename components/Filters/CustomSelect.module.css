@@ -14,8 +14,7 @@
   align-items: center;
 
   background-color: #fff;
-
-  border: 1px solid #d9d9d9;
+  border: 1px solid #ececec;
   border-radius: 8px;
 
   cursor: pointer;
@@ -24,7 +23,7 @@
 .buttonLabel {
   font-family: var(--font-family);
   font-weight: 400;
-  color: #333;
+  color: #595d62;
 }
 
 .arrow {
@@ -109,7 +108,7 @@
 
   .buttonLabel {
     font-size: 14px;
-    color: #999;
+    color: #595d62;
   }
 
   .arrow {
@@ -134,7 +133,7 @@
 
   .buttonLabel {
     font-size: 14px;
-    color: #999;
+    color: #595d62;
     line-height: 155%;
   }
 

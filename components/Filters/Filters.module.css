@@ -4,6 +4,9 @@
 }
 
 .counter {
+  width: 100%;
+  margin: 0;
+
   font-family: var(--font-family);
   font-weight: 700;
   font-size: 16px;
@@ -11,29 +14,35 @@
   margin: 0;
 }
 
-/* ================================================== */
-/* MOBILE + TABLET HEADER */
-/* ================================================== */
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 .mobileHeader {
-  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
+  flex-direction: column;
+  gap: 16px;
   margin: 16px 0;
 }
 
 .mobileFilters {
+  position: relative;
+
+  width: 320px;
+
   margin-top: 16px;
 
-  background-color: white;
-  border-radius: 8px;
-  padding: 16px 12px;
-  max-width: 325px;
-  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
 
-  z-index: 100;
+  padding: 16px 12px;
+
+  background: whitesmoke;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
@@ -83,6 +92,7 @@
 }
 
 .closeButton {
+
   all: unset;
 
   width: 15px;
@@ -98,18 +108,23 @@
   cursor: pointer;
 
   color: #050505;
-  font-size: 14px;
+  font-size: 8px;
   line-height: 1;
 }
 
-.desktopHeader {
-  display: none;
+@media screen and (min-width: 768px) {
+  .mobileFilters {
+    width: 320px;
+    min-height: 222px;
+
+    top: calc(100% + 16px);
+    right: 0;
+  }
 }
 
-@media screen and (min-width: 768px) {
-  .mobileHeader {
-    padding: 0 32px;
-  }
+
+.desktopHeader {
+  display: none;
 }
 
 @media screen and (min-width: 1440px) {

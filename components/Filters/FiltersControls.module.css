@@ -1,12 +1,17 @@
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .selectGroup {
   display: flex;
   flex-direction: column;
   gap: 24px;
+
+  width: 296px;
+
   margin-bottom: 24px;
-}
-.controls {
-  display: flex;
-  flex-direction: column;
 }
 
 .selectWrapper {
@@ -28,24 +33,41 @@
   text-underline-offset: 4px;
   font-family: var(--font-family);
   color: #000;
+
+  white-space: nowrap;
+}
+
+@media screen and (min-width: 768px) {
+  .selectGroup {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .selectWrapper {
+    flex: 1;
+  }
+
 }
 
 @media screen and (min-width: 1440px) {
-  .selectGroup {
-    flex-direction: row;
-    gap: 24px;
-    margin-bottom: 0;
-    align-items: center;
-  }
-
   .controls {
     flex-direction: row;
     align-items: center;
     gap: 24px;
   }
 
+  .selectGroup {
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 0;
+    width: auto;
+  }
+
+
   .resetButton {
     order: -1;
     font-size: 14px;
+    white-space: nowrap;
   }
 }

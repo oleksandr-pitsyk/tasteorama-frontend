@@ -8,6 +8,7 @@
 // Імпорт hook 
 
 import { useRecipesList } from '@/hooks/useRecipesList';
+import SearchResultsTitle from '@/components/RecipesList/SeacrhResultsTitle';
 
 // Імпорт модуля зі стилями компонента
 
@@ -29,6 +30,7 @@ function MainPage() {
   return (
     <main className={css.container}>
       <Hero />
+      <SearchResultsTitle />
       <Filters totalItems={totalItems}/>
       <RecipesList />
       {/* <RecipeCard /> */}

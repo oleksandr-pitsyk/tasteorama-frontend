@@ -79,6 +79,7 @@ export default function SearchBox() {
   const handleSubmit = () => {
     const text = searchText.trim();
 
+
     const params = new URLSearchParams(searchParams.toString());
 
     if (text) {

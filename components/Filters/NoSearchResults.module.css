@@ -1,6 +1,6 @@
 .wrapper {
   border-radius: 16px;
-  padding: 40px 24px; 
+  padding: 40px 24px;
   width: 100%;
   max-width: 361px;
   min-height: 207px;
@@ -13,8 +13,8 @@
 }
 
 .wrapperOne {
-    margin-bottom: 48px;
-    margin-top: 48px;
+  margin-bottom: 48px;
+  margin-top: 48px;
 }
 
 .text {
@@ -51,25 +51,25 @@
   cursor: pointer;
 }
 
-@media screen and (min-width: 768px) {}
-.wrapperOne {
+@media screen and (min-width: 768px) {
+  .wrapperOne {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.wrapper {
-    
+  }
+  .wrapper {
     max-width: 522px;
     width: 100%;
     min-height: 0;
+  }
 }
 
 @media screen and (min-width: 1440px) {
-    .wrapper {
-        max-width: 598px;
-    }
-    
-    .text {
-        margin-bottom: 20px;
-    }
+  .wrapper {
+    max-width: 598px;
+  }
+
+  .text {
+    margin-bottom: 20px;
+  }
 }

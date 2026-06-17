@@ -9,7 +9,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { FC, useCallback, useState } from 'react';
 import Loading from '@/app/loading';
-import { NoSearchResults } from './NoSearchResults';
 import { resetSearchAndFilters } from './helpers';
 
 interface FiltersProps {
@@ -40,7 +39,6 @@ const Filters: FC<FiltersProps> = ({ totalItems }) => {
 
   const categoryParams = searchParams.get('category');
   const ingredientParams = searchParams.get('ingredient');
-  const search = searchParams.get('search');
 
   const updateURL = useCallback(
     (updates: Record<string, string | null>) => {
@@ -66,8 +64,12 @@ const Filters: FC<FiltersProps> = ({ totalItems }) => {
       updateURL({
         category: value || null,
       });
+
+      if (value && ingredientParams) {
+        setIsOpen(false)
+      }
     },
-    [updateURL]
+    [updateURL, ingredientParams]
   );
 
   const handleIngredientChange = useCallback(
@@ -75,8 +77,12 @@ const Filters: FC<FiltersProps> = ({ totalItems }) => {
       updateURL({
         ingredient: value || null,
       });
+
+      if (categoryParams && value) {
+        setIsOpen(false)
+      }
     },
-    [updateURL]
+    [updateURL, categoryParams]
   );
 
  const handleResetSearchAndFilters = () => {
@@ -88,58 +94,66 @@ const Filters: FC<FiltersProps> = ({ totalItems }) => {
   }
 
   return (
-    <section className={css.wrapper}>
-      {totalItems === 0 && <h2>Search result for {search}</h2>}
-      <div className={css.mobileHeader}>
+  <section className={css.wrapper}>
+    <div className={css.mobileHeader}>
+      <div className={css.topRow}>
         <p className={css.counter}>{totalItems} recipes</p>
 
         {!isOpen && (
-          <button className={css.filtersButton} onClick={() => setIsOpen(true)}>
+          <button
+            className={css.filtersButton}
+            onClick={() => setIsOpen(true)}
+          >
             <svg width={20} height={20}>
               <use href="/sprite.svg#filter"></use>
             </svg>
             Filters
           </button>
         )}
+      </div>
 
-        {isOpen && (
-          <div className={css.mobileFilters}>
-            <div className={css.mobileFiltersHeader}>
-              <p className={css.textFiltersButton}>Filters</p>
+      {isOpen && (
+        <div className={css.mobileFilters}>
+          <div className={css.mobileFiltersHeader}>
+            <p className={css.textFiltersButton}>Filters</p>
 
-              <button type="button" className={css.closeButton} onClick={() => setIsOpen(false)}>
-                ✕
-              </button>
-            </div>
-
-            <FiltersControls
-              categoryParams={categoryParams}
-              ingredientParams={ingredientParams}
-              categories={categories}
-              ingredients={ingredients}
-              handleCategoryChange={handleCategoryChange}
-              handleIngredientChange={handleIngredientChange}
-              handleResetSearchAndFilters={handleResetSearchAndFilters}
-            />
+            <button
+              type="button"
+              className={css.closeButton}
+              onClick={() => setIsOpen(false)}
+            >
+              ✕
+            </button>
           </div>
-        )}
-      </div>
 
-      <div className={css.desktopHeader}>
-        <p className={css.counter}>{totalItems} recipes</p>
+          <FiltersControls
+            categoryParams={categoryParams}
+            ingredientParams={ingredientParams}
+            categories={categories}
+            ingredients={ingredients}
+            handleCategoryChange={handleCategoryChange}
+            handleIngredientChange={handleIngredientChange}
+            handleResetSearchAndFilters={handleResetSearchAndFilters}
+          />
+        </div>
+      )}
+    </div>
 
-        <FiltersControls
-          categoryParams={categoryParams}
-          ingredientParams={ingredientParams}
-          categories={categories}
-          ingredients={ingredients}
-          handleCategoryChange={handleCategoryChange}
-          handleIngredientChange={handleIngredientChange}
-          handleResetSearchAndFilters={handleResetSearchAndFilters}
-        />
-      </div>
-    </section>
-  );
+    <div className={css.desktopHeader}>
+      <p className={css.counter}>{totalItems} recipes</p>
+
+      <FiltersControls
+        categoryParams={categoryParams}
+        ingredientParams={ingredientParams}
+        categories={categories}
+        ingredients={ingredients}
+        handleCategoryChange={handleCategoryChange}
+        handleIngredientChange={handleIngredientChange}
+        handleResetSearchAndFilters={handleResetSearchAndFilters}
+      />
+    </div>
+  </section>
+);
 };
 
 export default Filters;
