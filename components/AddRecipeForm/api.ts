@@ -2,6 +2,26 @@ import type { Category } from '@/types/category';
 import type { Ingredient } from '@/types/ingredient';
 import type { AddRecipeFormValues, CollectionResponse, CreateRecipeResponse } from './types';
 
+// Безпечно парсить тіло відповіді як JSON.
+// fetch не гарантує, що тіло непорожнє і є валідним JSON —
+// порожнє тіло (наприклад при 204, або при помилці без body)
+// викликає "Unexpected end of JSON input" при прямому res.json().
+async function safeParseJson<T>(res: Response): Promise<T | null> {
+  const text = await res.text();
+
+  if (!text) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    // Тіло є, але це не JSON (наприклад HTML-сторінка помилки) —
+    // повертаємо null, виклик нижче сформує власне повідомлення.
+    return null;
+  }
+}
+
 // GET-запит до колекції та повертає типізовані дані або помилку.
 async function fetchCollection<T>(
   url: string,
@@ -13,7 +33,13 @@ async function fetchCollection<T>(
     throw new Error(errorMessage);
   }
 
-  return (await res.json()) as CollectionResponse<T>;
+  const data = await safeParseJson<CollectionResponse<T>>(res);
+
+  if (!data) {
+    throw new Error(errorMessage);
+  }
+
+  return data;
 }
 
 // Завантажує список категорій для селекту
@@ -45,7 +71,11 @@ export async function createRecipe(values: AddRecipeFormValues): Promise<string>
     formData.append('thumb', values.thumb);
   }
 
-  const res = await fetch('/api/recipes/my', {
+  // ВАЖЛИВО: бекенд приймає POST саме на /api/recipes (дивись Swagger:
+  // "POST /api/recipes — Створити новий рецепт"). Шлях /api/recipes/my
+  // призначений для GET-запиту власних рецептів користувача, а не для
+  // створення нового — саме тому раніше прилітала помилка "Route not found".
+  const res = await fetch('/api/recipes', {
     method: 'POST',
     body: formData,
   });

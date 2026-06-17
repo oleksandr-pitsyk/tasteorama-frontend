@@ -4,20 +4,47 @@
   gap: 20px;
 }
 
-.topGrid {
+.pageTitle {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: #000;
+  margin: 0;
+}
+
+/* ===========================================================
+   FORM GRID — контейнер для всіх 4 секцій.
+   Порядок секцій на кожному breakpoint керується через `order`,
+   а не через DOM-порядок чи column-reverse.
+   =========================================================== */
+.formGrid {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   gap: 20px;
 }
 
 .generalInfoSection {
   display: flex;
   flex-direction: column;
+  order: 2;
 }
 
 .uploadSection {
   display: flex;
   flex-direction: column;
+  order: 1;
+}
+
+.ingredientsSection {
+  display: flex;
+  flex-direction: column;
+  order: 3;
+}
+
+.instructionSection {
+  display: flex;
+  flex-direction: column;
+  order: 4;
 }
 
 .photoTitle {
@@ -36,7 +63,6 @@
   font-size: 24px;
   color: #000;
 
-  margin-top: 24px;
   margin-bottom: 16px;
 }
 
@@ -149,18 +175,26 @@
 
 .cameraIcon {
   display: block;
-  width: 64px;
-  height: 64px;
+  width: 52px;
+  height: 52px;
   flex-shrink: 0;
+
+  fill: none;
+  stroke: #070707;
+}
+
+.trashIcon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+
+  fill: none;
+  stroke: #070707;
 }
 
 .hiddenInput {
   display: none;
-}
-
-.ingredientsSection {
-  display: flex;
-  flex-direction: column;
 }
 
 .ingredientsControls {
@@ -209,7 +243,7 @@
 }
 
 .ingredientsHead {
-  display: grid;
+  display: none;
   grid-template-columns: 1fr 1fr 24px;
   align-items: center;
   width: 100%;
@@ -301,7 +335,7 @@
   width: 100%;
   margin-top: -12px;
   margin-bottom: 16px;
-  text-align: center;
+  text-align: left;
   color: #be1f1f;
   font-size: 14px;
 }
@@ -310,17 +344,18 @@
   margin-top: 4px;
 }
 
+/* ===========================================================
+   MOBILE small (>=393px): порядок як на mobile-макеті —
+   Upload -> General -> Ingredients -> Instructions
+   (це і є дефолтний order вище: 1, 2, 3, 4)
+   =========================================================== */
 @media (min-width: 393px) {
   .form {
-    gap: 24px;
+    gap: 40px;
   }
 
-  .sectionTitle {
-    font-size: 32px;
-  }
-
-  .secondaryButton {
-    font-size: 16px;
+  .formGrid {
+    gap: 40px;
   }
 
   .primaryButton {
@@ -334,27 +369,49 @@
   }
 }
 
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TABLET!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* ===========================================================
+   TABLET (>=768px): порядок як на tablet-макеті —
+   Upload -> Ingredients -> General -> Instructions
+   =========================================================== */
 @media (min-width: 768px) {
   .form {
     gap: 28px;
   }
 
+  .formGrid {
+    gap: 24px;
+  }
+
+  .uploadSection {
+    order: 1;
+  }
+
+  .ingredientsSection {
+    order: 2;
+  }
+
+  .generalInfoSection {
+    order: 3;
+  }
+
+  .instructionSection {
+    order: 4;
+  }
+
+  .ingredientsHead {
+    display: grid;
+  }
+
   .input {
-    margin-bottom: 16px;
+    margin-bottom: 32px;
   }
 
   .error {
-    margin-bottom: 10px;
+    margin-top: -26px;
   }
 
-  .sectionTitle {
-    font-size: 36px;
-  }
-
-  .topGrid {
-    flex-direction: column-reverse;
-    gap: 24px;
+  .photoTitle {
+    margin-bottom: 12px;
   }
 
   .generalTitle {
@@ -446,20 +503,49 @@
   }
 }
 
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!DESKTOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* ===========================================================
+   DESKTOP (>=1440px): порядок як на desktop-макеті —
+   зліва: General -> Ingredients -> Instructions
+   справа: Upload Photo (зверху, поряд з General)
+   Реалізовано через grid-template-areas, тому `order` тут
+   вже не визначає розташування — кожна секція займає свою area.
+   =========================================================== */
 @media (min-width: 1440px) {
-  .topGrid {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 24px;
+  .formGrid {
+    display: grid;
+    grid-template-columns: 1fr 32%;
+    grid-template-areas:
+      'general upload'
+      'ingredients upload'
+      'instructions instructions';
+    column-gap: 24px;
+    row-gap: 0;
+    align-items: start;
   }
 
   .generalInfoSection {
-    flex: 1;
+    grid-area: general;
+    order: initial;
   }
 
-  .sectionTitle {
-    font-size: 40px;
+  .uploadSection {
+    grid-area: upload;
+    order: initial;
+    width: 100%;
+    min-width: 220px;
+  }
+
+  .ingredientsSection {
+    grid-area: ingredients;
+    order: initial;
+    max-width: 100%;
+    margin-top: 32px;
+  }
+
+  .instructionSection {
+    grid-area: instructions;
+    order: initial;
+    margin-top: 40px;
   }
 
   .label,
@@ -467,25 +553,12 @@
     font-size: 18px;
   }
 
-  .uploadSection {
-    width: 32%;
-    min-width: 220px;
-  }
-
   .photoTitle {
     margin-bottom: 20px;
   }
 
-  .instructionsTitle {
-    margin-top: 72px;
-  }
-
   .ingredientsHead {
-    margin-top: 132px;
-  }
-
-  .ingredientsSection {
-    max-width: calc(100% - 32% - 24px);
+    margin-top: 0;
   }
 
   .ingredientsControls {
