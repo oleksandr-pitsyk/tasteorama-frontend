@@ -1,8 +1,35 @@
+// ===========================================================================================
+// Файл route.ts повинен експортувати функції з назвами, що збігаються з HTTP-методами,
+// які ми хочемо обробляти (GET, POST, PUT тощо).
+// ===========================================================================================
+
+// Імпортуємо необхідні модулі та типи
+// NextResponse – це розширення стандартного Web Response з додатковими методами Next.js
+// і дозволяє легко повертати JSON-дані.
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { isAxiosError } from 'axios';
-import { api } from '../api';
+import { api, ApiError } from '../api';
 import { logErrorResponse } from '../_utils/utils';
+
+// GET /api/recipes — отримання списку рецептів з можливістю фільтрації
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const { data } = await api(`api/recipes?${searchParams.toString()}`);
+
+    // Повертаємо те, що відповів бекенд через метод json
+    return NextResponse.json(data);
+  } catch (error) {
+    // У випадку помилки — повертаємо обʼєкт з помилкою
+    return NextResponse.json(
+      {
+        error: (error as ApiError).response?.data?.error ?? (error as ApiError).message,
+      },
+      { status: (error as ApiError).status }
+    );
+  }
+}
 
 // POST /api/recipes — створення нового рецепту.
 export async function POST(request: NextRequest) {
