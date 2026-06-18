@@ -5,7 +5,6 @@ import { parse } from 'cookie';
 import { api } from '../api';
 import { logErrorResponse } from '../_utils/utils';
 
-// ВИДАЛИЛИ 'area' з переліку полів, оскільки бекенд його забороняє
 function buildOutgoingFormData(incoming: FormData): FormData {
   const formData = new FormData();
   const fields = ['title', 'category', 'instructions', 'description', 'time', 'ingredients'];
@@ -40,9 +39,8 @@ export async function POST(request: NextRequest) {
           headers: { Cookie: cookieStore.toString() },
         });
 
-        // ... код оновлення кук ...
+        // код оновлення кук ...
 
-        // Повторна спроба з клонованого запиту
         const retryFormData = await clonedRequest.formData();
         const retryRes = await api.post('/api/recipes', buildOutgoingFormData(retryFormData), {
           headers: { Cookie: cookieStore.toString() },
