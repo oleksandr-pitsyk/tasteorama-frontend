@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from 'formik';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import toast, { Toaster } from 'react-hot-toast';
 import css from './AddRecipeForm.module.css';
 import { createRecipe, getCategories, getIngredients } from './api';
