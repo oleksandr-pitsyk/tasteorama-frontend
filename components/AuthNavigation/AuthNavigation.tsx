@@ -3,27 +3,23 @@
 import css from './AuthNavigation.module.css';
 import Link from 'next/link';
 import UserBar from '../UserBar/UserBar';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/store/authStore';
-import { logout } from '@/lib/api/clientApi';
+// import { logout } from '@/lib/api/clientApi';
 interface AuthNavigationProps {
   onLinkClick?: () => void;
 }
 
 const AuthNavigation = ({ onLinkClick }: AuthNavigationProps) => {
   const router = useRouter();
+  const pathname = usePathname();
   const { isAuthenticated, user } = useAuthStore();
 
   // Отримуємо метод очищення глобального стану
-  const clearIsAuthenticated = useAuthStore(state => state.clearIsAuthenticated);
+  // const clearIsAuthenticated = useAuthStore(state => state.clearIsAuthenticated);
 
   const handleLogout = async () => {
-    // Викликаємо logout
-    await logout();
-    // Чистимо глобальний стан
-    clearIsAuthenticated();
-    // Виконуємо навігацію на сторінку авторизації
-    router.push('/auth/login');
+    router.push('/logout');
   };
 
   // Якщо є сесія - відображаємо кнопку Logout та інформацію про користувача
@@ -31,7 +27,11 @@ const AuthNavigation = ({ onLinkClick }: AuthNavigationProps) => {
   return isAuthenticated ? (
     <>
       <li className={css.navigationItem}>
-        <Link onClick={onLinkClick} className={css.navigationLink} href="/profile/own">
+        <Link
+          onClick={onLinkClick}
+          className={`${css.navigationLink} ${pathname.startsWith('/profile') ? css.activeLink : ''}`}
+          href="/profile/own"
+        >
           My Profile
         </Link>
       </li>
@@ -48,7 +48,7 @@ const AuthNavigation = ({ onLinkClick }: AuthNavigationProps) => {
         <li>
           <Link
             onClick={onLinkClick}
-            className={css.navigationLink}
+            className={`${css.navigationLink} ${pathname === '/auth/login' ? css.activeLink : ''}`}
             href="/auth/login"
             prefetch={false}
           >

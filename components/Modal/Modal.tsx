@@ -56,14 +56,14 @@ export default function Modal({ children, onClose }: ModalProps) {
     // Додаємо слухач клавіатури на весь документ
     document.addEventListener('keydown', handleKeyDown);
     // Додаємо у useEffect код блокуання скролу при відкритті модалки
-    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
 
     //  При розмонтуванні компонента додаємо наступне :
     return () => {
       // Видалення слухача клавіатури
       document.removeEventListener('keydown', handleKeyDown);
       // Видаляємо з useEffect код блокування скролу
-      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     };
   }, [onClose]);
 
@@ -71,10 +71,12 @@ export default function Modal({ children, onClose }: ModalProps) {
   return createPortal(
     <div className={css.backdrop} onClick={handleBackdropClick} role="dialog" aria-modal="true">
       <div className={css.modal}>
-        {/* Вміст модального вікна*/}
-        {/* Тут рендериться переданий вміст із пропса children */}
+        <button className={css.closeBtn} onClick={onClose} aria-label="Close modal">
+          <svg width={24} height={24} className={css.closeIcon}>
+            <use href="/sprite.svg#close-button" />
+          </svg>
+        </button>
         {children}
-        {/* ================================================== */}
       </div>
     </div>,
     document.body
