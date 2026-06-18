@@ -22,6 +22,8 @@ const AuthNavigation = ({ onLinkClick }: AuthNavigationProps) => {
     router.push('/logout');
   };
 
+  // Якщо є сесія - відображаємо кнопку Logout та інформацію про користувача
+  // інакше - лінки для авторизації
   return isAuthenticated ? (
     <>
       <li className={css.navigationItem}>

@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from 'formik';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import toast, { Toaster } from 'react-hot-toast';
 import css from './AddRecipeForm.module.css';
 import { createRecipe, getCategories, getIngredients } from './api';
@@ -68,7 +67,26 @@ const AddRecipeForm = () => {
           const visibleIngredients = getVisibleIngredients(values.ingredients);
 
           return (
-            <Form className={css.form}>
+            <Form
+              className={css.form}
+              // КНОПКА ЕНТЕР
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  const target = e.target as HTMLElement;
+
+                  // В текстареа Ентер це новий рядок
+                  if (target.tagName === 'TEXTAREA') {
+                    return;
+                  }
+
+                  // для інших полів перевірка
+                  e.preventDefault();
+
+                  const formElement = e.currentTarget as HTMLFormElement;
+                  formElement.requestSubmit();
+                }
+              }}
+            >
               <div className={css.formGrid}>
                 <section className={css.uploadSection}>
                   <h2 className={css.photoTitle}>Upload Photo</h2>
@@ -82,6 +100,8 @@ const AddRecipeForm = () => {
                       </svg>
                     )}
                   </label>
+
+                  {/* КАРТИНКА */}
                   <input
                     id="thumb"
                     name="thumb"
@@ -106,6 +126,7 @@ const AddRecipeForm = () => {
                   <ErrorMessage name="thumb" component="span" className={css.error} />
                 </section>
 
+                {/* ІНГРЕДІЄНТИ */}
                 <section className={css.ingredientsSection}>
                   <h2 className={css.ingredientsTitle}>Ingredients</h2>
 
@@ -210,6 +231,7 @@ const AddRecipeForm = () => {
                   )}
                 </section>
 
+                {/* ДЖЕНЕРАЛ */}
                 <section className={css.generalInfoSection}>
                   <h2 className={css.generalTitle}>General Information</h2>
 
@@ -283,6 +305,7 @@ const AddRecipeForm = () => {
                   </div>
                 </section>
 
+                {/* ІНСТРУКЦІЇ */}
                 <section className={css.instructionSection}>
                   <h2 className={css.instructionsTitle}>Instructions</h2>
                   <Field
@@ -296,6 +319,7 @@ const AddRecipeForm = () => {
                 </section>
               </div>
 
+              {/* ПОЛЕТІЛИ */}
               <button
                 type="submit"
                 className={css.primaryButton}

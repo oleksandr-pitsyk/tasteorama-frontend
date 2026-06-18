@@ -2,10 +2,7 @@ import type { Category } from '@/types/category';
 import type { Ingredient } from '@/types/ingredient';
 import type { AddRecipeFormValues, CollectionResponse, CreateRecipeResponse } from './types';
 
-// Безпечно парсить тіло відповіді як JSON.
-// fetch не гарантує, що тіло непорожнє і є валідним JSON —
-// порожнє тіло (наприклад при 204, або при помилці без body)
-// викликає "Unexpected end of JSON input" при прямому res.json().
+// парсить тіло відповіді  JSON
 async function safeParseJson<T>(res: Response): Promise<T | null> {
   const text = await res.text();
 
@@ -16,13 +13,11 @@ async function safeParseJson<T>(res: Response): Promise<T | null> {
   try {
     return JSON.parse(text) as T;
   } catch {
-    // Тіло є, але це не JSON (наприклад HTML-сторінка помилки) —
-    // повертаємо null, виклик нижче сформує власне повідомлення.
     return null;
   }
 }
 
-// GET-запит до колекції та повертає типізовані дані або помилку.
+// запит
 async function fetchCollection<T>(
   url: string,
   errorMessage: string
@@ -42,12 +37,12 @@ async function fetchCollection<T>(
   return data;
 }
 
-// Завантажує список категорій для селекту
+//  список категорій для селекту
 export async function getCategories(): Promise<CollectionResponse<Category>> {
   return fetchCollection<Category>('/api/categories', 'Не вдалося завантажити категорії');
 }
 
-// Завантажує список  інгредієнтів
+//  список інгредієнтів
 export async function getIngredients(): Promise<CollectionResponse<Ingredient>> {
   return fetchCollection<Ingredient>('/api/ingredients', 'Не вдалося завантажити інгредієнти');
 }
@@ -71,10 +66,7 @@ export async function createRecipe(values: AddRecipeFormValues): Promise<string>
     formData.append('thumb', values.thumb);
   }
 
-  // ВАЖЛИВО: бекенд приймає POST саме на /api/recipes (дивись Swagger:
-  // "POST /api/recipes — Створити новий рецепт"). Шлях /api/recipes/my
-  // призначений для GET-запиту власних рецептів користувача, а не для
-  // створення нового — саме тому раніше прилітала помилка "Route not found".
+  // бекенд приймає POST саме на /api/recipes 
   const res = await fetch('/api/recipes', {
     method: 'POST',
     body: formData,
