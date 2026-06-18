@@ -1,213 +1,248 @@
 .card,
 .card * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .card {
-  width: 100%;
-  border-radius: 16px;
-  background-color: #faf3e0;
-  padding: 8px;
+    width: 100%;
+    border-radius: 16px;
+    background-color: #FAF3E0;
+    padding: 8px;
 }
 
 .img {
-  width: 100%;
-  height: 210px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  object-fit: cover;
-  object-position: center;
+    width: 100%;
+    height: 210px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    object-fit: cover;
+    object-position: center;
 }
 
 .header {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
 }
 
 .title {
-  width: 203px;
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 1.2;
+    width: 203px;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.2;
 }
 
 .timeBox {
-  max-width: 75px;
-  height: 28px;
-  border-radius: 8px;
-  padding: 2px 8px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  justify-content: center;
-  background-color: #ffffff;
+    max-width: 75px;
+    height: 28px;
+    border-radius: 8px;
+    padding: 2px 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: center;
+    background-color: #ffffff;
 }
 
 .time {
-  font-weight: 600;
-  font-size: 12px;
+    font-weight: 600;
+    font-size: 12px;
 }
 
-/* Иконка часов */
-.iconClock {
-  stroke: #000000;
-  fill: none;
-  stroke-width: 1.5px;
+.clock {
+    width: 24px;
+    height: 24px;
 }
 
 .desBox {
-  height: 83px;
-  font-weight: 400;
-  font-size: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+    height: 83px;
+    font-weight: 400;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
 }
 
 .desBox p {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 155%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 155%;
 }
 
-/* Оболочка для кнопок внизу */
 .btnBox {
-  height: 40px;
-  display: flex;
-  gap: 8px;
-  width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    gap: 2.7%;
 }
 
-/* Кнопка подробнее */
 .moreBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  height: 40px;
-  background-color: transparent;
-  border: 1px solid #000000;
-  border-radius: 8px;
-  text-decoration: none;
-  color: #000000;
-  cursor: pointer;
-  font-weight: 600;
+    display: block;
+    width: 83%;
+    height: 40px;
+    background-color: inherit;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #000000;
+    cursor: pointer;
+    text-align: center;
+    align-content: center;
+    transition: background-color 0.3s;
 }
 
 .moreBtnFull {
-  width: 100% !important;
+    display: block;
+    width: 100% !important;
 }
 
-/* Базовые стили для кнопок-иконок */
 .saveBtn,
 .removeBtn {
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+    color: #000000;
+    transition: background-color 0.3s;
+    cursor: pointer;
 }
 
-/* Общий класс для управления внутренними SVG линиями */
-.iconAction {
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.5px;
+.moreBtn:hover,
+.saveBtn:hover {
+    background-color: #9B6C43;
+    border-color: #9B6C43;
+    color: #ffffff;
 }
 
-/* --- ВАРИАНТ 1: Обычная кнопка Сейв (Черный контур) --- */
+.moreBtn:active,
+.saveBtn:active {
+    background-color: #9B6C43;
+    border-color: #ffffff;
+    color: #ffffff;
+    box-shadow:
+        0px 0px 0px 6px #4E46B41F,
+        0px 0px 0px 2px #FFFFFF;
+}
+
 .saveBtn {
-  background-color: transparent;
-  border: 1px solid #000000;
-  color: #000000;
+    width: 14%;
+    background-color: inherit;
+    border: 1px solid #000000;
+    border-radius: 8px;
 }
 
-/* --- ВАРИАНТ 2: Активный Сейв (Коричневый фон, иконка залита коричневым, контур белый) --- */
+.icon {
+    width: 24px;
+    height: 24px;
+    display: block;
+    color: currentColor;
+}
+
+.removeBtn:hover,
+.removeBtn:active,
+.saveBtn.active:active {
+    background-color: #C80000;
+    border-color: #C80000;
+}
+
 .saveBtn.active {
-  background-color: #9b6c43;
-  border: 1px solid #9b6c43;
-  color: #ffffff;
+    background-color: #9B6C43;
+    border: none !important;
+    color: #FFFFFF !important;
 }
 
-.saveBtn.active .iconAction {
-  fill: #9b6c43;
+.saveBtn.active:hover {
+    background-color: #b9916d;
 }
 
-/* --- ВАРИАНТ 3: Красная мусорка --- */
-.removeBtn {
-  background-color: #c80000;
-  border: 1px solid #c80000;
-  color: #ffffff;
-}
 
-/* --- МЕДИА ЗАПРОСЫ ДЕВОЧКИ --- */
 @media screen and (min-width: 393px) {
-  .card {
-    width: 361px;
-    height: 483px;
-    padding: 12px;
-  }
+    .card {
+        width: 361px;
+        height: 483px;
+        padding: 12px;
+    }
 
-  .img {
-    width: 337px;
-    height: 230px;
-  }
+    .img {
+        width: 337px;
+        height: 230px;
+    }
 
-  .header {
-    width: 337px;
-    height: 58px;
-    gap: 8px;
-  }
+    .header {
+        width: 337px;
+        height: 58px;
+        gap: 8px;
+    }
 
-  .title {
-    width: 276px;
-  }
+    .title {
+        width: 276px;
+    }
+
+    .btnBox {
+        gap: 8px;
+    }
+
+    .moreBtn {
+        width: 289px;
+    }
+
+    .saveBtn {
+        width: 40px;
+    }
 }
 
 @media screen and (min-width: 768px) {
-  .card {
-    width: 339px;
-  }
+    .card {
+        width: 339px;
+    }
 
-  .img {
-    width: 315px;
-  }
+    .img {
+        width: 315px;
+    }
 
-  .header {
-    width: 315px;
-  }
+    .header {
+        width: 315px;
+    }
 
-  .title {
-    width: 253px;
-  }
+    .title {
+        width: 253px;
+    }
+
+    .moreBtn {
+        width: 267px;
+    }
 }
 
 @media screen and (min-width: 1440px) {
-  .card {
-    width: 288px;
-    height: 431px;
-  }
+    .card {
+        width: 288px;
+        height: 431px;
+    }
 
-  .img {
-    width: 264px;
-    height: 178px;
-  }
+    .img {
+        width: 264px;
+        height: 178px;
+    }
 
-  .header {
-    width: 264px;
-  }
+    .header {
+        width: 264px;
+    }
 
-  .title {
-    width: 203px;
-  }
+    .title {
+        width: 203px;
+    }
+
+    .btnBox {
+        width: 264px;
+    }
+
+    .moreBtn {
+        width: 216px;
+    }
+
+    .saveBtn {
+        cursor: pointer;
+    }
 }
