@@ -74,6 +74,7 @@ const PasswordInput = ({
 
 const RegistrationForm = () => {
   const router = useRouter();
+  // Отримуємо метод із стора
   const setUser = useAuthStore(state => state.setUser);
   const [isLoading, setIsLoading] = useState(false);
   const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null);
