@@ -18,15 +18,20 @@ const AuthNavigation = ({ onLinkClick }: AuthNavigationProps) => {
   const clearIsAuthenticated = useAuthStore(state => state.clearIsAuthenticated);
 
   const handleLogout = async () => {
+    // Викликаємо logout
     await logout();
+    // Чистимо глобальний стан
     clearIsAuthenticated();
+    // Виконуємо навігацію на сторінку авторизації
     router.push('/auth/login');
   };
 
+  // Якщо є сесія - відображаємо кнопку Logout та інформацію про користувача
+  // інакше - лінки для авторизації
   return isAuthenticated ? (
     <>
       <li className={css.navigationItem}>
-        <Link onClick={onLinkClick} className={css.navigationLink} href="/profile">
+        <Link onClick={onLinkClick} className={css.navigationLink} href="/profile/own">
           My Profile
         </Link>
       </li>

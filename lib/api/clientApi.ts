@@ -5,6 +5,67 @@
 import { nextServer } from './api';
 import { isAxiosError } from 'axios';
 
+// ==========================================================================================
+// register : реєстрація користувача
+// ==========================================================================================
+// Структура запиту :
+
+// Імпорт інтерфейсів
+import type { User } from '@/types/user';
+
+export type RegisterRequest = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export const register = async (data: RegisterRequest) => {
+  const res = await nextServer.post<User>('/auth/register', data);
+  return res.data;
+};
+
+// ==========================================================================================
+// login : Вхід користувача в систему (логін)
+// ==========================================================================================
+// Структура запиту :
+
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export const login = async (data: LoginRequest) => {
+  const res = await nextServer.post<User>('/auth/login', data);
+  return res.data;
+};
+
+// ==========================================================================================
+// logout : Вихід користувача з системи (логаут)
+// ==========================================================================================
+export const logout = async (): Promise<void> => {
+  await nextServer.post('/auth/logout');
+};
+
+// ==========================================================================================
+// getMe : Отримання об’єкта користувача (профілю) для авторизованого користувача
+// ==========================================================================================
+export const getMe = async () => {
+  const res = await nextServer.get<User>('/auth/me');
+  return res.data;
+};
+
+// ==========================================================================================
+// checkSession : Перевірка сесії користувача (чи він авторизований)
+// ==========================================================================================
+type CheckSessionRequest = {
+  success: boolean;
+};
+
+export const checkSession = async () => {
+  const res = await nextServer.get<CheckSessionRequest>('/auth/session');
+  return res.data.success;
+};
+
 // *********************************************************************************
 // Робота з категоріями
 // *********************************************************************************
@@ -142,67 +203,6 @@ export async function getRecipeById(recipeId: string): Promise<GetRecipeHttpResp
   // Повертаємо значення data відповіді
   return response.data;
 }
-
-// ==========================================================================================
-// register : реєстрація користувача
-// ==========================================================================================
-// Структура запиту :
-
-// Імпорт інтерфейсів
-import type { User } from '@/types/user';
-
-export type RegisterRequest = {
-  name: string;
-  email: string;
-  password: string;
-};
-
-export const register = async (data: RegisterRequest) => {
-  const res = await nextServer.post<User>('/auth/register', data);
-  return res.data;
-};
-
-// ==========================================================================================
-// login : Вхід користувача в систему (логін)
-// ==========================================================================================
-// Структура запиту :
-
-export type LoginRequest = {
-  email: string;
-  password: string;
-};
-
-export const login = async (data: LoginRequest) => {
-  const res = await nextServer.post<User>('/auth/login', data);
-  return res.data;
-};
-
-// ==========================================================================================
-// getMe : Отримання об’єкта користувача (профілю) для авторизованого користувача
-// ==========================================================================================
-export const getMe = async () => {
-  const res = await nextServer.get<User>('/auth/me');
-  return res.data;
-};
-
-// ==========================================================================================
-// logout : Вихід користувача з системи (логаут)
-// ==========================================================================================
-export const logout = async (): Promise<void> => {
-  await nextServer.post('/auth/logout');
-};
-
-// ==========================================================================================
-// checkSession : Перевірка сесії користувача (чи він авторизований)
-// ==========================================================================================
-type CheckSessionRequest = {
-  success: boolean;
-};
-
-export const checkSession = async () => {
-  const res = await nextServer.get<CheckSessionRequest>('/auth/session');
-  return res.data.success;
-};
 
 // ==========================================================================================
 // getMyRecipes : власні рецепти користувача (приватний маршрут /api/recipes/my)
