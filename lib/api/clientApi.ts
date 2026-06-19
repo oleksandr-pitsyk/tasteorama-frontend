@@ -20,9 +20,10 @@ export type RegisterRequest = {
   password: string;
 };
 
-export const register = async (data: RegisterRequest) => {
-  const res = await nextServer.post<User>('/auth/register', data);
-  return res.data;
+export const register = async (data: RegisterRequest): Promise<User> => {
+  // Бекенд повертає користувача загорнутим у { user } (або { data })
+  const res = await nextServer.post<{ user?: User; data?: User }>('/auth/register', data);
+  return (res.data.user ?? res.data.data) as User;
 };
 
 // ==========================================================================================
@@ -35,9 +36,10 @@ export type LoginRequest = {
   password: string;
 };
 
-export const login = async (data: LoginRequest) => {
-  const res = await nextServer.post<User>('/auth/login', data);
-  return res.data;
+export const login = async (data: LoginRequest): Promise<User> => {
+  // Бекенд повертає користувача загорнутим у { user } (або { data })
+  const res = await nextServer.post<{ user?: User; data?: User }>('/auth/login', data);
+  return (res.data.user ?? res.data.data) as User;
 };
 
 // ==========================================================================================
@@ -52,9 +54,10 @@ export const logout = async (): Promise<void> => {
 // getMe : Отримання об’єкта користувача (профілю) для авторизованого користувача
 // ==========================================================================================
 
-export const getMe = async () => {
-  const res = await nextServer.get<User>('/auth/me');
-  return res.data;
+export const getMe = async (): Promise<User> => {
+  // Бекенд повертає користувача загорнутим у { user } (або { data })
+  const res = await nextServer.get<{ user?: User; data?: User }>('/auth/me');
+  return (res.data.user ?? res.data.data) as User;
 };
 
 // ==========================================================================================

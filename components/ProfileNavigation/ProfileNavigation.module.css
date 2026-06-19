@@ -1,6 +1,8 @@
+/* Base (only mobile version here, tablet and desktop are not changing) */
 .nav {
   display: flex;
   gap: 38px;
+  margin-bottom: 16px;
 }
 
 .tab {
@@ -21,3 +23,4 @@
   color: var(--foreground);
   border-bottom-color: var(--foreground);
 }
+

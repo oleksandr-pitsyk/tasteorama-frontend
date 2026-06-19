@@ -1,0 +1,29 @@
+/* Base */
+.profile_container {
+    padding-top: 48px;
+    padding-left: 16px;
+}
+
+.profile_header {
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 40px;
+    color: var(--black);
+    padding-bottom: 16px;
+}
+
+/* Tablet (>= 768px) */
+@media (min-width: 768px) {
+    .profile_container {
+        padding-left: 31px;
+    }
+
+}
+
+/* Desktop (>= 1440px) */
+@media (min-width: 1440px) {
+    .profile_container {
+        padding-top: 46px;
+        padding-left: 108px;
+    }
+}

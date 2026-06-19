@@ -27,6 +27,11 @@
   width: 100%;
   box-sizing: border-box;
 }
+/* Counter */
+
+.count {
+  padding-bottom: 29px;
+}
 
 /* Картка */
 .item {

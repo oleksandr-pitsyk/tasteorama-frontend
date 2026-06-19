@@ -15,9 +15,16 @@ import AppError from '@/app/error';
 import { resetSearchAndFilters } from '@/components/Filters/helpers';
 import { useRecipesList } from '@/hooks/useRecipesList';
 
-const RecipesList = () => {
+type RecipesListProps = {
+  // Переданий проп → режим профілю (власні / улюблені); без нього → головна сторінка
+  recipeType?: 'own' | 'favorites';
+};
+
+const RecipesList = ({ recipeType }: RecipesListProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const isProfileMode = recipeType === 'own' || recipeType === 'favorites';
 
   const handleResetSearchAndFilters = () => {
     resetSearchAndFilters(searchParams, router);
@@ -25,6 +32,7 @@ const RecipesList = () => {
 
   const {
     recipes,
+    totalItems,
     isLoading,
     isError,
     error,
@@ -33,13 +41,14 @@ const RecipesList = () => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useRecipesList();
+  } = useRecipesList(recipeType);
 
   useEffect(() => {
-    if (isNotFound) {
+    // Тост "не знайдено" лише на головній (пошук), не в профілі
+    if (isNotFound && !isProfileMode) {
       toast.error('No recipes found');
     }
-  }, [isNotFound]);
+  }, [isNotFound, isProfileMode]);
 
   if (isLoading) {
     return <Loading />;
@@ -54,8 +63,22 @@ const RecipesList = () => {
     );
   }
 
+  // Порожній список у профілі — нормальна ситуація → дружнє повідомлення
+  if (isProfileMode && recipes.length === 0) {
+    return (
+      <p className={css.empty}>
+        {recipeType === 'favorites'
+          ? "You don't have any saved recipes yet."
+          : "You haven't added any recipes yet."}
+      </p>
+    );
+  }
+
   return (
     <div className={css.wrapper}>
+      {/* Лічильник "N recipes" — лише в профілі */}
+      {isProfileMode && <p className={css.count}>{totalItems} recipes</p>}
+
       {isNotFound ? (
         <NoSearchResults onReset={handleResetSearchAndFilters} />
       ) : (
@@ -69,10 +92,7 @@ const RecipesList = () => {
           </ul>
 
           {hasNextPage && (
-            <LoadMoreBtn
-              onClick={fetchNextPage}
-              isLoading={isFetchingNextPage}
-            />
+            <LoadMoreBtn onClick={fetchNextPage} isLoading={isFetchingNextPage} />
           )}
         </>
       )}
