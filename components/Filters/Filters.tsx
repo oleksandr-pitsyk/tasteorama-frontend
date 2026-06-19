@@ -24,16 +24,14 @@ const Filters: FC<FiltersProps> = ({ totalItems }) => {
   const { data: categories = [], isLoading: isCategoriesLoading } = useQuery<Category[]>({
     queryKey: ['categories'],
     queryFn: async () => {
-      const response = await getCategories();
-      return response.data;
+      return await getCategories()
     },
   });
 
   const { data: ingredients = [], isLoading: isIngredientsLoading } = useQuery<Ingredient[]>({
     queryKey: ['ingredients'],
     queryFn: async () => {
-      const response = await getIngredients();
-      return response.data;
+      return await getIngredients()
     },
   });
 

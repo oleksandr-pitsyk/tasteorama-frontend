@@ -24,7 +24,6 @@ export function useRecipesList() {
       return undefined;
     },
   });
-
   const recipes = query.data?.pages.flatMap(page => page.data) ?? [];
   const totalItems = query.data?.pages[0]?.totalItems ?? 0;
 
