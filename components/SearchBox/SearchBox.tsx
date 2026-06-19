@@ -4,12 +4,13 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import css from './SearchBox.module.css';
-
+console.log('SearchBox mounted');
 export default function SearchBox() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [searchText, setSearchText] = useState(searchParams.get('search') ?? '');
+  const [searchText, setSearchText] = useState('');
+
   const handleSubmit = () => {
     const text = searchText.trim();
 
@@ -25,6 +26,7 @@ export default function SearchBox() {
       return;
     }
 
+    setSearchText('');
     router.replace(`?${params.toString()}`);
   };
 

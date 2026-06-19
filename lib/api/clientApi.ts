@@ -81,15 +81,19 @@ export const checkSession = async () => {
 // ==========================================================================================
 // Структура запиту :
 
+interface getCategoriesResponse {
+  categories: Category[];
+}
+
 export async function getCategories(): Promise<Category[]> {
   // Виконуємо HTTP-запит
-  const response = await nextServer.get<Category[]>('/categories');
+  const response = await nextServer.get<getCategoriesResponse>('/categories');
   console.log('Fetch - GET getCategories :');
   console.log('response', response);
   console.log('response.data', response.data);
-
+console.log(response.data);
   // Повертаємо значення відповіді
-  return response.data;
+  return response.data.categories;
 }
 
 // *********************************************************************************
@@ -105,15 +109,19 @@ export async function getCategories(): Promise<Category[]> {
 // ==========================================================================================
 // Структура запиту :
 
+interface getIngredientsResponse {
+  ingredients: Ingredient[];
+}
+
 export async function getIngredients(): Promise<Ingredient[]> {
   // Виконуємо HTTP-запит
-  const response = await nextServer.get<Ingredient[]>('/ingredients');
+  const response = await nextServer.get<getIngredientsResponse>('/ingredients');
   console.log('Fetch - GET getIngredients :');
   console.log('response', response);
   console.log('response.data', response.data);
 
   // Повертаємо значення data відповіді
-  return response.data;
+  return response.data.ingredients;
 }
 
 // *********************************************************************************

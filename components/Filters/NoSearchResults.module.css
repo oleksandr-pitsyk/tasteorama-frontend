@@ -5,7 +5,7 @@
   max-width: 361px;
   min-height: 207px;
   box-sizing: border-box;
-  background: #faf3e0;
+  background: var(--light-beige);
   padding-left: 24px;
   padding-right: 24px;
   padding-top: 40px;
@@ -22,7 +22,7 @@
   font-weight: 600;
   font-size: 24px;
   text-align: center;
-  color: black;
+  color: var(--black);
   margin-bottom: 15px;
 }
 
@@ -38,7 +38,7 @@
   height: 54px;
   padding: 16px;
 
-  border: 1px solid black;
+  border: 1px solid var(--black);
   border-radius: 8px;
 
   background-color: transparent;

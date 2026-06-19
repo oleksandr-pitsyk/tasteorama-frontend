@@ -1,8 +1,6 @@
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-
 export const resetSearchAndFilters = (
   searchParams: URLSearchParams,
-  router: AppRouterInstance
+  router:  { replace: (url: string) => void }
 ) => {
   const params = new URLSearchParams(searchParams);
 

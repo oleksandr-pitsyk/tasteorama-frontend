@@ -24,6 +24,9 @@ const FiltersControls = ({
   handleIngredientChange,
   handleResetSearchAndFilters,
 }: FiltersControlsProps) => {
+  console.log('categories', categories);
+console.log('isArray', Array.isArray(categories));
+console.log('typeof', typeof categories);
   return (
     <div className={css.controls}>
       <div className={css.selectGroup}>

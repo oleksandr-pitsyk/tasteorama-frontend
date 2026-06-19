@@ -9,7 +9,7 @@ export default function SearchResultsTitle() {
 
 
   return (
-  <h2 className={css.h2}>
+  <h2 className={`${css.h2} container`}>
     {search ? `Search Results for "${search}"` : 'Recipes'}
   </h2>
 );
