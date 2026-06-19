@@ -5,13 +5,14 @@
 import { nextServer } from './api';
 import { isAxiosError } from 'axios';
 
+// Імпорт інтерфейсів
+import type { User } from '@/types/user';
+import type { Category } from '@/types/category';
+import type { Ingredient } from '@/types/ingredient';
 // ==========================================================================================
 // register : реєстрація користувача
 // ==========================================================================================
 // Структура запиту :
-
-// Імпорт інтерфейсів
-import type { User } from '@/types/user';
 
 export type RegisterRequest = {
   name: string;
@@ -43,18 +44,16 @@ export const login = async (data: LoginRequest) => {
 // logout : Вихід користувача з системи (логаут)
 // ==========================================================================================
 export const logout = async (): Promise<void> => {
-  await nextServer.post('/auth/logout');
+  const res = await nextServer.post('/auth/logout');
+  return res.data;
 };
 
 // ==========================================================================================
 // getMe : Отримання об’єкта користувача (профілю) для авторизованого користувача
 // ==========================================================================================
-export type GetMeRequest = {
-  data: User;
-};
 
 export const getMe = async () => {
-  const res = await nextServer.get<GetMeRequest>('/auth/me');
+  const res = await nextServer.get<User>('/auth/me');
   return res.data;
 };
 
@@ -73,48 +72,44 @@ export const checkSession = async () => {
 // *********************************************************************************
 // Робота з категоріями
 // *********************************************************************************
-// Імпорт інтерфейсів
-import type { Category } from '@/types/category';
-
 // Типізація відповіді Get-запиту від Axios - згідно структури бекенда :
-interface GetCategoriesHttpResponse {
-  data: Category[]; // Відповідь містить масив категорій у властивості data
-}
+// interface GetCategoriesHttpResponse {
+//   data: Category[]; // Відповідь містить масив категорій у властивості data
+// }
 // ==========================================================================================
 // getCategories : виконує запит для отримання колекції категорій із сервера.
 // ==========================================================================================
 // Структура запиту :
 
-export async function getCategories(): Promise<GetCategoriesHttpResponse> {
+export async function getCategories(): Promise<Category[]> {
   // Виконуємо HTTP-запит
-  const response = await nextServer.get<GetCategoriesHttpResponse>('/categories');
-  console.log('Fetch - GET :');
+  const response = await nextServer.get<Category[]>('/categories');
+  console.log('Fetch - GET getCategories :');
+  console.log('response', response);
   console.log('response.data', response.data);
-  // console.log('totalPages', response.data.totalPages);
 
-  // Повертаємо значення notes та totalPages відповіді
+  // Повертаємо значення відповіді
   return response.data;
 }
 
 // *********************************************************************************
 // Робота з інгредієнтами
 // *********************************************************************************
-// Імпорт інтерфейсів
-import type { Ingredient } from '@/types/ingredient';
 
 // Типізація відповіді Get-запиту від Axios - згідно структури бекенда :
-interface GetIngredientsHttpResponse {
-  data: Ingredient[]; // Відповідь містить масив категорій у властивості data
-}
+// interface GetCategoriesHttpResponse {
+//   data: Ingredient[]; // Відповідь містить масив категорій у властивості data
+// }
 // ==========================================================================================
 // getIngredients : виконує запит для отримання колекції інгредієнтів із сервера.
 // ==========================================================================================
 // Структура запиту :
 
-export async function getIngredients(): Promise<GetIngredientsHttpResponse> {
+export async function getIngredients(): Promise<Ingredient[]> {
   // Виконуємо HTTP-запит
-  const response = await nextServer.get<GetIngredientsHttpResponse>('/ingredients');
-  console.log('Fetch - GET :');
+  const response = await nextServer.get<Ingredient[]>('/ingredients');
+  console.log('Fetch - GET getIngredients :');
+  console.log('response', response);
   console.log('response.data', response.data);
 
   // Повертаємо значення data відповіді

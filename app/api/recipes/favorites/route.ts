@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const cookieStore = await cookies();
     const { searchParams } = request.nextUrl;
 
-    const res = await api.get('/api/recipes/favorites', {
+    const res = await api.get('/recipes/favorites', {
       params: {
         page: searchParams.get('page') ?? 1,
         perPage: searchParams.get('perPage') ?? 12,

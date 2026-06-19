@@ -37,14 +37,10 @@ export const checkSessionServer = async () => {
 // getMe : Отримання об’єкта користувача (профілю) для авторизованого користувача
 // ==========================================================================================
 
-export type GetMeRequestServer = {
-  data: User;
-};
-
 export const getMeServer = async () => {
   // Дістаємо поточні cookie
   const cookieStore = await cookies();
-  const res = await nextServer.get<GetMeRequestServer>('/auth/me', {
+  const res = await nextServer.get<User>('/auth/me', {
     headers: {
       // передаємо кукі далі
       Cookie: cookieStore.toString(),

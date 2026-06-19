@@ -16,7 +16,7 @@ import { logErrorResponse } from '../_utils/utils';
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const { data } = await api(`/api/recipes?${searchParams.toString()}`);
+    const { data } = await api(`/recipes?${searchParams.toString()}`);
 
     // Повертаємо те, що відповів бекенд через метод json
     return NextResponse.json(data);
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
     if (typeof instructions === 'string') formData.append('instructions', instructions);
     if (thumb instanceof File) formData.append('image', thumb, thumb.name);
 
-    const res = await api.post('/api/recipes', formData, {
+    const res = await api.post('/recipes', formData, {
       headers: {
         Cookie: cookieStore.toString(),
       },

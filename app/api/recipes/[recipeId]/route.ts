@@ -14,7 +14,7 @@ export async function GET(request: Request, { params }: Props) {
   try {
     // const cookieStore = await cookies();
     const { recipeId } = await params;
-    const res = await api(`/api/recipes/${recipeId}`);
+    const res = await api(`/recipes/${recipeId}`);
 
     // const res = await api(`api/recipes/${recipeId}`, {
     //   headers: {

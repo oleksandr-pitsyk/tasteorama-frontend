@@ -66,7 +66,7 @@ const Filters: FC<FiltersProps> = ({ totalItems }) => {
       });
 
       if (value && ingredientParams) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
     },
     [updateURL, ingredientParams]
@@ -79,81 +79,74 @@ const Filters: FC<FiltersProps> = ({ totalItems }) => {
       });
 
       if (categoryParams && value) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
     },
     [updateURL, categoryParams]
   );
 
- const handleResetSearchAndFilters = () => {
-  resetSearchAndFilters(new URLSearchParams(searchParams), router);
-};
+  const handleResetSearchAndFilters = () => {
+    resetSearchAndFilters(new URLSearchParams(searchParams), router);
+  };
 
   if (isCategoriesLoading || isIngredientsLoading) {
     return <Loading />;
   }
 
   return (
-  <section className={css.wrapper}>
-    <div className={css.mobileHeader}>
-      <div className={css.topRow}>
-        <p className={css.counter}>{totalItems} recipes</p>
+    <section className={css.wrapper}>
+      <div className={css.mobileHeader}>
+        <div className={css.topRow}>
+          <p className={css.counter}>{totalItems} recipes</p>
 
-        {!isOpen && (
-          <button
-            className={css.filtersButton}
-            onClick={() => setIsOpen(true)}
-          >
-            <svg width={20} height={20}>
-              <use href="/sprite.svg#filter"></use>
-            </svg>
-            Filters
-          </button>
+          {!isOpen && (
+            <button className={css.filtersButton} onClick={() => setIsOpen(true)}>
+              <svg width={20} height={20}>
+                <use href="/sprite.svg#filter"></use>
+              </svg>
+              Filters
+            </button>
+          )}
+        </div>
+
+        {isOpen && (
+          <div className={css.mobileFilters}>
+            <div className={css.mobileFiltersHeader}>
+              <p className={css.textFiltersButton}>Filters</p>
+
+              <button type="button" className={css.closeButton} onClick={() => setIsOpen(false)}>
+                ✕
+              </button>
+            </div>
+
+            <FiltersControls
+              categoryParams={categoryParams}
+              ingredientParams={ingredientParams}
+              categories={categories}
+              ingredients={ingredients}
+              handleCategoryChange={handleCategoryChange}
+              handleIngredientChange={handleIngredientChange}
+              handleResetSearchAndFilters={handleResetSearchAndFilters}
+            />
+          </div>
         )}
       </div>
 
-      {isOpen && (
-        <div className={css.mobileFilters}>
-          <div className={css.mobileFiltersHeader}>
-            <p className={css.textFiltersButton}>Filters</p>
+      <div className={css.desktopHeader}>
+        <p className={css.counter}>{totalItems} recipes</p>
 
-            <button
-              type="button"
-              className={css.closeButton}
-              onClick={() => setIsOpen(false)}
-            >
-              ✕
-            </button>
-          </div>
-
-          <FiltersControls
-            categoryParams={categoryParams}
-            ingredientParams={ingredientParams}
-            categories={categories}
-            ingredients={ingredients}
-            handleCategoryChange={handleCategoryChange}
-            handleIngredientChange={handleIngredientChange}
-            handleResetSearchAndFilters={handleResetSearchAndFilters}
-          />
-        </div>
-      )}
-    </div>
-
-    <div className={css.desktopHeader}>
-      <p className={css.counter}>{totalItems} recipes</p>
-
-      <FiltersControls
-        categoryParams={categoryParams}
-        ingredientParams={ingredientParams}
-        categories={categories}
-        ingredients={ingredients}
-        handleCategoryChange={handleCategoryChange}
-        handleIngredientChange={handleIngredientChange}
-        handleResetSearchAndFilters={handleResetSearchAndFilters}
-      />
-    </div>
-  </section>
-);
+        <FiltersControls
+          categoryParams={categoryParams}
+          ingredientParams={ingredientParams}
+          categories={categories}
+          ingredients={ingredients}
+          handleCategoryChange={handleCategoryChange}
+          handleIngredientChange={handleIngredientChange}
+          handleResetSearchAndFilters={handleResetSearchAndFilters}
+        />
+      </div>
+    </section>
+  );
 };
 
 export default Filters;

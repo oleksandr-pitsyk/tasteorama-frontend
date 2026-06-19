@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { login } from '@/lib/api/clientApi';

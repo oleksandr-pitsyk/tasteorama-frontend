@@ -18,6 +18,7 @@ type Props = {
 };
 
 const AuthProvider = ({ children }: Props) => {
+  // const user = useAuthStore(state => state.user);
   const setUser = useAuthStore(state => state.setUser);
   const clearIsAuthenticated = useAuthStore(state => state.clearIsAuthenticated);
 
@@ -28,9 +29,9 @@ const AuthProvider = ({ children }: Props) => {
 
       if (isAuthenticated) {
         // Якщо сесія валідна — отримуємо користувача
-        const res = await getMe();
-        const user = res.data;
-        if (user) setUser(user);
+        const userCurrent = await getMe();
+        console.log('AuthProvider - userCurrent', userCurrent);
+        if (userCurrent) setUser(userCurrent);
       } else {
         // Якщо сесія невалідна — чистимо стан
         clearIsAuthenticated();
