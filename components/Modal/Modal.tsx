@@ -14,7 +14,7 @@
 // зазвичай безпосередньо в <body>, іноді в інший блок в корні за id
 import { createPortal } from 'react-dom';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // Імпорт інтерфейса для одного фільму
 // import type { Note } from '@/types/note';
@@ -66,6 +66,22 @@ export default function Modal({ children, onClose }: ModalProps) {
       document.documentElement.style.overflow = '';
     };
   }, [onClose]);
+
+  // ================================================
+  // mounted = false на сервері і при першому рендері в браузері
+  // mounted = true лише ПІСЛЯ того, як компонент реально з'явився в DOM
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Поки компонент не змонтований — нічого не рендеримо.
+  // Це і вирішує проблему: на сервері document.body просто не викликається.
+  if (!mounted) {
+    return null;
+  }
+  // ===============================================
 
   // Створення розмітки компонента в кінці елемента document.body
   return createPortal(
