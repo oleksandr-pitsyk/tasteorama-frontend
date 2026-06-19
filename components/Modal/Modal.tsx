@@ -71,11 +71,11 @@ export default function Modal({ children, onClose }: ModalProps) {
   return createPortal(
     <div className={css.backdrop} onClick={handleBackdropClick} role="dialog" aria-modal="true">
       <div className={css.modal}>
-        <button className={css.closeBtn} onClick={onClose} aria-label="Close modal">
+        {/* <button className={css.closeBtn} onClick={onClose} aria-label="Close modal">
           <svg width={24} height={24} className={css.closeIcon}>
             <use href="/sprite.svg#close-button" />
           </svg>
-        </button>
+        </button> */}
         {children}
       </div>
     </div>,

@@ -25,11 +25,15 @@ import { parse } from 'cookie';
 import { checkSessionServer } from './lib/api/serverApi';
 
 // масив приватних маршрутів
-const privateRoutes = ['/profile/own', '/profile/favorites', '/add-recipe', '/auth/logout'];
-// масив публічних маршрутів;
-
-// додаємо ці маршрути в matcher.
-const publicRoutes = ['/auth/login', '/auth/register', '/recipes/*'];
+const privateRoutes = [
+  '/logout',
+  '/profile/own',
+  '/profile/favorites',
+  '/add-recipe',
+  '/recipes/:path*',
+];
+// масив публічних маршрутів
+const publicRoutes = ['/auth/login', '/auth/register', '/recipes'];
 
 export async function proxy(request: NextRequest) {
   // Отримання токенів із cookie
@@ -45,7 +49,6 @@ export async function proxy(request: NextRequest) {
 
   const isPrivateRoute = privateRoutes.some(route => pathname.startsWith(route));
 
-  // Якщо це приватний маршрут :
   if (!accessToken) {
     if (refreshToken) {
       // Якщо accessToken відсутній, але є refreshToken — потрібно перевірити сесію навіть для публічного маршруту,
@@ -115,10 +118,11 @@ export const config = {
   matcher: [
     '/auth/login',
     '/auth/register',
-    '/auth/logout',
+    '/logout',
     '/profile/own',
     '/profile/favorites',
     '/add-recipe',
+    '/recipes',
     '/recipes/:path*',
   ],
 };

@@ -16,7 +16,7 @@ import { logErrorResponse } from '../_utils/utils';
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const { data } = await api(`api/recipes?${searchParams.toString()}`);
+    const { data } = await api(`/api/recipes?${searchParams.toString()}`);
 
     // Повертаємо те, що відповів бекенд через метод json
     return NextResponse.json(data);
@@ -40,21 +40,21 @@ export async function POST(request: NextRequest) {
     const formData = new FormData();
 
     const title = incomingFormData.get('title');
-    const category = incomingFormData.get('category');
-    const area = incomingFormData.get('area');
-    const instructions = incomingFormData.get('instructions');
     const description = incomingFormData.get('description');
     const time = incomingFormData.get('time');
+    const calories = incomingFormData.get('calories');
+    const category = incomingFormData.get('category');
     const ingredients = incomingFormData.get('ingredients');
+    const instructions = incomingFormData.get('instructions');
     const thumb = incomingFormData.get('thumb');
 
     if (typeof title === 'string') formData.append('title', title);
-    if (typeof category === 'string') formData.append('category', category);
-    if (typeof area === 'string') formData.append('area', area);
-    if (typeof instructions === 'string') formData.append('instructions', instructions);
     if (typeof description === 'string') formData.append('description', description);
     if (typeof time === 'string') formData.append('time', time);
+    if (typeof calories === 'string') formData.append('calories', calories);
+    if (typeof category === 'string') formData.append('category', category);
     if (typeof ingredients === 'string') formData.append('ingredients', ingredients);
+    if (typeof instructions === 'string') formData.append('instructions', instructions);
     if (thumb instanceof File) formData.append('image', thumb, thumb.name);
 
     const res = await api.post('/api/recipes', formData, {

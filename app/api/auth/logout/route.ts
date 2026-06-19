@@ -27,7 +27,7 @@ export async function POST() {
     //   },
     // });
 
-    await api.post('api/auth/logout', {
+    await api.post('/api/auth/logout', null, {
       headers: {
         Cookie: cookieStore.toString(),
       },

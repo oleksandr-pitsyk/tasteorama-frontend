@@ -19,6 +19,8 @@ const AuthNavigation = ({ onLinkClick }: AuthNavigationProps) => {
   // const clearIsAuthenticated = useAuthStore(state => state.clearIsAuthenticated);
 
   const handleLogout = async () => {
+    // Виконуємо навігацію на модальне вікно  - app/@modal/logout
+    // там проходить вихід, чистка авторизації та перенаправлення на login
     router.push('/logout');
   };
 
