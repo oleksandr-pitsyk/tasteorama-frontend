@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { addRecipeToFavorites, removeRecipeFromFavorites } from '@/lib/api/favoritesApi';
+import { addRecipeToFavorites, removeRecipeFromFavorites } from '@/lib/api/clientApi';
 
 type UseFavoriteProps = {
   recipeId: string;

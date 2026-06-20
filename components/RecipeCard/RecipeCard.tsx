@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useAuthStore } from '@/lib/store/authStore';
 import SaveRecipeNotAuthorized from '@/components/SaveRecipeNotAuthorized/SaveRecipeNotAuthorized';
 
-import { useFavorite } from './useFavorite';
+import { useFavorite } from '../../hooks/useFavorite';
 import css from './RecipeCard.module.css';
 
 import type { Recipe } from '@/types/recipe';

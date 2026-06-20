@@ -255,3 +255,20 @@ export async function getFavoriteRecipes(
     throw error;
   }
 }
+
+
+// ==========================================================================================
+// addRecipeToFavorites : додати рецепт до улюблених рецептів користувача 
+// (приватний маршрут POST /api/recipes/favorites)
+// ==========================================================================================
+export const addRecipeToFavorites = async (recipeId: string): Promise<void> => {
+  await nextServer.post(`/recipes/favorites/${recipeId}`);
+};
+
+// ==========================================================================================
+// removeRecipeFromFavorites : видалити рецепт з улюблених рецептів користувача 
+// (приватний маршрут DELETE /api/recipes/favorites)
+// ==========================================================================================
+export const removeRecipeFromFavorites = async (recipeId: string): Promise<void> => {
+  await nextServer.delete(`/recipes/favorites/${recipeId}`);
+};
