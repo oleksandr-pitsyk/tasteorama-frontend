@@ -1,9 +1,6 @@
 :root {
   --load-btn-radius: 8px;
   --load-btn-padding: 16px;
-  --light-brown: #9b6c43;
-  --white: #ffffff;
-  --font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Wrapper — центрує кнопку */
@@ -26,10 +23,10 @@
   padding: 0 var(--load-btn-padding);
   border-radius: var(--load-btn-radius);
 
-  background: var(--light-brown);
-  color: var(--white);
+  background: var(--light-brown); /* з global.css */
+  color: var(--white); /* з global.css */
 
-  font-family: var(--font-montserrat);
+  font-family: var(--font-montserrat); /* глобальний шрифт */
   font-weight: 600;
   font-size: 18px;
 

@@ -1,7 +1,6 @@
 :root {
   --gap: 24px;
   --card-radius: 12px;
-  --font-family: Arial, Helvetica, sans-serif;
 
   --fade-duration: 0.45s;
   --fade-ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -28,8 +27,8 @@
   width: 100%;
   box-sizing: border-box;
 }
-/* Counter */
 
+/* Counter */
 .count {
   padding-bottom: 29px;
 }
@@ -61,8 +60,8 @@
 .empty {
   padding: 24px;
   text-align: center;
-  color: #666;
-  font-family: var(--font-family);
+  color: var(--gray); /* глобальна змінна */
+  font-family: var(--font-montserrat); /* глобальний шрифт */
   font-size: 16px;
 }
 
@@ -71,6 +70,7 @@
   .list {
     grid-template-columns: repeat(2, 1fr);
   }
+
   .item:hover .cardInner {
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
