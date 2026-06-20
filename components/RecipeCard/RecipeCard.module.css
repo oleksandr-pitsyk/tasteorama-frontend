@@ -1,8 +1,3 @@
-.card,
-.card * {
-  box-sizing: border-box;
-}
-
 .card {
   width: 100%;
   border-radius: 16px;
@@ -33,12 +28,10 @@
   line-height: 1.2;
   min-height: 48px;
   max-height: 48px;
-
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
-
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-word;
@@ -59,11 +52,6 @@
 .time {
   font-weight: 600;
   font-size: 12px;
-}
-
-.clock {
-  width: 24px;
-  height: 24px;
 }
 
 .desBox {
@@ -90,12 +78,12 @@
   height: 40px;
   display: flex;
   flex-direction: row;
-  gap: 2.7%;
+  gap: 8px;
 }
 
 .moreBtn {
   display: block;
-  width: 83%;
+  flex: 1;
   height: 40px;
   background-color: inherit;
   border: 1px solid #000000;
@@ -138,22 +126,16 @@
 }
 
 .saveBtn {
-  width: 14%;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
   background-color: inherit;
   border: 1px solid #000000;
   border-radius: 8px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 0;
-}
-.icon {
-  width: 24px;
-  height: 24px;
-  display: block;
-  color: currentColor;
 }
 
 .removeBtn:hover,
@@ -170,7 +152,28 @@
 }
 
 .saveBtn.active:hover {
-  background-color: #b9916d;
+  background-color: #c80000;
+  border-color: #c80000;
+  color: #ffffff !important;
+}
+
+.clockIcon,
+.saveIcon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  color: currentColor;
+}
+
+.loader {
+  width: 18px;
+  height: 18px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
 }
 
 @media screen and (min-width: 393px) {
@@ -194,18 +197,6 @@
   .title {
     width: 276px;
   }
-
-  .btnBox {
-    gap: 8px;
-  }
-
-  .moreBtn {
-    width: 289px;
-  }
-
-  .saveBtn {
-    width: 40px;
-  }
 }
 
 @media screen and (min-width: 768px) {
@@ -223,10 +214,6 @@
 
   .title {
     width: 253px;
-  }
-
-  .moreBtn {
-    width: 267px;
   }
 }
 
@@ -252,32 +239,6 @@
   .btnBox {
     width: 264px;
   }
-
-  .moreBtn {
-    width: 216px;
-  }
-
-  .saveBtn {
-    cursor: pointer;
-  }
-}
-.clockIcon,
-.saveIcon {
-  width: 24px;
-  height: 24px;
-  display: block;
-  fill: none;
-  stroke: currentColor;
-  color: black;
-}
-
-.loader {
-  width: 18px;
-  height: 18px;
-  border: 2px solid currentColor;
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
 }
 
 @keyframes spin {
