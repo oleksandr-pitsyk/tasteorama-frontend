@@ -1,8 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/lib/store/authStore';
+import { useFavorite } from '@/hooks/useFavorite';
+import { getIngredients } from '@/lib/api/clientApi';
 import { Recipe } from '@/types/recipe';
 import styles from './RecipeDetails.module.css';
 
@@ -12,28 +14,26 @@ type Props = {
 
 export default function RecipeDetails({ recipe }: Props) {
   const { isAuthenticated } = useAuthStore();
-  const [isSaved, setIsSaved] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { isFavorite, isLoading, toggleFavorite } = useFavorite({ recipeId: recipe._id });
 
-  const handleSaveToggle = async () => {
+  // Інгредієнти рецепту зберігаються як { id, measure } — id це ObjectId.
+  // Тягнемо колекцію інгредієнтів, щоб показати назву замість id.
+  const { data: ingredients = [] } = useQuery({
+    queryKey: ['ingredients'],
+    queryFn: getIngredients,
+  });
+
+  const getIngredientName = (id: string) =>
+    ingredients.find(ingredient => ingredient._id === id)?.name ?? id;
+
+  const handleSaveToggle = () => {
     if (!isAuthenticated) {
       // TODO: відкрити модалку
       return;
     }
-    setIsLoading(true);
-    try {
-      if (isSaved) {
-        await fetch(`/api/recipes/favorites/${recipe._id}`, { method: 'DELETE' });
-        setIsSaved(false);
-      } else {
-        await fetch(`/api/recipes/favorites/${recipe._id}`, { method: 'POST' });
-        setIsSaved(true);
-      }
-    } catch (error) {
-      console.error('Error toggling favorite:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    // Спільна логіка з картками рецептів: читає реальний статус зі стора,
+    // додає/видаляє з улюблених і не падає 400 на вже збереженому рецепті.
+    toggleFavorite();
   };
 
   const infoCard = (
@@ -56,7 +56,7 @@ export default function RecipeDetails({ recipe }: Props) {
 
   const saveButton = (
     <button
-      className={`${styles.saveBtn} ${isSaved ? styles.saveBtnActive : ''}`}
+      className={`${styles.saveBtn} ${isFavorite ? styles.saveBtnActive : ''}`}
       onClick={handleSaveToggle}
       disabled={isLoading}
     >
@@ -64,7 +64,7 @@ export default function RecipeDetails({ recipe }: Props) {
         'Loading...'
       ) : (
         <>
-          {isSaved ? 'Unsave' : 'Save'}
+          {isFavorite ? 'Unsave' : 'Save'}
           <svg width="20" height="20" className={styles.saveIcon}>
             <use href="/sprite.svg#save" />
           </svg>
@@ -112,7 +112,7 @@ export default function RecipeDetails({ recipe }: Props) {
             <ul className={styles.ingredientsList}>
               {recipe.ingredients.map((item, index) => (
                 <li key={index} className={styles.ingredientItem}>
-                  • {item.id} — {item.measure}
+                  • {getIngredientName(item.id)} — {item.measure}
                 </li>
               ))}
             </ul>
