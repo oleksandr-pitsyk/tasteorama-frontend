@@ -23,8 +23,15 @@ export type CollectionResponse<T> = {
 };
 
 export type CreateRecipeResponse = {
-  message: string;
-  data: {
-    _id: string;
+  message?: string;
+  data?: {
+    _id?: string;
+    id?: string;
+  };
+  _id?: string;
+  id?: string;
+  recipe?: {
+    _id?: string;
+    id?: string;
   };
 };

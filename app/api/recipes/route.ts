@@ -9,8 +9,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { isAxiosError } from 'axios';
+import { parse } from 'cookie';
 import { api, ApiError } from '../api';
 import { logErrorResponse } from '../_utils/utils';
+
+function applySetCookieToStore(
+  cookieStore: Awaited<ReturnType<typeof cookies>>,
+  setCookie?: string | string[]
+) {
+  if (!setCookie) {
+    return;
+  }
+
+  const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
+
+  for (const cookieStr of cookieArray) {
+    const parsed = parse(cookieStr);
+    const options = {
+      expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
+      path: parsed.Path,
+      maxAge: Number(parsed['Max-Age']),
+    };
+
+    if (parsed.sessionId) cookieStore.set('sessionId', parsed.sessionId, options);
+    if (parsed.accessToken) cookieStore.set('accessToken', parsed.accessToken, options);
+    if (parsed.refreshToken) cookieStore.set('refreshToken', parsed.refreshToken, options);
+  }
+}
 
 // GET /api/recipes — отримання списку рецептів з можливістю фільтрації
 export async function GET(request: Request) {
@@ -57,13 +82,35 @@ export async function POST(request: NextRequest) {
     if (typeof instructions === 'string') formData.append('instructions', instructions);
     if (thumb instanceof File) formData.append('image', thumb, thumb.name);
 
-    const res = await api.post('/recipes', formData, {
-      headers: {
-        Cookie: cookieStore.toString(),
-      },
-    });
+    try {
+      const res = await api.post('/recipes', formData, {
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+      });
 
-    return NextResponse.json(res.data, { status: res.status });
+      return NextResponse.json(res.data, { status: res.status });
+    } catch (error) {
+      if (isAxiosError(error) && error.response?.status === 401) {
+        const refreshRes = await api.get('/auth/refresh', {
+          headers: {
+            Cookie: cookieStore.toString(),
+          },
+        });
+
+        applySetCookieToStore(cookieStore, refreshRes.headers['set-cookie']);
+
+        const retryRes = await api.post('/recipes', formData, {
+          headers: {
+            Cookie: cookieStore.toString(),
+          },
+        });
+
+        return NextResponse.json(retryRes.data, { status: retryRes.status });
+      }
+
+      throw error;
+    }
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
