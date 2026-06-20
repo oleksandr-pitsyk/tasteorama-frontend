@@ -16,7 +16,6 @@ import { resetSearchAndFilters } from '@/components/Filters/helpers';
 import { useRecipesList } from '@/hooks/useRecipesList';
 
 type RecipesListProps = {
-  // Переданий проп → режим профілю (власні / улюблені); без нього → головна сторінка
   recipeType?: 'own' | 'favorites';
 };
 
@@ -44,7 +43,6 @@ const RecipesList = ({ recipeType }: RecipesListProps) => {
   } = useRecipesList(recipeType);
 
   useEffect(() => {
-    // Тост "не знайдено" лише на головній (пошук), не в профілі
     if (isNotFound && !isProfileMode) {
       toast.error('No recipes found');
     }
@@ -63,7 +61,6 @@ const RecipesList = ({ recipeType }: RecipesListProps) => {
     );
   }
 
-  // Порожній список у профілі — нормальна ситуація → дружнє повідомлення
   if (isProfileMode && recipes.length === 0) {
     return (
       <p className={css.empty}>
@@ -75,8 +72,7 @@ const RecipesList = ({ recipeType }: RecipesListProps) => {
   }
 
   return (
-    <div className={css.wrapper}>
-      {/* Лічильник "N recipes" — лише в профілі */}
+    <div className={`${css.wrapper} container`}>
       {isProfileMode && <p className={css.count}>{totalItems} recipes</p>}
 
       {isNotFound ? (
@@ -91,9 +87,7 @@ const RecipesList = ({ recipeType }: RecipesListProps) => {
             ))}
           </ul>
 
-          {hasNextPage && (
-            <LoadMoreBtn onClick={fetchNextPage} isLoading={isFetchingNextPage} />
-          )}
+          {hasNextPage && <LoadMoreBtn onClick={fetchNextPage} isLoading={isFetchingNextPage} />}
         </>
       )}
     </div>
