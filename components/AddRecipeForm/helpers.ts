@@ -29,7 +29,7 @@ export function buildNextIngredients({
   const exists = currentIngredients.some(item => item.id === ingredient._id);
 
   if (exists) {
-    throw new Error('Цей інгредієнт уже доданий');
+    throw new Error('This ingredient has already been added');
   }
 
   return [

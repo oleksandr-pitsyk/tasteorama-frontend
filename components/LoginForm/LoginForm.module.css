@@ -4,7 +4,7 @@
   padding: 48px 32px;
   width: 100%;
   max-width: 362px;
-  margin: 76px auto;
+  margin: 91px auto;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -206,7 +206,7 @@
 @media (min-width: 768px) {
   .card {
     max-width: 522px;
-    margin: 151px auto;
+    margin: 262px auto;
   }
 
   .title {
@@ -237,7 +237,7 @@
   .card {
     max-width: 420px;
     min-height: 399px;
-    margin: 177px auto 250px;
+    margin: 177px auto 156px;
   }
 
   .title {

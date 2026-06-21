@@ -21,7 +21,7 @@ const AuthNavigation = ({ onLinkClick }: AuthNavigationProps) => {
   const handleLogout = async () => {
     // Виконуємо навігацію на модальне вікно  - app/@modal/logout
     // там проходить вихід, чистка авторизації та перенаправлення на login
-    router.push('/logout');
+    router.push('/logout', { scroll: false });
   };
 
   // Якщо є сесія - відображаємо кнопку Logout та інформацію про користувача

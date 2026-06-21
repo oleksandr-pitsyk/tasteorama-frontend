@@ -12,6 +12,7 @@
 import { checkSession, getMe } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 type Props = {
   children: React.ReactNode;
@@ -21,6 +22,7 @@ const AuthProvider = ({ children }: Props) => {
   // const user = useAuthStore(state => state.user);
   const setUser = useAuthStore(state => state.setUser);
   const clearIsAuthenticated = useAuthStore(state => state.clearIsAuthenticated);
+  const pathname = usePathname();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -38,7 +40,7 @@ const AuthProvider = ({ children }: Props) => {
       }
     };
     fetchUser();
-  }, [setUser, clearIsAuthenticated]);
+  }, [pathname, setUser, clearIsAuthenticated]);
 
   return children;
 };

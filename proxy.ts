@@ -29,6 +29,15 @@ const privateRoutes = ['/logout', '/profile/own', '/profile/favorites', '/add-re
 // масив публічних маршрутів
 const publicRoutes = ['/auth/login', '/auth/register', '/recipes'];
 
+function matchesRoute(pathname: string, route: string): boolean {
+  if (route.endsWith('/:path*')) {
+    const base = route.slice(0, -'/:path*'.length);
+    return pathname === base || pathname.startsWith(`${base}/`);
+  }
+
+  return pathname === route;
+}
+
 export async function proxy(request: NextRequest) {
   // Отримання токенів із cookie
   const cookieStore = await cookies();
@@ -39,9 +48,9 @@ export async function proxy(request: NextRequest) {
   // Шлях, на який користувач намагається перейти
   const { pathname } = request.nextUrl;
 
-  const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
+  const isPublicRoute = publicRoutes.some(route => matchesRoute(pathname, route));
 
-  const isPrivateRoute = privateRoutes.some(route => pathname.startsWith(route));
+  const isPrivateRoute = privateRoutes.some(route => matchesRoute(pathname, route));
 
   if (!accessToken) {
     if (refreshToken) {
