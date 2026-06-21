@@ -45,11 +45,16 @@ body {
 }
 
 body {
-  min-height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   color: var(--foreground);
   background: var(--background);
+}
+
+/* Контент між Header і Footer розтягується, штовхаючи футер донизу сторінки */
+.layoutMain {
+  flex: 1 0 auto;
 }
 
 a {

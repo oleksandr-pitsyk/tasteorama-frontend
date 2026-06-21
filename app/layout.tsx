@@ -75,10 +75,10 @@ export default function RootLayout({
           {/* Провайдер авторизації */}
           <AuthProvider>
             <Header />
-            {/* <main> */}
-            {children}
-            {modal}
-            {/* </main> */}
+            <div className="layoutMain">
+              {children}
+              {modal}
+            </div>
             <Footer />
           </AuthProvider>
         </TanStackProvider>

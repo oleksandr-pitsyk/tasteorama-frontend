@@ -15,8 +15,10 @@ export default async function ProfilePage({ params }: Props) {
 
   return (
     <div className={css.profile_container}>
-      <h1 className={css.profile_header}>My profile</h1>
-      <ProfileNavigation />
+      <div className="container">
+        <h1 className={css.profile_header}>My profile</h1>
+        <ProfileNavigation />
+      </div>
       <RecipesList recipeType={recipeType} />
     </div>
   );

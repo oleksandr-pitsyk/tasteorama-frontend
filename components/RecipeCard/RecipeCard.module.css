@@ -137,8 +137,8 @@
 
 .moreBtn:hover,
 .saveBtn:hover {
-  background-color: #9b6c43;
-  border-color: #9b6c43;
+  background: var(--light-brown);
+  border-color: var(--light-brown);
   color: #fff;
 }
 
@@ -152,17 +152,12 @@
     0 0 0 2px #fff;
 }
 
-.saveBtn.active {
-  background-color: transparent;
-  border-color: #000;
-  color: #9b6c43;
-}
-
+.saveBtn.active,
 .saveBtn.active:hover,
 .saveBtn.active:active {
-  background-color: transparent;
-  border-color: #000;
-  color: #9b6c43;
+  background-color: #9b6c43;
+  border-color: #fff;
+  color: #fff;
 }
 
 .clockIcon,
