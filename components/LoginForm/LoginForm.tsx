@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import toast, { Toaster } from 'react-hot-toast';
 import { login } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
 import { ApiError } from '@/app/api/api';
@@ -58,7 +59,10 @@ const PasswordInput = ({
         aria-label={show ? 'Hide password' : 'Show password'}
         className={css.eyeBtn}
       >
-        <Image src={show ? '/eye.svg' : '/eye-closed.svg'} alt="" width={24} height={24} />
+        {/* Заменяем Next.js компонент Image на SVG из нашего спрайта */}
+        <svg width={24} height={24} className={css.eyeIcon}>
+          <use href={show ? '/sprite.svg#open-eye' : '/sprite.svg#close-eye'} />
+        </svg>
       </button>
     </div>
   );
@@ -66,14 +70,28 @@ const PasswordInput = ({
 
 const LoginForm = () => {
   const router = useRouter();
-  const setUser = useAuthStore(state => state.setUser);
-  const [isLoading, setIsLoading] = useState(false);
-  const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null);
 
-  const showToast = (msg: string, ok: boolean) => {
-    setToast({ msg, ok });
-    setTimeout(() => setToast(null), 3000);
-  };
+  // Отримання даних зі стану авторизації
+  // Функція -
+  const setIsOpenRegisterLoginForm = useAuthStore(state => state.setIsOpenRegisterLoginForm);
+  // const clearIsOpenRegisterLoginForm = useAuthStore(state => state.clearIsOpenRegisterLoginForm);
+  // const isOpenRegisterLoginForm = useAuthStore(state => state.isOpenRegisterLoginForm);
+  // const [isOpen, setIsOpen] = useState(true);
+  useEffect(() => {
+    // При монтуванні компонента
+    // console.log('Компонент смонтирован');
+    setIsOpenRegisterLoginForm(true);
+    // При розмонтуванні компонента (очистки)
+    return () => {
+      // console.log('Компонент размонтирован');
+      setIsOpenRegisterLoginForm(false);
+    };
+  }, []);
+
+  // Функція - Встановлення поточного користувача та стану аутентификації в true
+  const setUser = useAuthStore(state => state.setUser);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -85,17 +103,25 @@ const LoginForm = () => {
           email: values.email,
           password: values.password,
         });
-
+        // Встановлення поточного користувача та стану аутентификації в true
         setUser(user);
+        // Очистка форми
         formik.resetForm();
+        // Перехід на основну сторінку
         router.push('/');
       } catch (error) {
-        showToast(
-          (error as ApiError).response?.data?.error ??
-            (error as ApiError).message ??
-            'Login failed',
-          false
-        );
+        // форма залишається заповненою — resetForm НЕ викликаємо
+        const status = (error as ApiError).response?.status;
+
+        if (status === 401) {
+          toast.error('Login failed user');
+        } else {
+          toast.error(
+            (error as ApiError).response?.data?.error ??
+              (error as ApiError).message ??
+              'Login failed'
+          );
+        }
       } finally {
         setIsLoading(false);
         setSubmitting(false);
@@ -110,6 +136,8 @@ const LoginForm = () => {
 
   return (
     <>
+      <Toaster position="top-right" />
+
       <div className={css.card}>
         <h2 className={css.title}>Login</h2>
 
@@ -135,7 +163,7 @@ const LoginForm = () => {
           {/* Password */}
           <div className={css.fieldGroup}>
             <label htmlFor="password" className={css.label}>
-              Create a strong password
+              Input password
             </label>
             <PasswordInput
               id="password"
@@ -154,22 +182,16 @@ const LoginForm = () => {
             Login
           </button>
 
-        <div className={css.regWrap}>
-          <p className={css.regText}>
-            Don&apos;t have an account?{' '}
-            <Link href="/auth/register" className={css.regLink}>
-              Register
-            </Link>
-          </p>
-        </div>
+          <div className={css.regWrap}>
+            <p className={css.regText}>
+              Don&apos;t have an account?{' '}
+              <Link href="/auth/register" className={css.regLink}>
+                Register
+              </Link>
+            </p>
+          </div>
         </form>
       </div>
-
-      {toast && (
-        <div className={css.toast} style={{ background: toast.ok ? '#2e7d32' : '#c80000' }}>
-          {toast.msg}
-        </div>
-      )}
     </>
   );
 };
