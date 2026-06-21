@@ -38,6 +38,9 @@ const dmSans = DM_Sans({
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  icons: {
+    icon: '/favicon-without-fill.svg',
+  },
   metadataBase: new URL('https://tasteorama-frontend.vercel.app/'),
   title: 'Tasteorama',
   description: 'Tasteorama - Your Ultimate Recipe Companion',
@@ -75,10 +78,10 @@ export default function RootLayout({
           {/* Провайдер авторизації */}
           <AuthProvider>
             <Header />
-            {/* <main> */}
-            {children}
-            {modal}
-            {/* </main> */}
+            <main>
+              {children}
+              {modal}
+            </main>
             <Footer />
           </AuthProvider>
         </TanStackProvider>

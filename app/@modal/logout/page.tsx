@@ -22,6 +22,7 @@ export default function LogoutModal() {
     // Очищення глобального стану авторризації
     clearIsAuthenticated();
     // Перехід на основну сторінку
+    window.scrollTo(0, 0);
     router.push('/');
   };
 
