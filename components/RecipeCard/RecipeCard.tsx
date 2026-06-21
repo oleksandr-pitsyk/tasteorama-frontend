@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { useAuthStore } from '@/lib/store/authStore';
+import Modal from '@/components/Modal/Modal';
 import SaveRecipeNotAuthorized from '@/components/SaveRecipeNotAuthorized/SaveRecipeNotAuthorized';
 
 import { useFavorite } from '../../hooks/useFavorite';
@@ -43,8 +44,8 @@ const RecipeCard = ({ recipe, initialIsFavorite = false }: RecipeCardProps) => {
         <Image
           src={thumb}
           alt={title}
-          width={337}
-          height={230}
+          width={264}
+          height={178}
           sizes="(max-width: 767px) 337px, (max-width: 1439px) 315px, 264px"
           className={css.img}
         />
@@ -57,13 +58,13 @@ const RecipeCard = ({ recipe, initialIsFavorite = false }: RecipeCardProps) => {
               <use href="/sprite.svg#clock" />
             </svg>
 
-            <span className={css.time}>{time ? `${time} min` : '—'}</span>
+            <span className={css.time}>{time ? `${time}` : '—'}</span>
           </span>
         </div>
 
         <div className={css.desBox}>
           <p>{description}</p>
-          <p>{calories ? `~${calories} cals` : ''}</p>
+          <p>{calories ? `~${calories} cals` : 'N/A'}</p>
         </div>
 
         <div className={css.btnBox}>
@@ -82,14 +83,18 @@ const RecipeCard = ({ recipe, initialIsFavorite = false }: RecipeCardProps) => {
               <span className={css.loader} aria-hidden="true" />
             ) : (
               <svg className={css.saveIcon} aria-hidden="true">
-                <use href={isFavorite ? '/sprite.svg#trash' : '/sprite.svg#save'} />
+                <use href="/sprite.svg#save" />
               </svg>
             )}
           </button>
         </div>
       </article>
 
-      {showAuthModal && <SaveRecipeNotAuthorized onClose={() => setShowAuthModal(false)} />}
+      {showAuthModal && (
+        <Modal onClose={() => setShowAuthModal(false)}>
+          <SaveRecipeNotAuthorized />
+        </Modal>
+      )}
     </>
   );
 };
