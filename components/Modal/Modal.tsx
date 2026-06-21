@@ -73,6 +73,8 @@ export default function Modal({ children, onClose }: ModalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // рядок-коментар попередження від лінтера !!!!!!
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 

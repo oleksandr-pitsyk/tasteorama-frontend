@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
@@ -72,46 +72,61 @@ const PasswordInput = ({
 
 const RegistrationForm = () => {
   const router = useRouter();
+
+  // Отримання даних зі стану авторизації
+  // Функція - стан відкритого вікна реєстрації або логінізації
+  const setIsOpenRegisterLoginForm = useAuthStore(state => state.setIsOpenRegisterLoginForm);
+
+  useEffect(() => {
+    // При монтуванні компонента
+    setIsOpenRegisterLoginForm(true);
+
+    return () => {
+      // При розмонтуванні компонента (очистки)
+      setIsOpenRegisterLoginForm(false);
+    };
+  }, []);
+
   const setUser = useAuthStore(state => state.setUser);
   const [isLoading, setIsLoading] = useState(false);
 
   const formik = useFormik({
-  initialValues: { email: '', name: '', password: '', confirmPassword: '' },
-  validationSchema: registerSchema,
-  validateOnChange: true,
-  validateOnBlur: true,
-  onSubmit: async (values, { setSubmitting }) => {
-    setIsLoading(true);
-    try {
-      const user = await register({
-        name: values.name,
-        email: values.email,
-        password: values.password,
-      });
+    initialValues: { email: '', name: '', password: '', confirmPassword: '' },
+    validationSchema: registerSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
+    onSubmit: async (values, { setSubmitting }) => {
+      setIsLoading(true);
+      try {
+        const user = await register({
+          name: values.name,
+          email: values.email,
+          password: values.password,
+        });
 
-      setUser(user);
-      formik.resetForm();
-      toast.success('Registration successful!');
-      router.push('/');
-    } catch (error) {
-      // форма залишається заповненою — resetForm НЕ викликаємо
-      const status = (error as ApiError).response?.status;
+        setUser(user);
+        formik.resetForm();
+        toast.success('Registration successful!');
+        router.push('/');
+      } catch (error) {
+        // форма залишається заповненою — resetForm НЕ викликаємо
+        const status = (error as ApiError).response?.status;
 
-      if (status === 409 || status === 400) {
-        toast.error('A user with this email is already registered');
-      } else {
-        toast.error(
-          (error as ApiError).response?.data?.error ??
-            (error as ApiError).message ??
-            'Registration failed'
-        );
+        if (status === 409 || status === 400) {
+          toast.error('A user with this email is already registered');
+        } else {
+          toast.error(
+            (error as ApiError).response?.data?.error ??
+              (error as ApiError).message ??
+              'Registration failed'
+          );
+        }
+      } finally {
+        setIsLoading(false);
+        setSubmitting(false);
       }
-    } finally {
-      setIsLoading(false);
-      setSubmitting(false);
-    }
-  },
-});
+    },
+  });
 
   const inputClass = (name: keyof typeof formik.values) =>
     `${css.input}${formik.touched[name] && formik.errors[name] ? ` ${css.inputError}` : ''}`;
