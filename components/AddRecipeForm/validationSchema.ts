@@ -9,21 +9,19 @@ const ingredientSchema = Yup.object({
 export const addRecipeValidationSchema = Yup.object({
   title: Yup.string()
     .trim()
-    .min(2, 'Title must contain at least 2 characters')
-    .max(100, 'Title must not exceed 100 characters')
+    .max(64, 'Title must not exceed 64 characters')
     .required('Recipe title is required'),
 
   description: Yup.string()
     .trim()
-    .min(10, 'Description must contain at least 10 characters')
-    .max(500, 'Description must not exceed 500 characters')
+    .max(200, 'Description must not exceed 200 characters')
     .required('Short description is required'),
 
   time: Yup.number()
     .typeError('Please enter the cooking time in minutes')
     .integer('Time must be a whole number')
     .min(1, 'Minimum cooking time is 1 minute')
-    .max(1440, 'Maximum cooking time is 1440 minutes')
+    .max(360, 'Maximum cooking time is 360 minutes')
     .required('Cooking time is required'),
   calories: Yup.number()
     .transform((value, originalValue) => {
@@ -35,16 +33,17 @@ export const addRecipeValidationSchema = Yup.object({
     .typeError('Calories must be a number')
     .integer('Calories must be a whole number')
     .min(1, 'Calories must be greater than 0')
+    .max(10000, 'Calories must not exceed 10000')
     .optional(),
   category: Yup.string().trim().required('Please select a category'),
   ingredients: Yup.array()
     .of(ingredientSchema)
-    .min(1, 'Please add at least one ingredient')
+    .min(2, 'Please add at least two ingredients')
+    .max(16, 'Ingredients must not exceed 16 items')
     .required('Ingredients list is required'),
   instructions: Yup.string()
     .trim()
-    .min(10, 'Instructions must contain at least 10 characters')
-    .max(3000, 'Instructions must not exceed 3000 characters')
+    .max(1200, 'Instructions must not exceed 1200 characters')
     .required('Instructions are required'),
   thumb: Yup.mixed<File>()
     .nullable()

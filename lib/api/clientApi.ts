@@ -144,7 +144,8 @@ interface GetRecipesHttpResponse {
 
 // Типізація відповіді Get-запиту від Axios - один рецепт за Id - згідно структури бекенда :
 interface GetRecipeHttpResponse {
-  recipe: Recipe; // було data, але бекенд повертає recipe
+  data?: Recipe;
+  recipe?: Recipe;
 }
 // ==========================================================================================
 // getRecipes : виконує запит для отримання колекції рецептів
@@ -206,12 +207,17 @@ export async function getRecipes(
 // ==========================================================================================
 // Структура запиту :
 
-export async function getRecipeById(recipeId: string): Promise<GetRecipeHttpResponse> {
+export async function getRecipeById(recipeId: string): Promise<Recipe> {
   // Виконуємо HTTP-запит
   const response = await nextServer.get<GetRecipeHttpResponse>(`/recipes/${recipeId}`);
 
-  // Повертаємо значення data відповіді
-  return response.data;
+  const recipe = response.data.data ?? response.data.recipe;
+
+  if (!recipe) {
+    throw new Error('Не вдалося отримати рецепт');
+  }
+
+  return recipe;
 }
 
 // ==========================================================================================

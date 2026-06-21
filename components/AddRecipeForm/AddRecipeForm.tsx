@@ -16,12 +16,20 @@ const AddRecipeForm = () => {
   const router = useRouter();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const { data: categoriesData, isLoading: categoriesLoading } = useQuery({
+  const {
+    data: categoriesData,
+    isLoading: categoriesLoading,
+    isError: isCategoriesError,
+  } = useQuery({
     queryKey: ['categories'],
     queryFn: getCategories,
   });
 
-  const { data: ingredientsData, isLoading: ingredientsLoading } = useQuery({
+  const {
+    data: ingredientsData,
+    isLoading: ingredientsLoading,
+    isError: isIngredientsError,
+  } = useQuery({
     queryKey: ['ingredients'],
     queryFn: getIngredients,
   });
@@ -36,6 +44,18 @@ const AddRecipeForm = () => {
       }
     };
   }, [previewUrl]);
+
+  useEffect(() => {
+    if (isCategoriesError) {
+      toast.error('Failed to load categories');
+    }
+  }, [isCategoriesError]);
+
+  useEffect(() => {
+    if (isIngredientsError) {
+      toast.error('Failed to load ingredients');
+    }
+  }, [isIngredientsError]);
 
   const handleSubmit = async (
     values: AddRecipeFormValues,
@@ -68,35 +88,7 @@ const AddRecipeForm = () => {
           const visibleIngredients = getVisibleIngredients(values.ingredients);
 
           return (
-            <Form
-              className={css.form}
-              // КНОПКА ЕНТЕР
-              onKeyDown={e => {
-                if (e.key === 'Enter') {
-                  const target = e.target as HTMLElement;
-
-                  // Не чіпаємо нативну поведінку елементів, де Enter має власну дію.
-                  if (
-                    target.tagName === 'TEXTAREA' ||
-                    target.tagName === 'SELECT' ||
-                    target.tagName === 'OPTION' ||
-                    target.tagName === 'BUTTON'
-                  ) {
-                    return;
-                  }
-
-                  if ((target as HTMLInputElement).type === 'file') {
-                    return;
-                  }
-
-                  // для інших полів перевірка
-                  e.preventDefault();
-
-                  const formElement = e.currentTarget as HTMLFormElement;
-                  formElement.requestSubmit();
-                }
-              }}
-            >
+            <Form className={css.form}>
               <div className={css.formGrid}>
                 <section className={css.uploadSection}>
                   <h2 className={css.photoTitle}>Upload Photo</h2>
@@ -152,7 +144,7 @@ const AddRecipeForm = () => {
                         className={`${css.input} ${css.selectInput} ${
                           !values.selectedIngredientId ? css.selectPlaceholder : ''
                         }`}
-                        disabled={isDataLoading}
+                        disabled={ingredientsLoading}
                       >
                         <option value="" disabled hidden>
                           Broccoli
@@ -299,7 +291,7 @@ const AddRecipeForm = () => {
                         id="category"
                         name="category"
                         className={`${css.input} ${css.selectInput} ${!values.category ? css.selectPlaceholder : ''}`}
-                        disabled={isDataLoading}
+                        disabled={categoriesLoading}
                       >
                         <option value="" disabled hidden>
                           Soup
