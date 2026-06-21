@@ -8,12 +8,12 @@ type BuildNextIngredientsParams = {
   availableIngredients: Ingredient[];
 };
 
-// Повертає лише ті інгредієнти, де заповнені і назва, і кількість.
+// повертає інгредієнти, де заповнені і назва кільк.
 export function getVisibleIngredients(ingredients: IngredientFormItem[]): IngredientFormItem[] {
   return ingredients.filter(item => item.name.trim().length > 0 && item.measure.trim().length > 0);
 }
 
-// Валідує вибір інгредієнта і повертає новий список з доданим елементом.
+// валідує вибір інгредієнта і повертає новий список
 export function buildNextIngredients({
   currentIngredients,
   selectedIngredientId,

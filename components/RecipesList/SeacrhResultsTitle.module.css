@@ -1,0 +1,22 @@
+.TitleResults {
+  margin-top: 40;
+  margin-bottom: 16px;
+}
+.h2 {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 32px;
+  color: var(--black);
+}
+
+@media screen and (min-width: 768px) {
+  .h2 {
+    font-size: 40px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .h2 {
+    font-size: 40px;
+  }
+}

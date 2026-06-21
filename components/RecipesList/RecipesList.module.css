@@ -1,34 +1,59 @@
 :root {
   --gap: 24px;
-  --card-radius: 8px;
+  --card-radius: 12px;
   --font-family: Arial, Helvetica, sans-serif;
+
+  --fade-duration: 0.45s;
+  --fade-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Загальний wrapper компонента */
+/* Контейнер */
 .wrapper {
   width: 100%;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  box-sizing: border-box;
 }
 
-/* Список карток (ul) — використовує grid */
+/* Grid список */
 .list {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--gap);
+  padding: 0;
+  margin: 0;
   list-style: none;
   width: 100%;
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+}
+/* Counter */
+
+.count {
+  padding-bottom: 29px;
 }
 
-/* Окрема позиція списку (li) */
+/* Картка */
 .item {
+  display: flex;
+  justify-content: center;
+
   width: 100%;
   box-sizing: border-box;
+
+  /* Анімація появи */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp var(--fade-duration) var(--fade-ease) forwards;
+  will-change: opacity, transform;
+}
+
+/* Анімація */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Порожній стан */
@@ -40,42 +65,25 @@
   font-size: 16px;
 }
 
-/* Image / content helpers (якщо хочете стилізувати частини картки тут) */
-.cardInner {
-  display: block;
-  width: 100%;
-  border-radius: var(--card-radius);
-  overflow: hidden;
-}
-
-/* --- Адаптація: "адаптивна" з 393px (плавні зміни) --- */
-@media (min-width: 393px) {
-  /* .list {
-  
-  } */
-}
-
-/* Tablet: 2 колонки, padding справа і знизу 24px */
+/* Tablet */
 @media (min-width: 768px) {
   .list {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--gap);
-    /* padding-right: var(--gap);
-    padding-bottom: var(--gap); */
+  }
+  .item:hover .cardInner {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   }
 }
 
-/* Desktop: 4 колонки, padding справа і знизу 24px */
+/* Desktop */
 @media (min-width: 1440px) {
   .list {
     grid-template-columns: repeat(4, 1fr);
-    gap: var(--gap);
-    /* padding-right: var(--gap);
-    padding-bottom: var(--gap); */
   }
 }
 
-/* Додаткові утиліти (за потреби) */
+/* Центрування */
 .centered {
   display: flex;
   justify-content: center;

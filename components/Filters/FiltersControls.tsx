@@ -12,7 +12,7 @@ interface FiltersControlsProps {
   ingredients: Ingredient[];
   handleCategoryChange: (value: string) => void;
   handleIngredientChange: (value: string) => void;
-  handleResetFilters: () => void;
+  handleResetSearchAndFilters: () => void;
 }
 
 const FiltersControls = ({
@@ -22,7 +22,7 @@ const FiltersControls = ({
   ingredients,
   handleCategoryChange,
   handleIngredientChange,
-  handleResetFilters,
+  handleResetSearchAndFilters,
 }: FiltersControlsProps) => {
   return (
     <div className={css.controls}>
@@ -51,7 +51,7 @@ const FiltersControls = ({
           />
         </div>
       </div>
-      <button onClick={handleResetFilters} className={css.resetButton}>
+      <button onClick={handleResetSearchAndFilters} className={css.resetButton}>
         Reset filters
       </button>
     </div>

@@ -37,7 +37,7 @@ export async function GET() {
     // Якщо accessToken немає — перевіряємо refreshToken
     if (refreshToken) {
       // Виконуємо запит до API, передаючи всі cookie у заголовку
-      const apiRes = await api.get('/api/auth/refresh', {
+      const apiRes = await api.get('/auth/refresh', {
         headers: {
           Cookie: cookieStore.toString(), // перетворюємо cookie у рядок
         },

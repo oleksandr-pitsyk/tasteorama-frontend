@@ -34,6 +34,17 @@
   background: transparent;
   border: none;
   cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.logoutBtn:hover,
+.logoutBtn:focus {
+  opacity: 0.5;
+}
+
+.logoutBtn:active {
+  opacity: 1;
+  border-bottom: 1px solid white;
 }
 
 .logoutBtn svg {

@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from 'formik';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import toast, { Toaster } from 'react-hot-toast';
 import css from './AddRecipeForm.module.css';
 import { createRecipe, getCategories, getIngredients } from './api';
@@ -43,11 +42,12 @@ const AddRecipeForm = () => {
     actions: FormikHelpers<AddRecipeFormValues>
   ) => {
     try {
-      const recipeId = await createRecipe(values);
+      await createRecipe(values);
 
       actions.resetForm();
       setPreviewUrl(null);
-      router.push(`/recipes/${recipeId}`);
+      router.push(`/`);
+      // router.push(`/recipes/${recipeId}`);
     } catch (error) {
       toast.error((error as Error).message);
     }
@@ -68,8 +68,180 @@ const AddRecipeForm = () => {
           const visibleIngredients = getVisibleIngredients(values.ingredients);
 
           return (
-            <Form className={css.form}>
-              <div className={css.topGrid}>
+            <Form
+              className={css.form}
+              // КНОПКА ЕНТЕР
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  const target = e.target as HTMLElement;
+
+                  // Не чіпаємо нативну поведінку елементів, де Enter має власну дію.
+                  if (
+                    target.tagName === 'TEXTAREA' ||
+                    target.tagName === 'SELECT' ||
+                    target.tagName === 'OPTION' ||
+                    target.tagName === 'BUTTON'
+                  ) {
+                    return;
+                  }
+
+                  if ((target as HTMLInputElement).type === 'file') {
+                    return;
+                  }
+
+                  // для інших полів перевірка
+                  e.preventDefault();
+
+                  const formElement = e.currentTarget as HTMLFormElement;
+                  formElement.requestSubmit();
+                }
+              }}
+            >
+              <div className={css.formGrid}>
+                <section className={css.uploadSection}>
+                  <h2 className={css.photoTitle}>Upload Photo</h2>
+                  <label className={css.uploadBox} htmlFor="thumb">
+                    {previewUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={previewUrl} alt="Recipe preview" className={css.uploadImage} />
+                    ) : (
+                      <svg width="64" height="64" className={css.cameraIcon}>
+                        <use xlinkHref="/sprite.svg#media"></use>
+                      </svg>
+                    )}
+                  </label>
+
+                  {/* КАРТИНКА */}
+                  <input
+                    id="thumb"
+                    name="thumb"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    className={css.hiddenInput}
+                    onChange={event => {
+                      const file = event.currentTarget.files?.[0] ?? null;
+                      setFieldValue('thumb', file);
+
+                      if (previewUrl) {
+                        URL.revokeObjectURL(previewUrl);
+                      }
+
+                      if (file) {
+                        setPreviewUrl(URL.createObjectURL(file));
+                      } else {
+                        setPreviewUrl(null);
+                      }
+                    }}
+                  />
+                  <ErrorMessage name="thumb" component="span" className={css.error} />
+                </section>
+
+                {/* ІНГРЕДІЄНТИ */}
+                <section className={css.ingredientsSection}>
+                  <h2 className={css.ingredientsTitle}>Ingredients</h2>
+
+                  <div className={css.ingredientsControls}>
+                    <div>
+                      <label className={css.label} htmlFor="selectedIngredientId">
+                        Name
+                      </label>
+                      <Field
+                        as="select"
+                        id="selectedIngredientId"
+                        name="selectedIngredientId"
+                        className={`${css.input} ${css.selectInput} ${
+                          !values.selectedIngredientId ? css.selectPlaceholder : ''
+                        }`}
+                        disabled={isDataLoading}
+                      >
+                        <option value="" disabled hidden>
+                          Broccoli
+                        </option>
+                        {ingredients.map(ingredient => (
+                          <option key={ingredient._id} value={ingredient._id}>
+                            {ingredient.name}
+                          </option>
+                        ))}
+                      </Field>
+                    </div>
+
+                    <div>
+                      <label className={css.label} htmlFor="selectedIngredientMeasure">
+                        Amount
+                      </label>
+                      <Field
+                        id="selectedIngredientMeasure"
+                        name="selectedIngredientMeasure"
+                        type="text"
+                        className={css.input}
+                        placeholder="100g"
+                      />
+                    </div>
+
+                    <button
+                      type="button"
+                      className={css.addIngredientButton}
+                      onClick={() => {
+                        try {
+                          const nextIngredients = buildNextIngredients({
+                            currentIngredients: values.ingredients,
+                            selectedIngredientId: values.selectedIngredientId,
+                            selectedIngredientMeasure: values.selectedIngredientMeasure,
+                            availableIngredients: ingredients,
+                          });
+
+                          setFieldValue('ingredients', nextIngredients);
+                          setFieldValue('selectedIngredientId', '');
+                          setFieldValue('selectedIngredientMeasure', '');
+                        } catch (error) {
+                          toast.error((error as Error).message);
+                        }
+                      }}
+                    >
+                      Add new Ingredient
+                    </button>
+                  </div>
+
+                  <ErrorMessage
+                    name="ingredients"
+                    component="span"
+                    className={`${css.error} ${css.ingredientsError}`}
+                  />
+
+                  <div className={css.ingredientsHead}>
+                    <span className={css.ingredientsHeadText}>Name:</span>
+                    <span className={css.ingredientsHeadText}>Amount:</span>
+                    <span aria-hidden="true" />
+                  </div>
+
+                  {visibleIngredients.length > 0 && (
+                    <ul className={css.ingredientsList}>
+                      {visibleIngredients.map(item => (
+                        <li key={item.id} className={css.ingredientRow}>
+                          <span className={css.ingredientText}>{item.name}</span>
+                          <span className={css.ingredientText}>{item.measure}</span>
+                          <button
+                            type="button"
+                            className={css.removeButton}
+                            aria-label="Delete ingredient"
+                            onClick={() => {
+                              setFieldValue(
+                                'ingredients',
+                                values.ingredients.filter(ingredient => ingredient.id !== item.id)
+                              );
+                            }}
+                          >
+                            <svg width="15" height="15" className={css.trashIcon}>
+                              <use xlinkHref="/sprite.svg#trash"></use>
+                            </svg>{' '}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </section>
+
+                {/* ДЖЕНЕРАЛ */}
                 <section className={css.generalInfoSection}>
                   <h2 className={css.generalTitle}>General Information</h2>
 
@@ -143,161 +315,21 @@ const AddRecipeForm = () => {
                   </div>
                 </section>
 
-                <section className={css.uploadSection}>
-                  <h2 className={css.photoTitle}>Upload Photo</h2>
-                  <label className={css.uploadBox} htmlFor="thumb">
-                    {previewUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={previewUrl} alt="Recipe preview" className={css.uploadImage} />
-                    ) : (
-                      <Image
-                        src="/dima-img/aparat.svg"
-                        alt=""
-                        width={64}
-                        height={64}
-                        className={css.cameraIcon}
-                      />
-                    )}
-                  </label>
-                  <input
-                    id="thumb"
-                    name="thumb"
-                    type="file"
-                    accept="image/png,image/jpeg,image/webp"
-                    className={css.hiddenInput}
-                    onChange={event => {
-                      const file = event.currentTarget.files?.[0] ?? null;
-                      setFieldValue('thumb', file);
-
-                      if (previewUrl) {
-                        URL.revokeObjectURL(previewUrl);
-                      }
-
-                      if (file) {
-                        setPreviewUrl(URL.createObjectURL(file));
-                      } else {
-                        setPreviewUrl(null);
-                      }
-                    }}
+                {/* ІНСТРУКЦІЇ */}
+                <section className={css.instructionSection}>
+                  <h2 className={css.instructionsTitle}>Instructions</h2>
+                  <Field
+                    as="textarea"
+                    id="instructions"
+                    name="instructions"
+                    className={`${css.input} ${css.textarea} ${css.instructionsTextarea}`}
+                    placeholder="Enter a text"
                   />
-                  <ErrorMessage name="thumb" component="span" className={css.error} />
+                  <ErrorMessage name="instructions" component="span" className={css.error} />
                 </section>
               </div>
 
-              <section className={css.ingredientsSection}>
-                <h2 className={css.ingredientsTitle}>Ingredients</h2>
-
-                <div className={css.ingredientsControls}>
-                  <div>
-                    <label className={css.label} htmlFor="selectedIngredientId">
-                      Name
-                    </label>
-                    <Field
-                      as="select"
-                      id="selectedIngredientId"
-                      name="selectedIngredientId"
-                      className={`${css.input} ${css.selectInput} ${
-                        !values.selectedIngredientId ? css.selectPlaceholder : ''
-                      }`}
-                      disabled={isDataLoading}
-                    >
-                      <option value="" disabled hidden>
-                        Broccoli
-                      </option>
-                      {ingredients.map(ingredient => (
-                        <option key={ingredient._id} value={ingredient._id}>
-                          {ingredient.name}
-                        </option>
-                      ))}
-                    </Field>
-                  </div>
-
-                  <div>
-                    <label className={css.label} htmlFor="selectedIngredientMeasure">
-                      Amount
-                    </label>
-                    <Field
-                      id="selectedIngredientMeasure"
-                      name="selectedIngredientMeasure"
-                      type="text"
-                      className={css.input}
-                      placeholder="100g"
-                    />
-                  </div>
-
-                  <button
-                    type="button"
-                    className={css.addIngredientButton}
-                    onClick={() => {
-                      try {
-                        const nextIngredients = buildNextIngredients({
-                          currentIngredients: values.ingredients,
-                          selectedIngredientId: values.selectedIngredientId,
-                          selectedIngredientMeasure: values.selectedIngredientMeasure,
-                          availableIngredients: ingredients,
-                        });
-
-                        setFieldValue('ingredients', nextIngredients);
-                        setFieldValue('selectedIngredientId', '');
-                        setFieldValue('selectedIngredientMeasure', '');
-                      } catch (error) {
-                        toast.error((error as Error).message);
-                      }
-                    }}
-                  >
-                    Add new Ingredient
-                  </button>
-                </div>
-
-                <ErrorMessage
-                  name="ingredients"
-                  component="span"
-                  className={`${css.error} ${css.ingredientsError}`}
-                />
-
-                <div className={css.ingredientsHead}>
-                  <span className={css.ingredientsHeadText}>Name:</span>
-                  <span className={css.ingredientsHeadText}>Amount:</span>
-                  <span aria-hidden="true" />
-                </div>
-
-                {visibleIngredients.length > 0 && (
-                  <ul className={css.ingredientsList}>
-                    {visibleIngredients.map(item => (
-                      <li key={item.id} className={css.ingredientRow}>
-                        <span className={css.ingredientText}>{item.name}</span>
-                        <span className={css.ingredientText}>{item.measure}</span>
-                        <button
-                          type="button"
-                          className={css.removeButton}
-                          aria-label="Delete ingredient"
-                          onClick={() => {
-                            setFieldValue(
-                              'ingredients',
-                              values.ingredients.filter(ingredient => ingredient.id !== item.id)
-                            );
-                          }}
-                        >
-                          <Image src="/dima-img/trash.svg" alt="" width={24} height={24} />
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </section>
-
-              <section>
-                <h2 className={css.instructionsTitle}>Instructions</h2>
-                <Field
-                  as="textarea"
-                  id="instructions"
-                  name="instructions"
-                  className={`${css.input} ${css.textarea} ${css.instructionsTextarea}`}
-                  placeholder="Enter a text"
-                />
-                <ErrorMessage name="instructions" component="span" className={css.error} />
-              </section>
-
+              {/* ПОЛЕТІЛИ */}
               <button
                 type="submit"
                 className={css.primaryButton}

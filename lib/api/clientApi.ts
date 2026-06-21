@@ -5,55 +5,126 @@
 import { nextServer } from './api';
 import { isAxiosError } from 'axios';
 
+// Імпорт інтерфейсів
+import type { User } from '@/types/user';
+import type { Category } from '@/types/category';
+import type { Ingredient } from '@/types/ingredient';
+// ==========================================================================================
+// register : реєстрація користувача
+// ==========================================================================================
+// Структура запиту :
+
+export type RegisterRequest = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export const register = async (data: RegisterRequest): Promise<User> => {
+  // Бекенд повертає користувача загорнутим у { user } (або { data })
+  const res = await nextServer.post<{ user?: User; data?: User }>('/auth/register', data);
+  return (res.data.user ?? res.data.data) as User;
+};
+
+// ==========================================================================================
+// login : Вхід користувача в систему (логін)
+// ==========================================================================================
+// Структура запиту :
+
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export const login = async (data: LoginRequest): Promise<User> => {
+  // Бекенд повертає користувача загорнутим у { user } (або { data })
+  const res = await nextServer.post<{ user?: User; data?: User }>('/auth/login', data);
+  return (res.data.user ?? res.data.data) as User;
+};
+
+// ==========================================================================================
+// logout : Вихід користувача з системи (логаут)
+// ==========================================================================================
+export const logout = async (): Promise<void> => {
+  const res = await nextServer.post('/auth/logout');
+  return res.data;
+};
+
+// ==========================================================================================
+// getMe : Отримання об’єкта користувача (профілю) для авторизованого користувача
+// ==========================================================================================
+
+export const getMe = async (): Promise<User> => {
+  // Бекенд повертає користувача загорнутим у { user } (або { data })
+  const res = await nextServer.get<{ user?: User; data?: User }>('/auth/me');
+  return (res.data.user ?? res.data.data) as User;
+};
+
+// ==========================================================================================
+// checkSession : Перевірка сесії користувача (чи він авторизований)
+// ==========================================================================================
+type CheckSessionRequest = {
+  success: boolean;
+};
+
+export const checkSession = async () => {
+  const res = await nextServer.get<CheckSessionRequest>('/auth/session');
+  return res.data.success;
+};
+
 // *********************************************************************************
 // Робота з категоріями
 // *********************************************************************************
-// Імпорт інтерфейсів
-import type { Category } from '@/types/category';
-
 // Типізація відповіді Get-запиту від Axios - згідно структури бекенда :
-interface GetCategoriesHttpResponse {
-  data: Category[]; // Відповідь містить масив категорій у властивості data
-}
+// interface GetCategoriesHttpResponse {
+//   data: Category[]; // Відповідь містить масив категорій у властивості data
+// }
 // ==========================================================================================
 // getCategories : виконує запит для отримання колекції категорій із сервера.
 // ==========================================================================================
 // Структура запиту :
 
-export async function getCategories(): Promise<GetCategoriesHttpResponse> {
-  // Виконуємо HTTP-запит
-  const response = await nextServer.get<GetCategoriesHttpResponse>('/categories');
-  console.log('Fetch - GET :');
-  console.log('response.data', response.data);
-  // console.log('totalPages', response.data.totalPages);
+interface getCategoriesResponse {
+  categories: Category[];
+}
 
-  // Повертаємо значення notes та totalPages відповіді
-  return response.data;
+export async function getCategories(): Promise<Category[]> {
+  // Виконуємо HTTP-запит
+  const response = await nextServer.get<getCategoriesResponse>('/categories');
+  console.log('Fetch - GET getCategories :');
+  console.log('response', response);
+  console.log('response.data', response.data);
+  console.log(response.data);
+  // Повертаємо значення відповіді
+  return response.data.categories;
 }
 
 // *********************************************************************************
 // Робота з інгредієнтами
 // *********************************************************************************
-// Імпорт інтерфейсів
-import type { Ingredient } from '@/types/ingredient';
 
 // Типізація відповіді Get-запиту від Axios - згідно структури бекенда :
-interface GetIngredientsHttpResponse {
-  data: Ingredient[]; // Відповідь містить масив категорій у властивості data
-}
+// interface GetCategoriesHttpResponse {
+//   data: Ingredient[]; // Відповідь містить масив категорій у властивості data
+// }
 // ==========================================================================================
 // getIngredients : виконує запит для отримання колекції інгредієнтів із сервера.
 // ==========================================================================================
 // Структура запиту :
 
-export async function getIngredients(): Promise<GetIngredientsHttpResponse> {
+interface getIngredientsResponse {
+  ingredients: Ingredient[];
+}
+
+export async function getIngredients(): Promise<Ingredient[]> {
   // Виконуємо HTTP-запит
-  const response = await nextServer.get<GetIngredientsHttpResponse>('/ingredients');
-  console.log('Fetch - GET :');
+  const response = await nextServer.get<getIngredientsResponse>('/ingredients');
+  console.log('Fetch - GET getIngredients :');
+  console.log('response', response);
   console.log('response.data', response.data);
 
   // Повертаємо значення data відповіді
-  return response.data;
+  return response.data.ingredients;
 }
 
 // *********************************************************************************
@@ -73,7 +144,7 @@ interface GetRecipesHttpResponse {
 
 // Типізація відповіді Get-запиту від Axios - один рецепт за Id - згідно структури бекенда :
 interface GetRecipeHttpResponse {
-  data: Recipe; // Відповідь містить один рецепт у властивості data
+  recipe: Recipe; // було data, але бекенд повертає recipe
 }
 // ==========================================================================================
 // getRecipes : виконує запит для отримання колекції рецептів
@@ -144,67 +215,6 @@ export async function getRecipeById(recipeId: string): Promise<GetRecipeHttpResp
 }
 
 // ==========================================================================================
-// register : реєстрація користувача
-// ==========================================================================================
-// Структура запиту :
-
-// Імпорт інтерфейсів
-import type { User } from '@/types/user';
-
-export type RegisterRequest = {
-  name: string;
-  email: string;
-  password: string;
-};
-
-export const register = async (data: RegisterRequest) => {
-  const res = await nextServer.post<User>('/auth/register', data);
-  return res.data;
-};
-
-// ==========================================================================================
-// login : Вхід користувача в систему (логін)
-// ==========================================================================================
-// Структура запиту :
-
-export type LoginRequest = {
-  email: string;
-  password: string;
-};
-
-export const login = async (data: LoginRequest) => {
-  const res = await nextServer.post<User>('/auth/login', data);
-  return res.data;
-};
-
-// ==========================================================================================
-// getMe : Отримання об’єкта користувача (профілю) для авторизованого користувача
-// ==========================================================================================
-export const getMe = async () => {
-  const res = await nextServer.get<User>('/auth/me');
-  return res.data;
-};
-
-// ==========================================================================================
-// logout : Вихід користувача з системи (логаут)
-// ==========================================================================================
-export const logout = async (): Promise<void> => {
-  await nextServer.post('/auth/logout');
-};
-
-// ==========================================================================================
-// checkSession : Перевірка сесії користувача (чи він авторизований)
-// ==========================================================================================
-type CheckSessionRequest = {
-  success: boolean;
-};
-
-export const checkSession = async () => {
-  const res = await nextServer.get<CheckSessionRequest>('/auth/session');
-  return res.data.success;
-};
-
-// ==========================================================================================
 // getMyRecipes : власні рецепти користувача (приватний маршрут /api/recipes/my)
 // ==========================================================================================
 export async function getMyRecipes(
@@ -245,3 +255,20 @@ export async function getFavoriteRecipes(
     throw error;
   }
 }
+
+
+// ==========================================================================================
+// addRecipeToFavorites : додати рецепт до улюблених рецептів користувача 
+// (приватний маршрут POST /api/recipes/favorites)
+// ==========================================================================================
+export const addRecipeToFavorites = async (recipeId: string): Promise<void> => {
+  await nextServer.post(`/recipes/favorites/${recipeId}`);
+};
+
+// ==========================================================================================
+// removeRecipeFromFavorites : видалити рецепт з улюблених рецептів користувача 
+// (приватний маршрут DELETE /api/recipes/favorites)
+// ==========================================================================================
+export const removeRecipeFromFavorites = async (recipeId: string): Promise<void> => {
+  await nextServer.delete(`/recipes/favorites/${recipeId}`);
+};

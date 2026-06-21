@@ -15,16 +15,16 @@ import { api, ApiError } from '../../api';
 import { cookies } from 'next/headers';
 
 export async function GET() {
-  try {
-    const cookieStore = await cookies();
+  const cookieStore = await cookies();
 
-    const apiRes = await api.get('/api/users/me', {
+  try {
+    const { data } = await api.get('/users/me', {
       headers: {
         Cookie: cookieStore.toString(),
       },
     });
 
-    return NextResponse.json(apiRes.data);
+    return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
       {

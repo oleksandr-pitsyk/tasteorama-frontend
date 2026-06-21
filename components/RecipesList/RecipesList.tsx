@@ -1,73 +1,60 @@
 'use client';
 
-// ==========================================================================================
-// Компонент RecipesList -  відображає адаптивну сітку карток рецептів.
-// Використовує useInfiniteQuery для пагінації (TanStack Query).
-// Читає фільтри з URL параметрів які записує компонент Filters (Денис).
-// ==========================================================================================
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useInfiniteQuery, keepPreviousData } from '@tanstack/react-query';
-import { useSearchParams } from 'next/navigation';
-
-// Імпорт API функції
-import { getRecipes } from '@/lib/api/clientApi';
-
-// Імпорт компонентів
 import RecipeCard from '@/components/RecipeCard/RecipeCard';
 import LoadMoreBtn from '@/components/LoadMoreBtn/LoadMoreBtn';
+import { NoSearchResults } from '@/components/Filters/NoSearchResults';
 
-// Імпорт стилів
 import css from './RecipesList.module.css';
 import Loading from '@/app/loading';
 import AppError from '@/app/error';
-import { notFound } from 'next/navigation';
 
-// ==========================================================================================
-// Компонент
-// ==========================================================================================
-const RecipesList = () => {
-  // ------------------------------------------------------------------------------------------
-  // Читаємо фільтри з URL які записує компонент Filters (Денис)
-  // ------------------------------------------------------------------------------------------
+import { resetSearchAndFilters } from '@/components/Filters/helpers';
+import { useRecipesList } from '@/hooks/useRecipesList';
+
+type RecipesListProps = {
+  // Переданий проп → режим профілю (власні / улюблені); без нього → головна сторінка
+  recipeType?: 'own' | 'favorites';
+};
+
+const RecipesList = ({ recipeType }: RecipesListProps) => {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const category = searchParams.get('category') ?? undefined;
-  const ingredient = searchParams.get('ingredient') ?? undefined;
-  const search = searchParams.get('search') ?? undefined;
+
+  const isProfileMode = recipeType === 'own' || recipeType === 'favorites';
+
+  const handleResetSearchAndFilters = () => {
+    resetSearchAndFilters(searchParams, router);
+  };
 
   const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
+    recipes,
+    totalItems,
     isLoading,
     isError,
     error,
     refetch,
-  } = useInfiniteQuery({
-    // При зміні фільтрів - робимо новий запит з початку
-    queryKey: ['recipes', { category, ingredient, search }],
-    queryFn: ({ pageParam = 1 }) => getRecipes(pageParam, undefined, search, category, ingredient),
-    initialPageParam: 1,
-    placeholderData: keepPreviousData,
-    getNextPageParam: lastPage => {
-      if (lastPage.page < lastPage.totalPages) {
-        return lastPage.page + 1;
-      }
-      return undefined;
-    },
-  });
+    isNotFound,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useRecipesList(recipeType);
 
-  // ------------------------------------------------------------------------------------------
-  // Стан завантаження початкових даних
-  // ------------------------------------------------------------------------------------------
+  useEffect(() => {
+    // Тост "не знайдено" лише на головній (пошук), не в профілі
+    if (isNotFound && !isProfileMode) {
+      toast.error('No recipes found');
+    }
+  }, [isNotFound, isProfileMode]);
+
   if (isLoading) {
     return <Loading />;
   }
 
-  // ------------------------------------------------------------------------------------------
-  // Стан помилки
-  // ------------------------------------------------------------------------------------------
-  if (isError) {
+  if (isError && !isNotFound) {
     return (
       <AppError
         error={error instanceof Error ? error : new Error('Something went wrong')}
@@ -76,32 +63,39 @@ const RecipesList = () => {
     );
   }
 
-  // ------------------------------------------------------------------------------------------
-  // Зводимо всі сторінки в один плаский масив рецептів
-  // ------------------------------------------------------------------------------------------
-  const recipes = data?.pages.flatMap(page => page.data) ?? [];
-
-  // ------------------------------------------------------------------------------------------
-  // Стан пустого результату
-  // ------------------------------------------------------------------------------------------
-  if (recipes.length === 0) {
-    notFound();
+  // Порожній список у профілі — нормальна ситуація → дружнє повідомлення
+  if (isProfileMode && recipes.length === 0) {
+    return (
+      <p className={css.empty}>
+        {recipeType === 'favorites'
+          ? "You don't have any saved recipes yet."
+          : "You haven't added any recipes yet."}
+      </p>
+    );
   }
 
-  // ------------------------------------------------------------------------------------------
-  // Основний рендер
-  // ------------------------------------------------------------------------------------------
   return (
     <div className={css.wrapper}>
-      <ul className={css.list}>
-        {recipes.map(recipe => (
-          <li key={recipe._id} className={css.item}>
-            <RecipeCard recipe={recipe} />
-          </li>
-        ))}
-      </ul>
+      {/* Лічильник "N recipes" — лише в профілі */}
+      {isProfileMode && <p className={css.count}>{totalItems} recipes</p>}
 
-      {hasNextPage && <LoadMoreBtn onClick={fetchNextPage} isLoading={isFetchingNextPage} />}
+      {isNotFound ? (
+        <NoSearchResults onReset={handleResetSearchAndFilters} />
+      ) : (
+        <>
+          <ul className={css.list}>
+            {recipes.map(recipe => (
+              <li key={recipe._id} className={css.item}>
+                <RecipeCard recipe={recipe} />
+              </li>
+            ))}
+          </ul>
+
+          {hasNextPage && (
+            <LoadMoreBtn onClick={fetchNextPage} isLoading={isFetchingNextPage} />
+          )}
+        </>
+      )}
     </div>
   );
 };

@@ -1,9 +1,10 @@
 .hero {
+  width: 100%;
   min-height: 513px;
 
   padding: 74px 32px 99px;
 
-  background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+  background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 100%),
     image-set(
       url('/images/BannerHero/BannerHero-mobile.webp') 1x,
       url('/images/BannerHero/BannerHero-mobile@2x.webp') 2x
@@ -16,6 +17,7 @@
 
 .content {
   max-width: 329px;
+  margin: 0 auto;
 }
 
 .title {
@@ -33,7 +35,7 @@
     min-height: 443px;
     padding: 128px 32px;
 
-    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+    background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 100%),
       image-set(
         url('/images/BannerHero/BannerHero-tablet.webp') 1x,
         url('/images/BannerHero/BannerHero-tablet@2x.webp') 2x
@@ -51,21 +53,16 @@
 }
 
 @media screen and (min-width: 1440px) {
-  .wrapper {
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-    /* 
-    width: 661px; */
+  .hero {
+    background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 100%),
+      image-set(
+        url('/images/BannerHero/BannerHero-desktop.webp') 1x,
+        url('/images/BannerHero/BannerHero-desktop@2x.webp') 2x
+      );
   }
-
-  .input {
-    width: 459px;
-    flex-shrink: 0;
-  }
-
-  .button {
-    width: 190px;
-    flex-shrink: 0;
+  .content {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 80px;
   }
 }

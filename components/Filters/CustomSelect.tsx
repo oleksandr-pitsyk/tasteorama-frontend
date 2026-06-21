@@ -22,14 +22,19 @@ const CustomSelect = ({
   onChange,
 }: CustomSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState('');
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = options.find(opt => opt.value === value);
+    const filteredOptions = options.filter(option =>
+  option.label.toLowerCase().includes(search.toLowerCase())
+);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+        setSearch('')
       }
     };
 
@@ -56,7 +61,11 @@ const CustomSelect = ({
 
       {isOpen && (
         <ul className={css.dropdown}>
-          {options.map(option => (
+          <li className={css.searchItem}>
+            <input className={css.searchFilter} type='text' value={search} onChange={e => setSearch(e.target.value)} placeholder='Search...'/>
+          </li>
+          {filteredOptions.map(option => (
+
             <li
               key={option.value}
               className={`${css.option} ${
@@ -65,11 +74,13 @@ const CustomSelect = ({
               onClick={() => {
                 onChange(option.value);
                 setIsOpen(false);
+                setSearch('')
               }}
             >
               {option.label}
             </li>
           ))}
+
         </ul>
       )}
     </div>

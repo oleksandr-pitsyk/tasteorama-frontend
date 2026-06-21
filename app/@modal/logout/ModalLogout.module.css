@@ -1,0 +1,95 @@
+/* Mobile styles */
+
+.title {
+  font-weight: 600;
+  font-size: 32px;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 155%;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+}
+
+.cancelBtn {
+  height: 54px;
+  width: 100%;
+  max-width: 314px;
+  border: 1px solid black;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  background-color: transparent;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border 0.2s ease;
+}
+
+.cancelBtn:hover,
+.cancelBtn:focus {
+  background-color: #d9d9d9;
+  border: none;
+}
+
+.cancelBtn:active {
+  box-shadow:
+    0 0 0 6px rgba(78, 70, 180, 0.12),
+    0 0 0 2px white;
+  border: white;
+}
+
+.logoutBtn {
+  height: 54px;
+  width: 100%;
+  max-width: 314px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  color: white;
+  background-color: #c80000;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logoutBtn:hover,
+.logoutBtn:focus {
+  background-color: #a30000;
+}
+
+.logoutBtn:active {
+  box-shadow:
+    0 0 0 6px rgba(78, 70, 180, 0.12),
+    0 0 0 2px white;
+  border: 1px solid white;
+}
+
+/* Tablet and Desktop Styles */
+
+@media (min-width: 768px) {
+  .buttonContainer {
+    flex-direction: row-reverse;
+    gap: 27px;
+  }
+  .cancelBtn {
+    width: 164px;
+    max-width: 164px;
+  }
+
+  .logoutBtn {
+    width: 164px;
+    max-width: 164px;
+  }
+}

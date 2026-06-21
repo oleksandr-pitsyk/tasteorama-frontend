@@ -5,8 +5,20 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Footer.module.css';
 
+// Імпорт авторизації зі стору
+import { useAuthStore } from '@/lib/store/authStore';
+
 export default function Footer(): React.ReactElement {
+  // Отримання значення поточного року для вставки в Копірайт
   const currentYear = new Date().getFullYear();
+
+  // Отримання даних зі стану авторизації
+  // const user = useAuthStore(state => state.user);
+  // Отримання даних зі стану авторизації
+  // Функція -
+  const isOpenRegisterLoginForm = useAuthStore(state => state.isOpenRegisterLoginForm);
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  // const clearIsAuthenticated = useAuthStore(state => state.clearIsAuthenticated);
 
   return (
     <footer className={styles.footer}>
@@ -28,12 +40,17 @@ export default function Footer(): React.ReactElement {
 
         {/* Елементи навігації */}
         <nav className={styles.nav}>
-          <Link href="/recipes" className={styles.link}>
+          {/* Перехід на сторінку з рецептами - основна сторінка */}
+          <Link href="/" className={styles.link}>
             Recipes
           </Link>
-          <Link href="/profile" className={styles.link}>
-            Account
-          </Link>
+          {/* Перехід на сторінку профіля користувача. 
+          Якщо користувач НЕ авторизований, в результаті кліку по даному елементу повинно відкритись модальне вікно з елементами навігації на сторінки логіну та реєстрації. */}
+          {!isOpenRegisterLoginForm && (
+            <Link href={!isAuthenticated ? '/auth/login' : '/profile'} className={styles.link}>
+              Account
+            </Link>
+          )}
         </nav>
       </div>
     </footer>

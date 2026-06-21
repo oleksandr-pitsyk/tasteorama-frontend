@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: 'Tasteorama - Your Ultimate Recipe Companion',
     images: [
       {
-        url: 'file.svg',
+        url: 'favicon.svg',
         width: 1200,
         height: 630,
         alt: `Tasteorama picture`,
@@ -63,8 +63,10 @@ import AuthProvider from '@/components/AuthProvider/AuthProvider';
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -75,6 +77,7 @@ export default function RootLayout({
             <Header />
             {/* <main> */}
             {children}
+            {modal}
             {/* </main> */}
             <Footer />
           </AuthProvider>

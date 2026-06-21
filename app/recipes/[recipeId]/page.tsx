@@ -1,4 +1,5 @@
 import { getRecipeById } from '@/lib/api/clientApi';
+import RecipeDetails from '@/components/RecipeDetails/RecipeDetails';
 
 type Props = {
   params: Promise<{ recipeId: string }>;
@@ -6,18 +7,10 @@ type Props = {
 
 const RecipeViewPage = async ({ params }: Props) => {
   const { recipeId } = await params;
-  console.log('RecipeViewPage - recipeid:', recipeId);
-  // const recipeById = await getRecipeById('6462a8f74c3d0ddd28897fbc');
-  const recipe = await getRecipeById(recipeId);
+  const response = await getRecipeById(recipeId);
+  const recipe = response.recipe;
 
-  return (
-    <div>
-      RecipeViewPage
-      <p>Recipe by Id:</p>
-      <p>{recipe.data.title}</p>
-      <p>{recipe.data.description}</p>
-    </div>
-  );
+  return <RecipeDetails recipe={recipe} />;
 };
 
 export default RecipeViewPage;

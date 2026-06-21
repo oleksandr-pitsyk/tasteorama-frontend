@@ -12,9 +12,6 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9rem;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
 }
 
 .logoutButton:hover {
@@ -72,5 +69,11 @@
 
   .navigationItem:has(.akcentLink) {
     order: 1;
+  }
+
+  .activeLink {
+    border-bottom: 2px solid white;
+    padding-bottom: 4px;
+    transform: translateY(3px);
   }
 }

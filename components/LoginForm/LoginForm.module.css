@@ -62,7 +62,9 @@
   color: #000;
   background: #fff;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .input::placeholder {
@@ -187,7 +189,19 @@
   white-space: nowrap;
   z-index: 100;
 }
+.eyeIcon {
+  stroke-width: 1.5px;
+  fill: none;
+  transition:
+    stroke 0.2s,
+    fill 0.2s;
+  stroke-width: 0.75px;
+  stroke: #000;
+}
 
+.eyeBtn:hover .eyeIcon {
+  stroke: #9b6c43;
+}
 /* Tablet */
 @media (min-width: 768px) {
   .card {

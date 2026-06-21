@@ -16,6 +16,9 @@ type AuthStore = {
   user: User | null;
   setUser: (user: User) => void;
   clearIsAuthenticated: () => void;
+  isOpenRegisterLoginForm: boolean;
+  setIsOpenRegisterLoginForm: (open: boolean) => void;
+  // clearIsOpenRegisterLoginForm: () => void;
 };
 
 export const useAuthStore = create<AuthStore>()(set => ({
@@ -27,6 +30,13 @@ export const useAuthStore = create<AuthStore>()(set => ({
   clearIsAuthenticated: () => {
     set(() => ({ user: null, isAuthenticated: false }));
   },
+  isOpenRegisterLoginForm: false,
+  setIsOpenRegisterLoginForm: (open: boolean) => {
+    set(() => ({ isOpenRegisterLoginForm: open }));
+  },
+  // clearIsOpenRegisterLoginForm: () => {
+  //   set(() => ({ isOpenRegisterLoginForm: false }));
+  // },
 }));
 
 // Обгортаємо функцію створення стора функцією persist

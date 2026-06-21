@@ -2,7 +2,50 @@ import type { Category } from '@/types/category';
 import type { Ingredient } from '@/types/ingredient';
 import type { AddRecipeFormValues, CollectionResponse, CreateRecipeResponse } from './types';
 
-// GET-запит до колекції та повертає типізовані дані або помилку.
+type RawCollectionResponse<T> = {
+  message?: string;
+  data?: T[];
+  categories?: T[];
+  ingredients?: T[];
+};
+
+type RawCreateRecipeResponse = CreateRecipeResponse & {
+  id?: string;
+  _id?: string;
+  recipe?: {
+    id?: string;
+    _id?: string;
+  };
+};
+
+function extractRecipeId(payload: RawCreateRecipeResponse): string | null {
+  const id =
+    payload?.data?._id ??
+    payload?.data?.id ??
+    payload?._id ??
+    payload?.id ??
+    payload?.recipe?._id ??
+    payload?.recipe?.id;
+
+  return typeof id === 'string' && id.length > 0 ? id : null;
+}
+
+// парсить тіло відповіді  JSON
+async function safeParseJson<T>(res: Response): Promise<T | null> {
+  const text = await res.text();
+
+  if (!text) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    return null;
+  }
+}
+
+// запит
 async function fetchCollection<T>(
   url: string,
   errorMessage: string
@@ -13,15 +56,30 @@ async function fetchCollection<T>(
     throw new Error(errorMessage);
   }
 
-  return (await res.json()) as CollectionResponse<T>;
+  const data = await safeParseJson<RawCollectionResponse<T>>(res);
+
+  if (!data) {
+    throw new Error(errorMessage);
+  }
+
+  const items = data.data ?? data.categories ?? data.ingredients;
+
+  if (!Array.isArray(items)) {
+    throw new Error(errorMessage);
+  }
+
+  return {
+    message: data.message ?? 'OK',
+    data: items,
+  };
 }
 
-// Завантажує список категорій для селекту
+//  список категорій для селекту
 export async function getCategories(): Promise<CollectionResponse<Category>> {
   return fetchCollection<Category>('/api/categories', 'Не вдалося завантажити категорії');
 }
 
-// Завантажує список  інгредієнтів
+//  список інгредієнтів
 export async function getIngredients(): Promise<CollectionResponse<Ingredient>> {
   return fetchCollection<Ingredient>('/api/ingredients', 'Не вдалося завантажити інгредієнти');
 }
@@ -45,7 +103,8 @@ export async function createRecipe(values: AddRecipeFormValues): Promise<string>
     formData.append('thumb', values.thumb);
   }
 
-  const res = await fetch('/api/recipes/my', {
+  // бекенд приймає POST саме на /api/recipes
+  const res = await fetch('/api/recipes', {
     method: 'POST',
     body: formData,
   });
@@ -63,12 +122,6 @@ export async function createRecipe(values: AddRecipeFormValues): Promise<string>
     throw new Error(message);
   }
 
-  const recipeResponse = (await res.json()) as CreateRecipeResponse;
-  const recipeId = recipeResponse?.data?._id;
-
-  if (!recipeId) {
-    throw new Error('Рецепт створено, але не отримано id');
-  }
-
-  return recipeId;
+  const recipeResponse = (await res.json()) as RawCreateRecipeResponse;
+  return extractRecipeId(recipeResponse) ?? '';
 }

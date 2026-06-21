@@ -1,13 +1,27 @@
 /* ══════════════════════════════════════
-   BASE — резина від 320px
+   BASE — резина від 320px до 393px
 ══════════════════════════════════════ */
 .wrapper {
-  margin: 0 auto;
-  max-width: 1440px;
   padding: 24px 16px 48px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Заголовок — завжди над картинкою */
+/* Mobile: картинка вище заголовку */
+.title {
+  order: 2;
+}
+.imageWrapper {
+  order: 1;
+}
+.infoRowMobile {
+  order: 3;
+}
+.desktopLayout {
+  order: 4;
+}
+
+/* Заголовок */
 .title {
   font-weight: 600;
   font-size: 28px;
@@ -16,7 +30,7 @@
   margin: 0 0 16px;
 }
 
-/* ── Фото mobile ── */
+/* ── Фото mobile — резина до 393px ── */
 .imageWrapper {
   position: relative;
   width: 100%;
@@ -31,7 +45,7 @@
   object-fit: cover;
 }
 
-/* ── General info mobile — колонка ── */
+/* ── Mobile: infoCard + кнопка — колонка ── */
 .infoRowMobile {
   display: flex;
   flex-direction: column;
@@ -75,7 +89,7 @@
   color: #000;
 }
 
-/* ── Save button ── */
+/* ── Save button mobile — резина до 393px ── */
 .saveBtn {
   display: flex;
   align-items: center;
@@ -171,21 +185,72 @@
 }
 
 /* ══════════════════════════════════════
-   TABLET — 768px
+   393px — фіксовані розміри
+══════════════════════════════════════ */
+@media (min-width: 393px) {
+  .imageWrapper {
+    width: 361px;
+    height: 276px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .saveBtn {
+    width: 361px;
+  }
+
+  .infoRowMobile {
+    width: 361px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .textContent {
+    width: 361px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .title {
+    width: 361px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 16px;
+  }
+}
+
+/* ══════════════════════════════════════
+   TABLET — 768px — строгі розміри
 ══════════════════════════════════════ */
 @media (min-width: 768px) {
   .wrapper {
     padding: 32px 40px 64px;
   }
 
+  /* Скидаємо order — заголовок повертається вище картинки */
+  .title {
+    order: unset;
+  }
+  .imageWrapper {
+    order: unset;
+  }
+  .infoRowMobile {
+    order: unset;
+  }
+  .desktopLayout {
+    order: unset;
+  }
+
   .title {
     font-size: 36px;
     margin-bottom: 24px;
+    width: 704px;
   }
 
+  /* Фото tablet — строго 704x624 */
   .imageWrapper {
-    width: 100%;
-    height: 400px;
+    width: 704px;
+    height: 624px;
     background-color: transparent;
     margin-bottom: 24px;
     border-radius: 12px;
@@ -195,20 +260,23 @@
     object-fit: cover;
   }
 
-  /* Рядок: бежевий + кнопка поруч */
+  /* Tablet: infoCard + кнопка — рядок */
   .infoRowMobile {
     flex-direction: row;
     align-items: flex-start;
     gap: 16px;
     margin-bottom: 40px;
+    width: 704px;
   }
 
   .infoCard {
     flex: 1;
   }
 
+  /* Кнопка tablet — строго 249x56 */
   .saveBtn {
     width: 249px;
+    height: 56px;
     flex-shrink: 0;
     align-self: flex-start;
   }
@@ -220,23 +288,32 @@
   .sectionTitle {
     font-size: 32px;
   }
+
+  .textContent {
+    width: 704px;
+  }
 }
 
 /* ══════════════════════════════════════
-   DESKTOP — 1440px
+   DESKTOP — 1440px — строгі розміри
+   Контент не резиновий після 1440px
 ══════════════════════════════════════ */
 @media (min-width: 1440px) {
   .wrapper {
+    width: 1440px;
+    margin: 0 auto;
     padding: 48px 108px;
   }
 
   .title {
     font-size: 48px;
     margin-bottom: 32px;
+    width: auto;
   }
 
+  /* Фото desktop — строго 1225x624 з сірим фоном */
   .imageWrapper {
-    width: 100%;
+    width: 1225px;
     height: 624px;
     background-color: #2b2d30;
     border-radius: 12px;
@@ -247,7 +324,7 @@
     object-fit: contain;
   }
 
-  /* Ховаємо mobile infoRow */
+  /* Ховаємо mobile/tablet infoRow */
   .infoRowMobile {
     display: none;
   }
@@ -259,13 +336,14 @@
     gap: 24px;
   }
 
+  /* Лівий стовпець — строго 808px */
   .textContent {
     width: 808px;
     flex-shrink: 0;
     gap: 40px;
   }
 
-  /* Aside — видимий тільки на desktop */
+  /* Aside — строго 393px, тільки на desktop */
   .aside {
     display: flex;
     flex-direction: column;
@@ -280,6 +358,7 @@
     width: 393px;
   }
 
+  /* Кнопка desktop — строго 393x56 */
   .saveBtn {
     width: 393px;
     height: 56px;

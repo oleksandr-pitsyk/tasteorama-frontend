@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     // Парсимо тіло запиту
     const body = await req.json();
     // Виконуємо запит до API
-    const apiRes = await api.post('/api/auth/login', body);
+    const apiRes = await api.post('/auth/login', body);
     // Ініціалізуємо cookieStore
     const cookieStore = await cookies();
     // Дістаємо set-cookie з хедерів відповіді

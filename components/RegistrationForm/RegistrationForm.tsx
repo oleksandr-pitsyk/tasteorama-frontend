@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-/* import Image from 'next/image'; */
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import toast, { Toaster } from 'react-hot-toast';
 import { register } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
 import { ApiError } from '@/app/api/api';
@@ -62,10 +62,8 @@ const PasswordInput = ({
         aria-label={show ? 'Hide password' : 'Show password'}
         className={css.eyeBtn}
       >
-        {/* Добавили класс css.eyeIcon */}
         <svg width={24} height={24} className={css.eyeIcon}>
-          {/* Добавили правильный путь к спрайту */}
-          <use href={show ? '/sprite.svg#open-eye' : '/sprite.svg#close-eye'} />
+          <use xlinkHref={show ? '/sprite.svg#open-eye' : '/sprite.svg#close-eye'} />
         </svg>
       </button>
     </div>
@@ -74,18 +72,29 @@ const PasswordInput = ({
 
 const RegistrationForm = () => {
   const router = useRouter();
+
+  // Отримання даних зі стану авторизації
+  // Функція - стан відкритого вікна реєстрації або логінізації
+  const setIsOpenRegisterLoginForm = useAuthStore(state => state.setIsOpenRegisterLoginForm);
+
+  useEffect(() => {
+    // При монтуванні компонента
+    setIsOpenRegisterLoginForm(true);
+
+    return () => {
+      // При розмонтуванні компонента (очистки)
+      setIsOpenRegisterLoginForm(false);
+    };
+  }, []);
+
   const setUser = useAuthStore(state => state.setUser);
   const [isLoading, setIsLoading] = useState(false);
-  const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null);
-
-  const showToast = (msg: string, ok: boolean) => {
-    setToast({ msg, ok });
-    setTimeout(() => setToast(null), 3000);
-  };
 
   const formik = useFormik({
     initialValues: { email: '', name: '', password: '', confirmPassword: '' },
     validationSchema: registerSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
     onSubmit: async (values, { setSubmitting }) => {
       setIsLoading(true);
       try {
@@ -97,14 +106,21 @@ const RegistrationForm = () => {
 
         setUser(user);
         formik.resetForm();
+        toast.success('Registration successful!');
         router.push('/');
       } catch (error) {
-        showToast(
-          (error as ApiError).response?.data?.error ??
-            (error as ApiError).message ??
-            'Registration failed',
-          false
-        );
+        // форма залишається заповненою — resetForm НЕ викликаємо
+        const status = (error as ApiError).response?.status;
+
+        if (status === 409 || status === 400) {
+          toast.error('A user with this email is already registered');
+        } else {
+          toast.error(
+            (error as ApiError).response?.data?.error ??
+              (error as ApiError).message ??
+              'Registration failed'
+          );
+        }
       } finally {
         setIsLoading(false);
         setSubmitting(false);
@@ -119,6 +135,8 @@ const RegistrationForm = () => {
 
   return (
     <>
+      <Toaster position="top-right" />
+
       <div className={css.card}>
         <h2 className={css.title}>Register</h2>
         <p className={css.subtitle}>
@@ -199,7 +217,11 @@ const RegistrationForm = () => {
             )}
           </div>
 
-          <button type="submit" disabled={isLoading} className={css.submitBtn}>
+          <button
+            type="submit"
+            disabled={isLoading || (formik.submitCount > 0 && !formik.isValid)}
+            className={css.submitBtn}
+          >
             Create account
           </button>
         </form>
@@ -211,12 +233,6 @@ const RegistrationForm = () => {
           </Link>
         </div>
       </div>
-
-      {toast && (
-        <div className={css.toast} style={{ background: toast.ok ? '#2e7d32' : '#c80000' }}>
-          {toast.msg}
-        </div>
-      )}
     </>
   );
 };

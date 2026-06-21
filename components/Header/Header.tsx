@@ -2,11 +2,13 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import css from './Header.module.css';
 import AuthNavigation from '@/components/AuthNavigation/AuthNavigation';
 
 const Header = () => {
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => setIsMenuOpen(prev => !prev);
   const closeMenu = () => setIsMenuOpen(false);
@@ -37,6 +39,18 @@ const Header = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.documentElement.style.overflow = '';
+    }
+
+    return () => {
+      document.documentElement.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+
   return (
     <header className={css.header}>
       <Link href="/" aria-label="Home" className={css.headerLink}>
@@ -64,7 +78,11 @@ const Header = () => {
       <nav aria-label="Main Navigation" className={`${css.nav} ${isMenuOpen ? css.navOpen : ''}`}>
         <ul className={css.navigation}>
           <li className={css.navigationItem}>
-            <Link onClick={closeMenu} href="/" className={css.navigationLink}>
+            <Link
+              onClick={closeMenu}
+              href="/"
+              className={`${css.navigationLink} ${pathname === '/' ? css.activeLink : ''}`}
+            >
               Recipes
             </Link>
           </li>

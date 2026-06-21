@@ -17,13 +17,19 @@ export async function POST() {
     // Передаємо поточні cookie до API
     const cookieStore = await cookies();
 
-    const accessToken = cookieStore.get('accessToken')?.value;
-    const refreshToken = cookieStore.get('refreshToken')?.value;
-    const sessionId = cookieStore.get('sessionId')?.value;
+    // const accessToken = cookieStore.get('accessToken')?.value;
+    // const refreshToken = cookieStore.get('refreshToken')?.value;
+    // const sessionId = cookieStore.get('sessionId')?.value;
 
-    await api.post('/api/auth/logout', null, {
+    // await api.post('/api/auth/logout', null, {
+    //   headers: {
+    //     Cookie: `sessionId=${sessionId}; accessToken=${accessToken}; refreshToken=${refreshToken}`,
+    //   },
+    // });
+
+    await api.post('/auth/logout', null, {
       headers: {
-        cookie: `sessionId=${sessionId}; accessToken=${accessToken}; refreshToken=${refreshToken}`,
+        Cookie: cookieStore.toString(),
       },
     });
 

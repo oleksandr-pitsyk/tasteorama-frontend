@@ -30,6 +30,7 @@ export interface Recipe {
   description: string;
   thumb: string;
   time: string;
+  calories: string;
   ingredients: {
     id: string;
     measure: string;

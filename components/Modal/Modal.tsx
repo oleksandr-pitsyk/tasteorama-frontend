@@ -2,10 +2,9 @@
 // Компонент Modal - універсальний компонент модального вікна,
 //                   який може відображати будь-який вміст, переданий через children
 // ==========================================================================================
-
 // Компонент Modal використовується в компоненті App
 // Modal отримує два пропси:
-//      - incluse - назва компонента, який буде в модальному вікні
+//      - children - назва компонента, який буде в модальному вікні
 //      - onClose - функцію закриття модального вікна.
 // ------------------------------------------------------------------------------------------
 
@@ -15,7 +14,7 @@
 // зазвичай безпосередньо в <body>, іноді в інший блок в корні за id
 import { createPortal } from 'react-dom';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // Імпорт інтерфейса для одного фільму
 // import type { Note } from '@/types/note';
@@ -57,25 +56,45 @@ export default function Modal({ children, onClose }: ModalProps) {
     // Додаємо слухач клавіатури на весь документ
     document.addEventListener('keydown', handleKeyDown);
     // Додаємо у useEffect код блокуання скролу при відкритті модалки
-    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
 
     //  При розмонтуванні компонента додаємо наступне :
     return () => {
       // Видалення слухача клавіатури
       document.removeEventListener('keydown', handleKeyDown);
       // Видаляємо з useEffect код блокування скролу
-      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     };
   }, [onClose]);
+
+  // ================================================
+  // mounted = false на сервері і при першому рендері в браузері
+  // mounted = true лише ПІСЛЯ того, як компонент реально з'явився в DOM
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // рядок-коментар попередження від лінтера !!!!!!
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  // Поки компонент не змонтований — нічого не рендеримо.
+  // Це і вирішує проблему: на сервері document.body просто не викликається.
+  if (!mounted) {
+    return null;
+  }
+  // ===============================================
 
   // Створення розмітки компонента в кінці елемента document.body
   return createPortal(
     <div className={css.backdrop} onClick={handleBackdropClick} role="dialog" aria-modal="true">
       <div className={css.modal}>
-        {/* Вміст модального вікна*/}
-        {/* Тут рендериться переданий вміст із пропса children */}
+        <button className={css.closeBtn} onClick={onClose} aria-label="Close modal">
+          <svg width={24} height={24} className={css.closeIcon}>
+            <use href="/sprite.svg#close-button" />
+          </svg>
+        </button>
         {children}
-        {/* ================================================== */}
       </div>
     </div>,
     document.body

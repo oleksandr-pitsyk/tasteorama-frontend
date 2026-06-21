@@ -13,21 +13,20 @@ type Props = {
 export async function GET(request: Request, { params }: Props) {
   try {
     // const cookieStore = await cookies();
-const { recipeId } = await params;
-    const res = await api(`api/recipes/${recipeId}`);
- 
+    const { recipeId } = await params;
+    const res = await api(`/recipes/${recipeId}`);
+
     // const res = await api(`api/recipes/${recipeId}`, {
     //   headers: {
     //     Cookie: cookieStore.toString(),
     //   },
     // });
 
-
     // NextResponse – це розширення стандартного Web Response з додатковими методами Next.js
     // і дозволяє легко повертати JSON-дані.
     // Повертаємо те, що відповів бекенд через метод json
     // return NextResponse.json(data);
-        return NextResponse.json(res.data, { status: res.status });
+    return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     // У випадку помилки — повертаємо обʼєкт з помилкою
     return NextResponse.json(

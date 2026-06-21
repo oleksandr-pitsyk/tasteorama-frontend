@@ -5,9 +5,10 @@
 // import Image from 'next/image';
 // ------------------------------------------------------------------------------------------
 
-// Імпорт hook 
+// Імпорт hook
 
 import { useRecipesList } from '@/hooks/useRecipesList';
+import SearchResultsTitle from '@/components/RecipesList/SeacrhResultsTitle';
 
 // Імпорт модуля зі стилями компонента
 
@@ -18,23 +19,17 @@ import css from './MainPage.module.css';
 import Hero from '@/components/Hero/Hero';
 import Filters from '@/components/Filters/Filters';
 import RecipesList from '@/components/RecipesList/RecipesList';
-// import RecipeCard from '@/components/RecipeCard/RecipeCard';
-// import LoadMoreBtn from '@/components/LoadMoreBtn/LoadMoreBtn';
 
-// import HeaderMy from '@/components/HeaderMy/HeaderMy';
-// import MyTest from '@/components/MyTest/MyTest';
 
 function MainPage() {
-  const { totalItems } = useRecipesList()
+  const { totalItems } = useRecipesList();
   return (
     <main className={css.container}>
       <Hero />
-      <Filters totalItems={totalItems}/>
+      <SearchResultsTitle />
+      <Filters totalItems={totalItems} />
       <RecipesList />
-      {/* <RecipeCard /> */}
-      {/* <LoadMoreBtn /> */}
-      {/* <HeaderMy /> */}
-      {/* <MyTest /> */}
+
     </main>
   );
 }

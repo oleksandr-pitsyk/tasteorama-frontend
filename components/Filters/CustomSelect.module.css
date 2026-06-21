@@ -3,9 +3,30 @@
   width: 100%;
 }
 
+.searchFilter {
+  width: 100%;
+  height: 33px;
+
+  padding: 0 16px;
+
+  border: 1px solid var(--light-gray);
+  border-radius: 4px;
+  outline: none;
+
+  font-family: var(--font-family);
+  font-size: 12px;
+
+  box-sizing: border-box;
+}
+
+.searchItem {
+  list-style: none;
+  padding: 16px;
+}
+
 .selectButton {
   width: 100%;
-  height: 48px;
+  height: 33px;
 
   padding: 0 16px;
 
@@ -13,10 +34,9 @@
   justify-content: space-between;
   align-items: center;
 
-  background-color: #fff;
-
-  border: 1px solid #d9d9d9;
-  border-radius: 8px;
+  background-color: var(--white);
+  border: 1px solid var(--light-gray);
+  border-radius: 4px;
 
   cursor: pointer;
 }
@@ -24,7 +44,7 @@
 .buttonLabel {
   font-family: var(--font-family);
   font-weight: 400;
-  color: #333;
+  color: var(--gray);
 }
 
 .arrow {
@@ -43,7 +63,7 @@
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 2px);
+  top: calc(100% + 8px);
   left: 0;
 
   width: 100%;
@@ -51,7 +71,7 @@
   overflow-y: auto;
   overflow-x: hidden;
 
-  background-color: #fff;
+  background-color: var(--white);
 
   border-radius: 8px;
 
@@ -91,7 +111,7 @@
 }
 
 .option:hover {
-  background-color: #d3d3d3;
+  background-color: var(--light-gray-2);
 }
 
 .optionSelected {
@@ -104,12 +124,11 @@
     height: 40px;
     padding: 0 12px;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .buttonLabel {
-    font-size: 14px;
-    color: #999;
+    font-size: 16px;
   }
 
   .arrow {
@@ -122,19 +141,13 @@
   .selectButton {
     width: 179px;
     height: 33px;
-
     padding: 0 8px;
-
     border-radius: 4px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
 
   .buttonLabel {
     font-size: 14px;
-    color: #999;
+    color: var(--gray);
     line-height: 155%;
   }
 
