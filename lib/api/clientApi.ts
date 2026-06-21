@@ -142,11 +142,6 @@ interface GetRecipesHttpResponse {
   data: Recipe[]; // Відповідь містить масив рецептів у властивості data
 }
 
-// Типізація відповіді Get-запиту від Axios - один рецепт за Id - згідно структури бекенда :
-interface GetRecipeHttpResponse {
-  data?: Recipe;
-  recipe?: Recipe;
-}
 // ==========================================================================================
 // getRecipes : виконує запит для отримання колекції рецептів
 // ==========================================================================================
@@ -207,17 +202,27 @@ export async function getRecipes(
 // ==========================================================================================
 // Структура запиту :
 
-export async function getRecipeById(recipeId: string): Promise<Recipe> {
+// Типізація відповіді Get-запиту від Axios - один рецепт за Id - згідно структури бекенда :
+interface GetRecipeHttpResponse {
+  // ========== Дима =====================================
+  // data?: Recipe;
+  // recipe?: Recipe;
+  // =====================================================
+  recipe: Recipe;
+}
+
+export async function getRecipeById(recipeId: string): Promise<GetRecipeHttpResponse> {
   // Виконуємо HTTP-запит
   const response = await nextServer.get<GetRecipeHttpResponse>(`/recipes/${recipeId}`);
 
-  const recipe = response.data.data ?? response.data.recipe;
-
-  if (!recipe) {
-    throw new Error('Не вдалося отримати рецепт');
-  }
-
-  return recipe;
+  return response.data;
+  // ========== Дима =====================================
+  // const recipe = response.data.data ?? response.data.recipe;
+  // if (!recipe) {
+  //   throw new Error('Не вдалося отримати рецепт');
+  // }
+  // return recipe;
+  // =======================================================
 }
 
 // ==========================================================================================
@@ -262,9 +267,8 @@ export async function getFavoriteRecipes(
   }
 }
 
-
 // ==========================================================================================
-// addRecipeToFavorites : додати рецепт до улюблених рецептів користувача 
+// addRecipeToFavorites : додати рецепт до улюблених рецептів користувача
 // (приватний маршрут POST /api/recipes/favorites)
 // ==========================================================================================
 export const addRecipeToFavorites = async (recipeId: string): Promise<void> => {
@@ -272,7 +276,7 @@ export const addRecipeToFavorites = async (recipeId: string): Promise<void> => {
 };
 
 // ==========================================================================================
-// removeRecipeFromFavorites : видалити рецепт з улюблених рецептів користувача 
+// removeRecipeFromFavorites : видалити рецепт з улюблених рецептів користувача
 // (приватний маршрут DELETE /api/recipes/favorites)
 // ==========================================================================================
 export const removeRecipeFromFavorites = async (recipeId: string): Promise<void> => {
