@@ -13,6 +13,7 @@ import SaveRecipeNotAuthorized from '@/components/SaveRecipeNotAuthorized/SaveRe
 
 import { useFavorite } from '../../hooks/useFavorite';
 import css from './RecipeCard.module.css';
+import modalCss from '@/app/@modal/logout/ModalLogout.module.css';
 
 import type { Recipe } from '@/types/recipe';
 
@@ -28,6 +29,7 @@ const RecipeCard = ({ recipe, initialIsFavorite = false, recipeType }: RecipeCar
   const isOwn = recipeType === 'own';
 
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   const queryClient = useQueryClient();
@@ -47,10 +49,12 @@ const RecipeCard = ({ recipe, initialIsFavorite = false, recipeType }: RecipeCar
     toggleFavorite();
   };
 
-  const handleDeleteClick = async () => {
-    if (!window.confirm('Delete this recipe?')) {
-      return;
-    }
+  const handleDeleteClick = () => {
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    setShowDeleteModal(false);
 
     try {
       setIsDeleting(true);
@@ -147,6 +151,22 @@ const RecipeCard = ({ recipe, initialIsFavorite = false, recipeType }: RecipeCar
       {showAuthModal && (
         <Modal onClose={() => setShowAuthModal(false)}>
           <SaveRecipeNotAuthorized />
+        </Modal>
+      )}
+
+      {/* Модальне вікно підтвердження видалення рецепту */}
+      {showDeleteModal && (
+        <Modal onClose={() => setShowDeleteModal(false)}>
+          <h2 className={modalCss.title}>Are you sure?</h2>
+          <p className={modalCss.text}>Delete this recipe?</p>
+          <div className={modalCss.buttonContainer}>
+            <button className={modalCss.cancelBtn} onClick={() => setShowDeleteModal(false)}>
+              Cancel
+            </button>
+            <button className={modalCss.logoutBtn} onClick={confirmDelete}>
+              Delete
+            </button>
+          </div>
         </Modal>
       )}
     </>

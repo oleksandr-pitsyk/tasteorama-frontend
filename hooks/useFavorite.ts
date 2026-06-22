@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { isAxiosError } from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { addRecipeToFavorites, removeRecipeFromFavorites } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
@@ -16,6 +17,7 @@ export const useFavorite = ({ recipeId }: UseFavoriteProps) => {
   const user = useAuthStore(state => state.user);
   const setUser = useAuthStore(state => state.setUser);
   const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   const isFavorite = user?.favorites?.some(f => f.recipeId === recipeId) ?? false;
 
@@ -40,6 +42,9 @@ export const useFavorite = ({ recipeId }: UseFavoriteProps) => {
           favorites: [...user.favorites, { _id: recipeId, recipeId }],
         });
       }
+
+      // Оновлюємо списки рецептів, щоб на вкладці "Favorites" знята картка зникла одразу
+      await queryClient.invalidateQueries({ queryKey: ['recipes'] });
     } catch (error) {
       const status = isAxiosError(error) ? error.response?.status : undefined;
 
