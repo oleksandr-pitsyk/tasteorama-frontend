@@ -1,37 +1,39 @@
-// Файл route.ts повинен експортувати функції з назвами, що збігаються з HTTP-методами,
-// які ми хочемо обробляти (GET, POST, PUT тощо).
-// У цьому випадку ми експортуємо функцію getCategories, яка буде обробляти GET-запити до маршруту /api/categories.
-
-// Імпортуємо необхідні модулі та типи
 import { NextResponse } from 'next/server';
 import { api, ApiError } from '../../api';
-import { parse } from 'cookie';
 import { cookies } from 'next/headers';
 
 type Props = {
   params: Promise<{ recipeId: string }>;
 };
 
-export async function DELETE(request: Request, { params }: Props) {
+// GET /api/recipes/:recipeId — деталі рецепту (публічний маршрут)
+export async function GET(_request: Request, { params }: Props) {
+  try {
+    const { recipeId } = await params;
+    const res = await api.get(`/recipes/${recipeId}`);
+    return NextResponse.json(res.data, { status: res.status });
+  } catch (error) {
+    return NextResponse.json(
+      { error: (error as ApiError).response?.data?.error ?? (error as ApiError).message },
+      { status: (error as ApiError).status }
+    );
+  }
+}
+
+// DELETE /api/recipes/:recipeId — видалення власного рецепту (приватний маршрут)
+export async function DELETE(_request: Request, { params }: Props) {
   try {
     const cookieStore = await cookies();
     const { recipeId } = await params;
-    const res = await api(`/recipes/${recipeId}`, {
+    const res = await api.delete(`/recipes/${recipeId}`, {
       headers: {
         Cookie: cookieStore.toString(),
       },
     });
-
-    // NextResponse – це розширення стандартного Web Response з додатковими методами Next.js
-    // і дозволяє легко повертати JSON-дані.
-    // Повертаємо те, що відповів бекенд через метод json - return NextResponse.json(data);
-    return NextResponse.json(res.data);
+    return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
-    // У випадку помилки — повертаємо обʼєкт з помилкою
     return NextResponse.json(
-      {
-        error: (error as ApiError).response?.data?.error ?? (error as ApiError).message,
-      },
+      { error: (error as ApiError).response?.data?.error ?? (error as ApiError).message },
       { status: (error as ApiError).status }
     );
   }

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { isAxiosError } from 'axios';
 
 import { addRecipeToFavorites, removeRecipeFromFavorites } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
@@ -39,10 +40,8 @@ export const useFavorite = ({ recipeId }: UseFavoriteProps) => {
           favorites: [...user.favorites, { _id: recipeId, recipeId }],
         });
       }
-    } catch (error: any) {
-      console.error('Toggle favorite failed:', error);
-
-      const status = error?.response?.status;
+    } catch (error) {
+      const status = isAxiosError(error) ? error.response?.status : undefined;
 
       if (status === 404) {
         toast.error(isFavorite ? 'Recipe not found in favorites' : 'Recipe not found');

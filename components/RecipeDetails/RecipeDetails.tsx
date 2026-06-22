@@ -52,7 +52,7 @@ export default function RecipeDetails({ recipe }: Props) {
       </div>
       <div className={styles.infoItem}>
         <span className={styles.infoLabel}>Caloric content:</span>
-        <span className={styles.infoValue}>—</span>
+        <span className={styles.infoValue}>{recipe.calories ? `${recipe.calories} cals` : 'N/A'}</span>
       </div>
     </div>
   );

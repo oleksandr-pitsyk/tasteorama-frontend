@@ -8,7 +8,7 @@ type Props = {
   params: Promise<{ recipeId: string }>;
 };
 
-// POST /api/recipes/favorites/:recipeId — додати рецепт до улюблених
+
 export async function POST(_request: NextRequest, { params }: Props) {
   try {
     const { recipeId } = await params;
@@ -35,7 +35,6 @@ export async function POST(_request: NextRequest, { params }: Props) {
   }
 }
 
-// DELETE /api/recipes/favorites/:recipeId — видалити рецепт з улюблених
 export async function DELETE(_request: NextRequest, { params }: Props) {
   try {
     const { recipeId } = await params;

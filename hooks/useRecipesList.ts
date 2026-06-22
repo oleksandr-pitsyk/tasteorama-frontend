@@ -14,7 +14,6 @@ export function useRecipesList(recipeType?: 'own' | 'favorites') {
   const isProfileMode = recipeType === 'own' || recipeType === 'favorites';
 
   const query = useInfiniteQuery({
-    // У профілі ключ залежить від recipeType, на головній — від фільтрів
     queryKey: isProfileMode
       ? ['recipes', recipeType]
       : ['recipes', { search, category, ingredient }],

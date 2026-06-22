@@ -75,10 +75,7 @@ export const checkSession = async () => {
 // *********************************************************************************
 // Робота з категоріями
 // *********************************************************************************
-// Типізація відповіді Get-запиту від Axios - згідно структури бекенда :
-// interface GetCategoriesHttpResponse {
-//   data: Category[]; // Відповідь містить масив категорій у властивості data
-// }
+// Типізація відповіді Get-запиту від Axios 
 // ==========================================================================================
 // getCategories : виконує запит для отримання колекції категорій із сервера.
 // ==========================================================================================
@@ -103,10 +100,8 @@ export async function getCategories(): Promise<Category[]> {
 // Робота з інгредієнтами
 // *********************************************************************************
 
-// Типізація відповіді Get-запиту від Axios - згідно структури бекенда :
-// interface GetCategoriesHttpResponse {
-//   data: Ingredient[]; // Відповідь містить масив категорій у властивості data
-// }
+// Типізація відповіді Get-запиту від Axios
+
 // ==========================================================================================
 // getIngredients : виконує запит для отримання колекції інгредієнтів із сервера.
 // ==========================================================================================
@@ -289,7 +284,14 @@ export async function getRecipeById(recipeId: string): Promise<GetRecipeHttpResp
 }
 
 // ==========================================================================================
-// getMyRecipes : власні рецепти користувача (приватний маршрут /api/recipes/my)
+// deleteRecipe : видалення власного рецепту
+// ==========================================================================================
+export const deleteRecipe = async (recipeId: string): Promise<void> => {
+  await nextServer.delete(`/recipes/${recipeId}`);
+};
+
+// ==========================================================================================
+// getMyRecipes : власні рецепти користувача
 // ==========================================================================================
 export async function getMyRecipes(
   page: number = 1,
@@ -301,8 +303,7 @@ export async function getMyRecipes(
     });
     return response.data;
   } catch (error) {
-    // Бекенд повертає 404, якщо у користувача ще немає рецептів.
-    // Трактуємо це як порожній список, а не як помилку.
+
     if (isAxiosError(error) && error.response?.status === 404) {
       return { page, perPage, totalItems: 0, totalPages: 0, data: [] };
     }
@@ -311,7 +312,7 @@ export async function getMyRecipes(
 }
 
 // ==========================================================================================
-// getFavoriteRecipes : улюблені рецепти користувача (приватний маршрут /api/recipes/favorites)
+// getFavoriteRecipes : улюблені рецепти користувача
 // ==========================================================================================
 export async function getFavoriteRecipes(
   page: number = 1,
@@ -332,7 +333,6 @@ export async function getFavoriteRecipes(
 
 // ==========================================================================================
 // addRecipeToFavorites : додати рецепт до улюблених рецептів користувача
-// (приватний маршрут POST /api/recipes/favorites)
 // ==========================================================================================
 export const addRecipeToFavorites = async (recipeId: string): Promise<void> => {
   await nextServer.post(`/recipes/favorites/${recipeId}`);
@@ -340,7 +340,7 @@ export const addRecipeToFavorites = async (recipeId: string): Promise<void> => {
 
 // ==========================================================================================
 // removeRecipeFromFavorites : видалити рецепт з улюблених рецептів користувача
-// (приватний маршрут DELETE /api/recipes/favorites)
+
 // ==========================================================================================
 export const removeRecipeFromFavorites = async (recipeId: string): Promise<void> => {
   await nextServer.delete(`/recipes/favorites/${recipeId}`);
@@ -354,11 +354,6 @@ export async function deleteMyRecipe(recipeId: string): Promise<Recipe> {
     const response = await nextServer.delete<Recipe>(`/recipes/${recipeId}`);
     return response.data;
   } catch (error) {
-    // // Бекенд повертає 404, якщо у користувача  рецептів.
-    // // Трактуємо це як порожній список, а не як помилку.
-    // if (isAxiosError(error) && error.response?.status === 404) {
-    //   return { page, perPage, totalItems: 0, totalPages: 0, data: [] };
-    // }
     throw error;
   }
 }

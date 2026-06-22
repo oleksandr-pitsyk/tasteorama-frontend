@@ -3,8 +3,11 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useAuthStore } from '@/lib/store/authStore';
+import { deleteRecipe } from '@/lib/api/clientApi';
 import Modal from '@/components/Modal/Modal';
 import SaveRecipeNotAuthorized from '@/components/SaveRecipeNotAuthorized/SaveRecipeNotAuthorized';
 
@@ -25,7 +28,9 @@ const RecipeCard = ({ recipe, initialIsFavorite = false, recipeType }: RecipeCar
   const isOwn = recipeType === 'own';
 
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  const queryClient = useQueryClient();
 
   const { isFavorite, isLoading, toggleFavorite } = useFavorite({
     recipeId: _id,
@@ -41,8 +46,18 @@ const RecipeCard = ({ recipe, initialIsFavorite = false, recipeType }: RecipeCar
     toggleFavorite();
   };
 
-  const handleDeleteClick = () => {
-    // TODO: підключити видалення власного рецепту
+  const handleDeleteClick = async () => {
+    try {
+      setIsDeleting(true);
+      await deleteRecipe(_id);
+      // Оновлюємо списки рецептів, щоб видалена картка зникла
+      await queryClient.invalidateQueries({ queryKey: ['recipes'] });
+      toast.success('Recipe deleted');
+    } catch {
+      toast.error('Failed to delete recipe');
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -79,7 +94,7 @@ const RecipeCard = ({ recipe, initialIsFavorite = false, recipeType }: RecipeCar
 
         <div className={css.desBox}>
           <p>{description}</p>
-          <p>{calories ? `~${calories} cals` : 'N/A'}</p>
+          <p>{calories ? `Approximately ${calories} kcal per serving` : 'N/A'}</p>
         </div>
 
         <div className={css.btnBox}>
@@ -91,12 +106,17 @@ const RecipeCard = ({ recipe, initialIsFavorite = false, recipeType }: RecipeCar
             <button
               type="button"
               onClick={handleDeleteClick}
+              disabled={isDeleting}
               className={css.deleteBtn}
               aria-label="Delete recipe"
             >
-              <svg className={css.saveIcon} aria-hidden="true">
-                <use href="/sprite.svg#trash" />
-              </svg>
+              {isDeleting ? (
+                <span className={css.loader} aria-hidden="true" />
+              ) : (
+                <svg className={css.saveIcon} aria-hidden="true">
+                  <use href="/sprite.svg#trash" />
+                </svg>
+              )}
             </button>
           ) : (
             <button
