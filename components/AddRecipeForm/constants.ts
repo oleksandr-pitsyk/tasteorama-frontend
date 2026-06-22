@@ -8,7 +8,7 @@ export const initialValues: AddRecipeFormValues = {
   category: '',
   ingredients: [],
   selectedIngredientId: '',
-  selectedIngredientMeasure: '',
+  selectedIngredientMeasure: "0",
   instructions: '',
   thumb: null,
 };

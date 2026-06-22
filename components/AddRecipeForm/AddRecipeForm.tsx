@@ -11,6 +11,7 @@ import { initialValues } from './constants';
 import { buildNextIngredients, getVisibleIngredients } from './helpers';
 import type { AddRecipeFormValues } from './types';
 import { addRecipeValidationSchema } from './validationSchema';
+import CustomSelect from '@/components/Filters/CustomSelect';
 
 const AddRecipeForm = () => {
   const router = useRouter();
@@ -136,24 +137,22 @@ const AddRecipeForm = () => {
                       <label className={css.label} htmlFor="selectedIngredientId">
                         Name
                       </label>
-                      <Field
-                        as="select"
-                        id="selectedIngredientId"
-                        name="selectedIngredientId"
-                        className={`${css.input} ${css.selectInput} ${
-                          !values.selectedIngredientId ? css.selectPlaceholder : ''
-                        }`}
-                        disabled={ingredientsLoading}
-                      >
-                        <option value="" disabled hidden>
-                          Broccoli
-                        </option>
-                        {ingredients.map(ingredient => (
-                          <option key={ingredient._id} value={ingredient._id}>
-                            {ingredient.name}
-                          </option>
-                        ))}
-                      </Field>
+                      <div className={css.selectWrapper}>
+                        <CustomSelect
+                          value={values.selectedIngredientId}
+                          placeholder="Ingredient"
+                          wrapperClassName={css.selectWrapper}
+                          buttonClassName={css.ingredientSelect}
+                          labelClassName={css.recipeSelectLabel}
+                          options={ingredients.map(ingredient => ({
+                            value: ingredient._id,
+                            label: ingredient.name,
+                          }))}
+                          onChange={value => {
+                            setFieldValue('selectedIngredientId', value);
+                          }}
+                        />
+                      </div>
                     </div>
 
                     <div>
@@ -165,7 +164,6 @@ const AddRecipeForm = () => {
                         name="selectedIngredientMeasure"
                         type="text"
                         className={css.input}
-                        placeholder="100g"
                       />
                     </div>
 
@@ -183,7 +181,7 @@ const AddRecipeForm = () => {
 
                           setFieldValue('ingredients', nextIngredients);
                           setFieldValue('selectedIngredientId', '');
-                          setFieldValue('selectedIngredientMeasure', '');
+                          setFieldValue('selectedIngredientMeasure', "0");
                         } catch (error) {
                           toast.error((error as Error).message);
                         }
@@ -285,22 +283,22 @@ const AddRecipeForm = () => {
                       <label className={css.label} htmlFor="category">
                         Category
                       </label>
-                      <Field
-                        as="select"
-                        id="category"
-                        name="category"
-                        className={`${css.input} ${css.selectInput} ${!values.category ? css.selectPlaceholder : ''}`}
-                        disabled={categoriesLoading}
-                      >
-                        <option value="" disabled hidden>
-                          Soup
-                        </option>
-                        {categories.map(category => (
-                          <option key={category._id} value={category._id}>
-                            {category.name}
-                          </option>
-                        ))}
-                      </Field>
+                      <div className={css.selectWrapper}>
+                        <CustomSelect
+                          value={values.category}
+                          placeholder="Category"
+                          wrapperClassName={css.selectWrapper}
+                          buttonClassName={css.categorySelect}
+                          labelClassName={css.recipeSelectLabel}
+                          options={categories.map(category => ({
+                            value: category.name,
+                            label: category.name,
+                          }))}
+                          onChange={value => {
+                            setFieldValue('category', value);
+                          }}
+                        />
+                      </div>
                       <ErrorMessage name="category" component="span" className={css.error} />
                     </div>
                   </div>

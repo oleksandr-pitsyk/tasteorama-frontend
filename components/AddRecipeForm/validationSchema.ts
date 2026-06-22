@@ -62,5 +62,5 @@ export const addRecipeValidationSchema = Yup.object({
       return allowedTypes.includes(value.type);
     }),
   selectedIngredientId: Yup.string().optional(),
-  selectedIngredientMeasure: Yup.string().optional(),
+  selectedIngredientMeasure: Yup.string().optional().max(10, 'Amount must not exceed 10 characters'),
 });
