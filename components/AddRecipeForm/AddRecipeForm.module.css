@@ -16,7 +16,7 @@
 .formGrid {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 40px;
 }
 
 .generalInfoSection {
@@ -132,7 +132,7 @@
 }
 
 .textarea {
-  min-height: 120px;
+  height: 144px;
   resize: vertical;
 }
 
@@ -364,7 +364,7 @@
 /*! ТАБЛЕТКА */
 @media (min-width: 768px) {
   .form {
-    gap: 28px;
+    gap: 8px;
   }
 
   .formGrid {
@@ -376,11 +376,11 @@
   }
 
   .ingredientsSection {
-    order: 2;
+    order: 3;
   }
 
   .generalInfoSection {
-    order: 3;
+    order: 2;
   }
 
   .instructionSection {
@@ -509,6 +509,7 @@
   .generalInfoSection {
     grid-area: general;
     order: initial;
+    max-width: 809px;
   }
 
   .uploadSection {
@@ -521,7 +522,7 @@
   .ingredientsSection {
     grid-area: ingredients;
     order: initial;
-    max-width: 100%;
+    max-width: 809px;
     margin-top: 32px;
   }
 
@@ -542,6 +543,7 @@
 
   .ingredientsHead {
     margin-top: 0;
+    width: 332px;
   }
 
   .ingredientsControls {
@@ -560,7 +562,6 @@
   }
 
   .ingredientsHead {
-    width: 100%;
     margin-top: 32px;
   }
 
@@ -583,7 +584,17 @@
 
   .primaryButton {
     font-size: 22px;
-    margin-top: 72px;
+    margin-top: 40px;
     max-width: 809px;
+  }
+
+  .ingredientRow {
+    width: 332px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .form {
+    gap: 0px;
   }
 }

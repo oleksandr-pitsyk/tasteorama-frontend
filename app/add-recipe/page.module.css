@@ -1,5 +1,6 @@
 .page {
   padding: 48px 16px;
+  background-color: #fbfcf8;
 }
 
 .title {
@@ -18,7 +19,7 @@
 
 @media (min-width: 393px) {
   .title {
-    font-size: 32px;
+    font-size: 40px;
   }
 
   .description {
@@ -48,8 +49,8 @@
   }
 
   .title {
-    font-size: 56px;
-    margin-bottom: 14px;
+    font-size: 48px;
+    margin-bottom: 40px;
   }
 
   .description {
