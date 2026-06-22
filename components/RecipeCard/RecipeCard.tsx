@@ -38,6 +38,7 @@ const RecipeCard = ({ recipe, initialIsFavorite = false, recipeType }: RecipeCar
   });
 
   const handleFavoriteClick = () => {
+    // Якщо користувач НЕавторизований - модальне вікно авторизації
     if (!isAuthenticated) {
       setShowAuthModal(true);
       return;
@@ -142,6 +143,7 @@ const RecipeCard = ({ recipe, initialIsFavorite = false, recipeType }: RecipeCar
         </div>
       </article>
 
+      {/* Модальне вікно переходу на авторизацію користувача */}
       {showAuthModal && (
         <Modal onClose={() => setShowAuthModal(false)}>
           <SaveRecipeNotAuthorized />
