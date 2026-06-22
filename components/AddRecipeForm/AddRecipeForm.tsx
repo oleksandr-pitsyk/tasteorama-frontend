@@ -62,12 +62,11 @@ const AddRecipeForm = () => {
     actions: FormikHelpers<AddRecipeFormValues>
   ) => {
     try {
-      await createRecipe(values);
+      const recipeId = await createRecipe(values);
 
       actions.resetForm();
       setPreviewUrl(null);
-      router.push(`/`);
-      // router.push(`/recipes/${recipeId}`);
+      router.push(`/recipes/${recipeId}`);
     } catch (error) {
       toast.error((error as Error).message);
     }

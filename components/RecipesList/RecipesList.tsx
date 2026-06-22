@@ -82,7 +82,7 @@ const RecipesList = ({ recipeType }: RecipesListProps) => {
           <ul className={css.list}>
             {recipes.map(recipe => (
               <li key={recipe._id} className={css.item}>
-                <RecipeCard recipe={recipe} />
+                <RecipeCard recipe={recipe} recipeType={recipeType} />
               </li>
             ))}
           </ul>

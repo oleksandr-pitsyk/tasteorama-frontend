@@ -18,13 +18,16 @@ export default function RecipeDetails({ recipe }: Props) {
 
   // Інгредієнти рецепту зберігаються як { id, measure } — id це ObjectId.
   // Тягнемо колекцію інгредієнтів, щоб показати назву замість id.
+  // Власний ключ кешу, щоб не конфліктувати з ['ingredients'] в AddRecipeForm,
+  // який повертає інший формат даних (об'єкт, а не масив).
   const { data: ingredients = [] } = useQuery({
-    queryKey: ['ingredients'],
+    queryKey: ['ingredients', 'details'],
     queryFn: getIngredients,
   });
 
   const getIngredientName = (id: string) =>
-    ingredients.find(ingredient => ingredient._id === id)?.name ?? id;
+    (Array.isArray(ingredients) ? ingredients : []).find(ingredient => ingredient._id === id)
+      ?.name ?? id;
 
   const handleSaveToggle = () => {
     if (!isAuthenticated) {

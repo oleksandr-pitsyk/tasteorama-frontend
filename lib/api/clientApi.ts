@@ -254,10 +254,29 @@ interface GetRecipeHttpResponse {
 }
 
 export async function getRecipeById(recipeId: string): Promise<GetRecipeHttpResponse> {
-  // Виконуємо HTTP-запит
-  const response = await nextServer.get<GetRecipeHttpResponse>(`/recipes/${recipeId}`);
+  // Щойно створений рецепт може бути ще не видимим одразу,
+  // тому на 404 робимо кілька повторних спроб з невеликою затримкою.
+  const maxAttempts = 3;
 
-  return response.data;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const response = await nextServer.get<GetRecipeHttpResponse>(`/recipes/${recipeId}`);
+      return response.data;
+    } catch (error) {
+      const isLastAttempt = attempt === maxAttempts;
+      const is404 = isAxiosError(error) && error.response?.status === 404;
+
+      if (is404 && !isLastAttempt) {
+        await new Promise(resolve => setTimeout(resolve, 400));
+        continue;
+      }
+
+      throw error;
+    }
+  }
+
+  // недосяжний рядок — цикл або повертає, або кидає
+  throw new Error('Recipe not found');
   // ========== Дима =====================================
   // const recipe = response.data.data ?? response.data.recipe;
   // if (!recipe) {
