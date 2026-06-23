@@ -14,10 +14,21 @@ import css from './RegistrationForm.module.css';
 
 const registerSchema = Yup.object({
   email: Yup.string()
-    .email('Invalid email format')
     .max(128, 'Email must be at most 128 characters')
-    .required('Email is required'),
-  name: Yup.string().max(16, 'Name must be at most 16 characters').required('Name is required'),
+    .required('Email is required')
+    .matches(
+    /^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/,
+    'Invalid email format: no spaces, cyrillic or special characters allowed'
+  )
+    .test('has-at', 'Email must contain "@"', val => !!val && val.includes('@'))
+    .test(
+      'valid-domain',
+    'Email must end with .com, .net or .ua',
+    val => !!val && /\.(com|net|ua)$/i.test(val)
+  ),
+  name: Yup.string()
+    .max(16, 'Name must be at most 16 characters')
+    .required('Name is required'),
   password: Yup.string()
     .min(8, 'Password must be at least 8 characters')
     .max(128, 'Password must be at most 128 characters')
@@ -72,20 +83,14 @@ const PasswordInput = ({
 
 const RegistrationForm = () => {
   const router = useRouter();
-
-  // Отримання даних зі стану авторизації
-  // Функція - стан відкритого вікна реєстрації або логінізації
   const setIsOpenRegisterLoginForm = useAuthStore(state => state.setIsOpenRegisterLoginForm);
 
   useEffect(() => {
-    // При монтуванні компонента
     setIsOpenRegisterLoginForm(true);
-
     return () => {
-      // При розмонтуванні компонента (очистки)
       setIsOpenRegisterLoginForm(false);
     };
-  }, []);
+  }, [setIsOpenRegisterLoginForm]);
 
   const setUser = useAuthStore(state => state.setUser);
   const [isLoading, setIsLoading] = useState(false);
@@ -109,7 +114,6 @@ const RegistrationForm = () => {
         toast.success('Registration successful!');
         router.push('/');
       } catch (error) {
-        // форма залишається заповненою — resetForm НЕ викликаємо
         const status = (error as ApiError).response?.status;
 
         if (status === 409 || status === 400) {
@@ -219,7 +223,7 @@ const RegistrationForm = () => {
 
           <button
             type="submit"
-            disabled={isLoading || (formik.submitCount > 0 && !formik.isValid)}
+            disabled={isLoading || (formik.dirty && !formik.isValid)}
             className={css.submitBtn}
           >
             Create account
