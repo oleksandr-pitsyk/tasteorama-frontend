@@ -72,7 +72,7 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body className={`${montserrat.variable} ${dmSans.variable}`}>
         <TanStackProvider>
           {/* Провайдер авторизації */}

@@ -145,24 +145,6 @@ const RegistrationForm = () => {
         </p>
 
         <form onSubmit={formik.handleSubmit} noValidate className={css.form}>
-          {/* Email */}
-          <div className={css.fieldGroup}>
-            <label htmlFor="email" className={css.label}>
-              Enter your email address
-            </label>
-            <input
-              id="email"
-              type="email"
-              placeholder="email@gmail.com"
-              autoComplete="off"
-              className={inputClass('email')}
-              {...formik.getFieldProps('email')}
-            />
-            {formik.touched.email && formik.errors.email && (
-              <span className={css.error}>{formik.errors.email}</span>
-            )}
-          </div>
-
           {/* Name */}
           <div className={css.fieldGroup}>
             <label htmlFor="name" className={css.label}>
@@ -178,6 +160,24 @@ const RegistrationForm = () => {
             />
             {formik.touched.name && formik.errors.name && (
               <span className={css.error}>{formik.errors.name}</span>
+            )}
+          </div>
+
+          {/* Email */}
+          <div className={css.fieldGroup}>
+            <label htmlFor="email" className={css.label}>
+              Enter your email address
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder="email@gmail.com"
+              autoComplete="off"
+              className={inputClass('email')}
+              {...formik.getFieldProps('email')}
+            />
+            {formik.touched.email && formik.errors.email && (
+              <span className={css.error}>{formik.errors.email}</span>
             )}
           </div>
 
