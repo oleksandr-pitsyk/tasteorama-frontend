@@ -16,12 +16,16 @@ const registerSchema = Yup.object({
   email: Yup.string()
     .max(128, 'Email must be at most 128 characters')
     .required('Email is required')
+    .matches(
+    /^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/,
+    'Invalid email format: no spaces, cyrillic or special characters allowed'
+  )
     .test('has-at', 'Email must contain "@"', val => !!val && val.includes('@'))
     .test(
-      'has-dotcom',
-      'Email must contain ".com"',
-      val => !!val && val.toLowerCase().includes('.com')
-    ),
+      'valid-domain',
+    'Email must end with .com, .net or .ua',
+    val => !!val && /\.(com|net|ua)$/i.test(val)
+  ),
   name: Yup.string()
     .max(16, 'Name must be at most 16 characters')
     .required('Name is required'),
