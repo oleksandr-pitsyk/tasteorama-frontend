@@ -37,17 +37,15 @@ const dmSans = DM_Sans({
 // Визначення метаданих для всього сайту, включаючи заголовок, опис та налаштування Open Graph для соціальних мереж.
 import type { Metadata } from 'next';
 
+// ============================================
 export const metadata: Metadata = {
-  icons: {
-    icon: '/favicon.svg',
-  },
-  metadataBase: new URL('https://tasteorama-frontend.vercel.app/'),
+  metadataBase: new URL('https://tasteorama-frontend.vercel.app'),
   title: 'Tasteorama',
   description: 'Tasteorama - Your Ultimate Recipe Companion',
   openGraph: {
     title: `Tasteorama`,
     description: 'Tasteorama - Your Ultimate Recipe Companion',
-    siteName: 'Tasteorama - Your Ultimate Recipe Companion',
+    siteName: 'Tasteorama',
     images: [
       {
         url: 'favicon.svg',
@@ -59,7 +57,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
 };
-
+// ============================================
 // Додаємо провайдер авторизації у layout.tsx,
 // щоб дані про авторизацію були доступні в будь-якому компоненті застосунку:
 import AuthProvider from '@/components/AuthProvider/AuthProvider';
