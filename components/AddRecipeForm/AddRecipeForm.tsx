@@ -181,7 +181,7 @@ const AddRecipeForm = () => {
 
                           setFieldValue('ingredients', nextIngredients);
                           setFieldValue('selectedIngredientId', '');
-                          setFieldValue('selectedIngredientMeasure', "0");
+                          setFieldValue('selectedIngredientMeasure', '0');
                         } catch (error) {
                           toast.error((error as Error).message);
                         }

@@ -2,7 +2,10 @@ import * as Yup from 'yup';
 
 const ingredientSchema = Yup.object({
   id: Yup.string().required('Ingredient is required'),
-  measure: Yup.string().trim().required('Measure is required'),
+  measure: Yup.string()
+  .trim()
+  .max(10, 'Amount must not exceed 10 characters')
+  .required('Measure is required'),
   name: Yup.string().required('Name is required'),
 });
 

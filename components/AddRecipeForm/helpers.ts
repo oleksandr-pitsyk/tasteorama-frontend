@@ -23,13 +23,17 @@ export function buildNextIngredients({
   const ingredient = availableIngredients.find(item => item._id === selectedIngredientId);
 
   if (!ingredient) {
-    throw new Error('Оберіть інгредієнт зі списку');
+    throw new Error('Please select an ingredient');
   }
 
   const exists = currentIngredients.some(item => item.id === ingredient._id);
 
   if (exists) {
     throw new Error('This ingredient has already been added');
+  }
+
+  if (selectedIngredientMeasure.trim().length > 10) {
+    throw new Error('Amount must not exceed 10 characters');
   }
 
   return [
