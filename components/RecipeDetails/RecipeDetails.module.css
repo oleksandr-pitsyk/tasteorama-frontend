@@ -109,10 +109,12 @@
   font-weight: 600;
   font-size: 18px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.saveBtn:hover:not(:disabled) {
-  background-color: #9b6c43;
+.saveBtn:hover:not(:disabled),
+.saveBtn:focus-visible:not(:disabled) {
+  background-color: #6d554b;
 }
 
 .saveBtn:disabled {

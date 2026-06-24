@@ -18,7 +18,9 @@
   font-size: 18px;
   line-height: 1, 5;
   color: #000;
-  transition: border-color 250ms ease, box-shadow 250ms ease;
+  transition:
+    border-color 250ms ease,
+    box-shadow 250ms ease;
 }
 .input:focus,
 .input:focus-visible {
@@ -46,7 +48,7 @@
 }
 .button:hover,
 .button:focus-visible {
-  background: #7f5634;
+  background: #6d554b;
 }
 
 @media screen and (min-width: 768px) {
