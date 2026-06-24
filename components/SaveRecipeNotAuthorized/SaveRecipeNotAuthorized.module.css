@@ -77,9 +77,30 @@
 
 .loginBtn {
   border: 1px solid #000;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s,
+    color 0.3s,
+    box-shadow 0.3s;
 }
 
 .registerBtn {
   background: #9b6c43;
+  color: #fff;
+}
+
+.registerBtn {
+  transition: background-color 0.2s;
+}
+
+.registerBtn:hover,
+.registerBtn:focus {
+  background-color: #6d554b;
+}
+
+.loginBtn:hover,
+.loginBtn:focus {
+  background: var(--light-brown);
+  border-color: var(--light-brown);
   color: #fff;
 }

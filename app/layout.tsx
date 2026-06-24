@@ -16,6 +16,8 @@ import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import Header from '@/components/Header/Header';
 // Імпорт компонента Footer
 import Footer from '@/components/Footer/Footer';
+// Імпорт компонента ScrollButton
+import ScrollButton from '@/components/ScrollButton/ScrollButton';
 
 // Імпорт шрифтів з Google Fonts за допомогою Next.js
 import { Montserrat, DM_Sans } from 'next/font/google';
@@ -79,6 +81,7 @@ export default function RootLayout({
             <div className="layoutMain">
               {children}
               {modal}
+              <ScrollButton />
             </div>
             <Footer />
           </AuthProvider>
