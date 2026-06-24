@@ -46,10 +46,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: `Tasteorama`,
     description: 'Tasteorama - Your Ultimate Recipe Companion',
+    url: 'https://tasteorama-frontend.vercel.app/',
     siteName: 'Tasteorama',
     images: [
       {
-        url: 'favicon-background.svg',
+        url: 'tasteorama.webp',
         width: 1200,
         height: 630,
         alt: `Tasteorama picture`,
