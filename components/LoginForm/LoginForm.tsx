@@ -77,16 +77,15 @@ const LoginForm = () => {
   // const clearIsOpenRegisterLoginForm = useAuthStore(state => state.clearIsOpenRegisterLoginForm);
   // const isOpenRegisterLoginForm = useAuthStore(state => state.isOpenRegisterLoginForm);
   // const [isOpen, setIsOpen] = useState(true);
+
   useEffect(() => {
     // При монтуванні компонента
-    // console.log('Компонент смонтирован');
     setIsOpenRegisterLoginForm(true);
     // При розмонтуванні компонента (очистки)
     return () => {
-      // console.log('Компонент размонтирован');
       setIsOpenRegisterLoginForm(false);
     };
-  }, []);
+  }, [setIsOpenRegisterLoginForm]);
 
   // Функція - Встановлення поточного користувача та стану аутентификації в true
   const setUser = useAuthStore(state => state.setUser);
@@ -113,8 +112,9 @@ const LoginForm = () => {
         // форма залишається заповненою — resetForm НЕ викликаємо
         const status = (error as ApiError).response?.status;
 
-        if (status === 401) {
-          toast.error('Login failed user');
+        // Помилка створюється фронтендом в залежності від коду статусу відповіді бекенда
+        if (status === 400 || status === 401) {
+          toast.error('Invalid email or password. Please try again.');
         } else {
           toast.error(
             (error as ApiError).response?.data?.error ??

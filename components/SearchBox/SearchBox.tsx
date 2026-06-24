@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import css from './SearchBox.module.css';
-console.log('SearchBox mounted');
+
 export default function SearchBox() {
   const router = useRouter();
   const searchParams = useSearchParams();

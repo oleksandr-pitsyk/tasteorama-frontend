@@ -88,10 +88,6 @@ export async function POST(request: NextRequest) {
           Cookie: cookieStore.toString(),
         },
       });
-      // ====== TEST ============================================================
-      console.log('app-api-recipes-route.ts-POST-res', res);
-      console.log('app-api-recipes-route.ts-POST-res.data', res.data);
-      // ====== TEST ============================================================
 
       return NextResponse.json(res.data, { status: res.status });
     } catch (error) {

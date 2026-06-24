@@ -88,10 +88,7 @@ interface getCategoriesResponse {
 export async function getCategories(): Promise<Category[]> {
   // Виконуємо HTTP-запит
   const response = await nextServer.get<getCategoriesResponse>('/categories');
-  console.log('Fetch - GET getCategories :');
-  console.log('response', response);
-  console.log('response.data', response.data);
-  console.log(response.data);
+
   // Повертаємо значення відповіді
   return response.data.categories;
 }
@@ -114,9 +111,6 @@ interface getIngredientsResponse {
 export async function getIngredients(): Promise<Ingredient[]> {
   // Виконуємо HTTP-запит
   const response = await nextServer.get<getIngredientsResponse>('/ingredients');
-  console.log('Fetch - GET getIngredients :');
-  console.log('response', response);
-  console.log('response.data', response.data);
 
   // Повертаємо значення data відповіді
   return response.data.ingredients;
@@ -225,11 +219,6 @@ export async function createRecipe(
 ): Promise<PostRecipeHttpResponse> {
   // Виконуємо HTTP-запит на додавання нового запису
   const response = await nextServer.post<PostRecipeHttpResponse>('/recipes', recipeNew);
-
-  // ====== TEST ============================================================
-  console.log('lib-api-clientApi.ts-createRecipe-responce', response);
-  console.log('lib-api-clientApi.ts-createRecipe-responce.data', response.data);
-  // ====== TEST ============================================================
 
   // Повертаємо інформацію про рецепт
   return response.data;

@@ -32,7 +32,7 @@ const AuthProvider = ({ children }: Props) => {
       if (isAuthenticated) {
         // Якщо сесія валідна — отримуємо користувача
         const userCurrent = await getMe();
-        console.log('AuthProvider - userCurrent', userCurrent);
+
         if (userCurrent) setUser(userCurrent);
       } else {
         // Якщо сесія невалідна — чистимо стан

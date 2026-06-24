@@ -14,21 +14,27 @@ import css from './RegistrationForm.module.css';
 
 const registerSchema = Yup.object({
   email: Yup.string()
+    .email('Invalid email format')
     .max(128, 'Email must be at most 128 characters')
-    .required('Email is required')
-    .matches(
-    /^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/,
-    'Invalid email format: no spaces, cyrillic or special characters allowed'
-  )
-    .test('has-at', 'Email must contain "@"', val => !!val && val.includes('@'))
-    .test(
-      'valid-domain',
-    'Email must end with .com, .net or .ua',
-    val => !!val && /\.(com|net|ua)$/i.test(val)
-  ),
-  name: Yup.string()
-    .max(16, 'Name must be at most 16 characters')
-    .required('Name is required'),
+    .required('Email is required'),
+  // ============================================================================
+  // Тест на валідність email - ВІДКЛЮЧЕНИЙ !!!
+  // .matches(
+  //   /^[a-zA-Z0-9_.+\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/,
+  //   'Invalid email format: no spaces, cyrillic or special characters allowed'
+  // )
+  // ============================================================================
+  // Тест на валідність @ в email - ВІДКЛЮЧЕНИЙ !!!
+  // .test('has-at', 'Email must contain "@"', val => !!val && val.includes('@')),
+  // ============================================================================
+  // Тест на валідність домена в email - ВІДКЛЮЧЕНИЙ !!!
+  // .test(
+  //   'valid-domain',
+  //   'Email must end with .com, .net or .ua',
+  //   val => !!val && /\.(com|net|ua)$/i.test(val)
+  // ),
+  // ============================================================================
+  name: Yup.string().max(16, 'Name must be at most 16 characters').required('Name is required'),
   password: Yup.string()
     .min(8, 'Password must be at least 8 characters')
     .max(128, 'Password must be at most 128 characters')
@@ -116,8 +122,13 @@ const RegistrationForm = () => {
       } catch (error) {
         const status = (error as ApiError).response?.status;
 
-        if (status === 409 || status === 400) {
+        // Помилка створюється фронтендом в залежності від коду статусу відповіді бекенда
+        if (status === 409) {
+          // Користувач вже є в БД
           toast.error('A user with this email is already registered');
+        } else if (status === 400) {
+          // Невірний запит
+          toast.error('Invalid email. Please try again.');
         } else {
           toast.error(
             (error as ApiError).response?.data?.error ??
